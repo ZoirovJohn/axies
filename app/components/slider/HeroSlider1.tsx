@@ -46,7 +46,7 @@ export default function HeroSlider1(): JSX.Element {
                         </p>
                         <div className="flat-bt-slider flex style2">
                           <Link
-                            href="/explore-1"
+                            href="/explore-4"
                             className="sc-button header-slider style style-1 rocket fl-button pri-1"
                           >
                             <span>Explore</span>
