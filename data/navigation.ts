@@ -1,15 +1,246 @@
-interface NavigationType {
+type NavigationType = {
   id: number;
   name: string;
-  path?: string | undefined;
+  path: string;
+  dropdown?: NavigationType[];
+};
+
+const authMember = true;
+
+let navigation: NavigationType[];
+
+if (authMember) {
+  navigation = [
+    { id: 1, name: "Home", path: "/" },
+    { id: 2, name: "Products", path: "/explore-4" },
+    { id: 3, name: "Live Auctions", path: "/live-auctions" },
+    { id: 4, name: "Articles", path: "/blog" },
+    { id: 5, name: "Creators", path: "/authors-1" },
+    {
+      id: 6,
+      name: "More",
+      path: "/",
+      dropdown: [
+        {
+          id: 1,
+          name: "Ranking",
+          path: "/ranking",
+        },
+        {
+          id: 2,
+          name: "My Profile",
+          path: "/edit-profile",
+        },
+        {
+          id: 3,
+          name: "Contact",
+          path: "/contact-1",
+        },
+        {
+          id: 4,
+          name: "FAQ",
+          path: "/faq",
+        },
+        {
+          id: 5,
+          name: "FAQ",
+          path: "/faq",
+        },
+      ],
+    },
+  ];
+} else {
+  navigation = [
+    { id: 1, name: "Home", path: "/" },
+    { id: 2, name: "Products", path: "/explore-4" },
+    { id: 3, name: "Live Auctions", path: "/live-auctions" },
+    { id: 4, name: "Articles", path: "/blog" },
+    { id: 5, name: "Creators", path: "/authors-1" },
+    {
+      id: 6,
+      name: "Register",
+      path: "#",
+      dropdown: [
+        {
+          id: 1,
+          name: "Login",
+          path: "/login",
+        },
+        {
+          id: 2,
+          name: "Sing Up",
+          path: "/signup",
+        },
+      ],
+    },
+  ];
 }
 
-export const navigation: NavigationType[] = [
-  { id: 1, name: "Home", path: "/" },
-  { id: 2, name: "Products", path: "/explore-4" },
-  { id: 3, name: "Live Auctions", path: "/live-auctions" },
-  { id: 4, name: "Articles", path: "/blog" },
-  { id: 5, name: "Creators", path: "/authors-1" },
-  { id: 6, name: "Contact", path: "/contact-1" },
-  { id: 6, name: "Ranking", path: "/ranking" },
-];
+export { navigation };
+/**"use client";
+import Image from "next/image";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useState } from "react";
+import { useMetaMask } from "metamask-react";
+import logoImg from "../../../public/assets/images/avatar/avata_profile.jpg";
+
+const tab: string[] = ["Explore", "Unlock"];
+
+export default function AdminBar(): JSX.Element {
+  const [isNotificationActive, setNotificationActive] =
+    useState<boolean>(false);
+  const [isAuthorActive, setAuthorActive] = useState<boolean>(false);
+  const [getCurrentTab, setCurrentTab] = useState<number>(0);
+  const [isLogoutConfirm, setLogoutConfirm] = useState<boolean>(false);
+  let { status, account } = useMetaMask();
+
+  const path = usePathname();
+  const authMember = true;
+
+  const notificationHandler = () => {
+    setNotificationActive(!isNotificationActive);
+    setAuthorActive(false);
+  };
+
+  const avatarHandler = () => {
+    setAuthorActive(!isAuthorActive);
+    setNotificationActive(false);
+  };
+
+  const handleLogout = () => {
+    setLogoutConfirm(true);
+  };
+
+  return (
+    <>
+      <div className={""}>
+        <div className="header_avatar">
+          <div className="popup-notification">
+            <div className="notification" onClick={notificationHandler}>
+              <span className="number">2</span>
+              <svg
+                width={19}
+                height={22}
+                viewBox="0 0 19 22"
+                fill="#fff"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M18.4915 15.495L17.209 13.65C17.0339 13.3992 16.9397 13.1009 16.939 12.795V7.5C16.939 5.51088 16.1488 3.60322 14.7423 2.1967C13.3357 0.790176 11.4281 0 9.43896 0C7.44984 0 5.54218 0.790176 4.13566 2.1967C2.72914 3.60322 1.93896 5.51088 1.93896 7.5V12.795C1.93824 13.1009 1.84403 13.3992 1.66896 13.65L0.386463 15.495C0.192273 15.7102 0.064576 15.977 0.018815 16.2632C-0.0269461 16.5494 0.0111884 16.8427 0.128607 17.1077C0.246026 17.3727 0.437699 17.598 0.680449 17.7563C0.923199 17.9147 1.20663 17.9993 1.49646 18H5.76396C5.9361 18.8477 6.39601 19.6099 7.06577 20.1573C7.73553 20.7047 8.57394 21.0038 9.43896 21.0038C10.304 21.0038 11.1424 20.7047 11.8122 20.1573C12.4819 19.6099 12.9418 18.8477 13.114 18H17.3815C17.6713 17.9993 17.9547 17.9147 18.1975 17.7563C18.4402 17.598 18.6319 17.3727 18.7493 17.1077C18.8667 16.8427 18.9049 16.5494 18.8591 16.2632C18.8133 15.977 18.6856 15.7102 18.4915 15.495ZM9.43896 19.5C8.97475 19.4987 8.52231 19.3538 8.14366 19.0853C7.76501 18.8168 7.4787 18.4377 7.32396 18H11.554C11.3992 18.4377 11.1129 18.8168 10.7343 19.0853C10.3556 19.3538 9.90317 19.4987 9.43896 19.5ZM1.49646 16.5C1.53036 16.4685 1.56056 16.4333 1.58646 16.395L2.89896 14.505C3.24909 14.0034 3.43751 13.4067 3.43896 12.795V7.5C3.43896 5.9087 4.0711 4.38258 5.19632 3.25736C6.32154 2.13214 7.84766 1.5 9.43896 1.5C11.0303 1.5 12.5564 2.13214 13.6816 3.25736C14.8068 4.38258 15.439 5.9087 15.439 7.5V12.795C15.4404 13.4067 15.6288 14.0034 15.979 14.505L17.2915 16.395C17.3174 16.4333 17.3476 16.4685 17.3815 16.5H1.49646Z"
+                  fill="white"
+                />
+              </svg>
+            </div>
+            <div
+              className={`avatar_popup2  mt-20 ${
+                isNotificationActive ? "visible" : ""
+              }`}
+            >
+              <div className="show mg-bt-18">
+                <h4>Notifications</h4>
+              </div>
+              <div className="flat-tabs">
+                <ul className="menu-tab">
+                  {tab.map((item, index) => (
+                    <li
+                      onClick={() => setCurrentTab(index)}
+                      key={index}
+                      className={getCurrentTab === index ? "active" : ""}
+                    >
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                <div className="content-tab">
+                  {getCurrentTab === 0 && (
+                    <div className="content-inner">
+                      <div className="wrap-box">
+                        <div className="heading">
+                          "Step into the world of digital art like never before.
+                          Our NFTs aren’t just collectibles; they represent a
+                          fusion of creativity, technology, and culture. With
+                          each unique piece, you’re not only owning a digital
+                          asset but also becoming part of a larger community.
+                          Discover the endless possibilities our NFTs offer, and
+                          immerse yourself in the future of digital ownership.
+                          It’s more than art; it’s your gateway to something new
+                          and exciting."
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                  {getCurrentTab === 1 && (
+                    <div className="content-inner">
+                      <div className="wrap-box">
+                        <div className="heading">
+                          "Ready to discover the rarest digital treasures? Our
+                          collection of NFTs is more than just a marketplace;
+                          it’s a gateway to a new world of opportunity. Whether
+                          you’re an art enthusiast, an investor, or someone
+                          looking to dive into the latest trends in technology,
+                          there’s something here for everyone. Each NFT tells a
+                          story, offering you a chance to own a piece of
+                          history. With each new release, we’re pushing the
+                          boundaries of what’s possible in the NFT space."
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+
+       
+          {authMember && (
+            <div className="profile">
+              <Image
+                height={100}
+                width={100}
+                onClick={avatarHandler}
+                className="avatar"
+                src={logoImg}
+                alt="avatar"
+              />
+              {isAuthorActive && (
+                <div
+                  className="logout-menu"
+                  ref={menuRef}
+                  style={{
+                    position: "absolute",
+                    top: "60px", // Adjust this value based on your layout
+                    left: "45px",
+                    border: "1px solid #ddd",
+                    borderRadius: "5px",
+                    boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+                    width: "74px",
+                    display: "block",
+                  }}
+                >
+                  <div className="links">
+                    <button
+                      onClick={handleLogout}
+                      style={{
+                        backgroundColor: "transparent",
+                        border: "none",
+                        padding: "10px",
+                        width: "100%",
+                        textAlign: "left",
+                        cursor: "pointer",
+                      }}
+                    >
+                      Log out
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      </div>
+    </>
+  );
+}
+ */
