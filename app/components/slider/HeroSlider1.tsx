@@ -64,7 +64,7 @@ export default function HeroSlider1(): JSX.Element {
                           height={448}
                           width={620}
                           className="img-bg"
-                          src="/assets/images/backgroup-secsion/img-bg-sliderhome2.png"
+                          src="/assets/images/backgroup-secsion/img-bg-sliderhome2.webp"
                           alt="Image"
                         />
                         <Image
@@ -124,14 +124,14 @@ export default function HeroSlider1(): JSX.Element {
                       <Image
                         height={395}
                         width={573}
-                        src="/assets/images/box-item/imgslider-3.png"
+                        src="/assets/images/box-item/imgslider-3.webp"
                         alt="Image"
                       />
                       <Image
                         height={460}
                         width={705}
                         className="img-bg"
-                        src="/assets/images/backgroup-secsion/img-bg-sliderhome3.png"
+                        src="/assets/images/backgroup-secsion/img-bg-sliderhome3.webp"
                         alt="Image"
                       />
                     </div>

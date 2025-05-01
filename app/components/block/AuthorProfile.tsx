@@ -26,7 +26,7 @@ export default function AuthorProfile(): JSX.Element {
                                     height={500}
                                     width={500}
                                     style={{ height: "276px", width: "276px" }}
-                                    src="/assets/images/avatar/avt-author-tab.jpg"
+                                    src="/assets/images/avatar/avt-author-tab.webp"
                                     alt="Image"
                                     className="avatar"
                                 />

@@ -93,7 +93,7 @@ export const activity1: Activity1[] = [
   },
   {
     id: 2,
-    img: "/assets/images/box-item/image-box-10.jpg",
+    img: "/assets/images/box-item/image-box-10.webp",
     icon: "icon-2",
     title: "Wow! That Brain is Floating",
     name: "Gayle Hicks",
@@ -102,7 +102,7 @@ export const activity1: Activity1[] = [
   },
   {
     id: 3,
-    img: "/assets/images/box-item/image-box-11.jpg",
+    img: "/assets/images/box-item/image-box-11.webp",
     icon: "icon-3",
     title: "Wow! That Brain is Floating",
     name: "Gayle Hicks",
@@ -110,7 +110,7 @@ export const activity1: Activity1[] = [
   },
   {
     id: 4,
-    img: "/assets/images/box-item/image-box-21.jpg",
+    img: "/assets/images/box-item/image-box-21.webp",
     icon: "icon-4",
     title: "Our Journey Start",
     name: "Gayle Hicks",
@@ -146,7 +146,7 @@ export const activity2: Activity2[] = [
   },
   {
     id: 2,
-    img: "/assets/images/box-item/image-box-21.jpg",
+    img: "/assets/images/box-item/image-box-21.webp",
     title: "Deep Sea Plan",
     name: "Trista Francis",
     eth: 0.049,
@@ -161,7 +161,7 @@ export const activity2: Activity2[] = [
   },
   {
     id: 4,
-    img: "/assets/images/box-item/card-item-7.jpg",
+    img: "/assets/images/box-item/card-item-7.webp",
     title: "This is Our Story",
     name: "Trista Francis",
     eth: 0.049,
@@ -169,14 +169,14 @@ export const activity2: Activity2[] = [
   },
   {
     id: 5,
-    img: "/assets/images/box-item/card-item-9.jpg",
+    img: "/assets/images/box-item/card-item-9.webp",
     title: "I Believe I Can Fly",
     name: "Gayle Hicks",
     type: 1,
   },
   {
     id: 5,
-    img: "/assets/images/box-item/image-box-11.jpg",
+    img: "/assets/images/box-item/image-box-11.webp",
     title: "Cute Astronout",
     name: "Trista Francis",
     eth: 0.049,
@@ -184,7 +184,7 @@ export const activity2: Activity2[] = [
   },
   {
     id: 6,
-    img: "/assets/images/box-item/card-item-4.jpg",
+    img: "/assets/images/box-item/card-item-4.webp",
     title: "USA Wordmation",
     eth: 0.049,
     name: "Gayle Hicks",

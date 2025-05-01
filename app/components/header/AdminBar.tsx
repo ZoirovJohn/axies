@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image"; // Import the Image component from Next.js
-import logoImg from "../../../public/assets/images/avatar/avata_profile.jpg";
+import logoImg from "../../../public/assets/images/avatar/avt-1.webp";
 
 const ProfileComponent = () => {
   const [isNotificationActive, setNotificationActive] =
