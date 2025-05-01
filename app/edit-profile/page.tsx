@@ -12,10 +12,10 @@ const item = {
     {
       name: "Author",
       path: "/edit-profile",
-      title: "My Profile",
+      title: "Profile",
     },
     {
-      name: "Edit Profile",
+      name: "Profile",
     },
   ],
 };
