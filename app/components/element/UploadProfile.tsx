@@ -3,47 +3,118 @@ import Image from "next/image";
 import { useState } from "react";
 
 export default function UploadProfile(): JSX.Element {
-    const [getProfileImg, setProfileImage] = useState<null | any>(null);
+  const [selectedAvatar, setSelectedAvatar] = useState<string | null>(null);
 
-    const uploadImage = (e: any) => {
-        setProfileImage(e.target.files[0]);
-    };
+  // Create array of 30 avatar images (5×6 grid)
+  const avatars = Array.from(
+    { length: 30 },
+    (_, i) => `/assets/images/avatar/avt-${i + 1}.webp`
+  );
 
-    return (
-        <>
-            <div className="sc-card-profile text-center">
-                <div className="card-media">
-                    <Image
-                        id="profileimg"
-                        src={
-                            getProfileImg !== null
-                                ? URL.createObjectURL(getProfileImg)
-                                : "/assets/images/avatar/avata_profile.jpg"
-                        }
-                        alt="Image"
-                        height={500}
-                        width={500}
-                    />
-                </div>
-                <div id="upload-profile">
-                    <a className="btn-upload">Upload New Photo </a>
-                    <input
-                        id="tf-upload-img"
-                        type="file"
-                        name="profile"
-                        required
-                        onChange={uploadImage}
-                        accept=".png, .jpg, .jpeg"
-                    />
-                </div>
-                <a
-                    onClick={() => setProfileImage(null)}
-                    style={{ cursor: "pointer" }}
-                    className="btn-upload style2"
-                >
-                    Delete
-                </a>
+  const updateProfileImage = () => {
+    if (selectedAvatar) {
+      // Handle profile update logic
+      console.log("Profile updated with:", selectedAvatar);
+    }
+  };
+
+  return (
+    <div className="text-center">
+      {/* Container Box with Fixed Styling */}
+      <div
+        style={{
+          width: "300px",
+          margin: "0 auto",
+          border: "2px solid #e5e7eb",
+          borderRadius: "8px",
+          padding: "12px",
+          backgroundColor: "#f9fafb",
+          boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
+        }}
+      >
+        {/* 5×6 Avatar Grid with Explicit Grid Styling */}
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(5, 1fr)",
+            gap: "8px",
+            marginBottom: "16px",
+          }}
+        >
+          {avatars.map((avatar, idx) => (
+            <div
+              key={idx}
+              onClick={() => setSelectedAvatar(avatar)}
+              style={{
+                cursor: "pointer",
+                borderRadius: "4px",
+                overflow: "hidden",
+                border:
+                  selectedAvatar === avatar ? "2px solid #3b82f6" : "none",
+                transition: "transform 0.2s",
+                // Force aspect ratio to be square
+                aspectRatio: "1/1",
+                width: "100%",
+                height: "0",
+                paddingBottom: "100%",
+                position: "relative",
+              }}
+              onMouseOver={(e) => {
+                e.currentTarget.style.transform = "scale(1.05)";
+              }}
+              onMouseOut={(e) => {
+                e.currentTarget.style.transform = "scale(1)";
+              }}
+            >
+              <div
+                style={{
+                  position: "absolute",
+                  top: "0",
+                  left: "0",
+                  width: "100%",
+                  height: "100%",
+                }}
+              >
+                <Image
+                  src={avatar}
+                  alt={`Avatar ${idx + 1}`}
+                  layout="fill"
+                  objectFit="cover"
+                  sizes="50px"
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                  }}
+                />
+              </div>
             </div>
-        </>
-    );
+          ))}
+        </div>
+
+        {/* Button */}
+        <button
+          onClick={updateProfileImage}
+          style={{
+            width: "100%",
+            padding: "8px 16px",
+            backgroundColor: "#3b82f6",
+            color: "white",
+            borderRadius: "6px",
+            fontWeight: "500",
+            cursor: "pointer",
+            border: "none",
+            transition: "background-color 0.2s",
+          }}
+          onMouseOver={(e) => {
+            e.currentTarget.style.backgroundColor = "#2563eb";
+          }}
+          onMouseOut={(e) => {
+            e.currentTarget.style.backgroundColor = "#3b82f6";
+          }}
+        >
+          Update Profile Logo
+        </button>
+      </div>
+    </div>
+  );
 }

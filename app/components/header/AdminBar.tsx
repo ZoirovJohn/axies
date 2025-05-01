@@ -8,14 +8,12 @@ const ProfileComponent = () => {
   const [isAuthorActive, setIsAuthorActive] = useState(false);
   const [getCurrentTab, setCurrentTab] = useState<number>(0);
   const [isLogoutConfirm, setLogoutConfirm] = useState<boolean>(false);
-  const menuRef = useRef(null); // Reference for the logout menu
+  const menuRef = useRef(null);
   const profileRef = useRef<HTMLDivElement>(null);
   const tab: string[] = ["Explore", "Unlock"];
 
-  // Manually set authMember to true (as requested)
   const authMember = true;
 
-  // Toggle the visibility of the logout menu
   const avatarHandler = () => {
     setIsAuthorActive((prevState) => !prevState);
   };
@@ -25,7 +23,6 @@ const ProfileComponent = () => {
     setIsAuthorActive(false);
   };
 
-  // Close logout menu if clicked outside
   const handleClickOutside = (event: MouseEvent) => {
     const target = event.target as HTMLElement;
     if (!profileRef.current?.contains(target)) {
@@ -33,17 +30,13 @@ const ProfileComponent = () => {
     }
   };
 
-  // Set up event listener when the component mounts
   useEffect(() => {
     document.addEventListener("mousedown", handleClickOutside);
 
-    // Clean up event listener when component unmounts
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
-
-  
 
   const handleLogout = () => {
     console.log("Logged out");
