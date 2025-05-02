@@ -23,8 +23,17 @@ export default function Contact(): JSX.Element {
               </h2>
               <h5 className="sub-title style-1">
                 Have a question or need support? Fill out the form below and
-                we'll get back to you as soon as possible.
+                we’ll get back to you as soon as possible. For urgent inquiries,
+                feel free to contact us at{" "}
+                <a
+                  href="mailto:zoirovtokhirjon@gmail.com"
+                  style={{ color: "#007bff", fontWeight: "bold" }}
+                >
+                  zoirovtokhirjon@gmail.com
+                </a>
+                .
               </h5>
+
               <div className="form-inner">
                 <form
                   action="contact/contact-process2.php"
