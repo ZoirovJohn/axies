@@ -7,12 +7,9 @@ import BackToTop from "./components/button/BackToTop";
 import "./../public/assets/css/style.css";
 import MobileNavigation from "./components/header/MobileNavigation";
 import { usePathname } from "next/navigation";
+import { useEffect } from "react";
 
-if (typeof window !== "undefined") {
-  import("bootstrap");
-}
-
-// rubic font
+// rubik font
 const rubik = Rubik({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700", "800"],
@@ -32,6 +29,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   const path = usePathname();
+
+  useEffect(() => {
+    // Dynamically import bootstrap only on the client side
+    import("bootstrap").then(() => {
+      console.log("Bootstrap loaded on the client-side");
+    });
+  }, []);
 
   return (
     <html lang="en">
