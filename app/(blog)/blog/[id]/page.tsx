@@ -3,33 +3,33 @@ import Breadcrumb from "@/app/components/breadcrumb";
 import { Metadata } from "next";
 
 const item = {
-    title: "Blog Details",
-    breadcrumb: [
-        {
-            name: "Home",
-            path: "/",
-        },
-        {
-            name: "Community",
-            path: "/blog/1",
-        },
-        {
-            name: "Blog Details",
-        },
-    ],
+  title: "Blog Details",
+  breadcrumb: [
+    {
+      name: "Home",
+      path: "/",
+    },
+    {
+      name: "Community",
+      path: "/blog/1",
+    },
+    {
+      name: "Blog Details",
+    },
+  ],
 };
 
 export const metadata: Metadata = {
-    title: "Axies | NFT Marketplace",
+  title: "Axies | NFT Marketplace",
 };
 
 export default function page({ params }: any): JSX.Element {
-    const { id } = params;
+  const { id } = params;
 
-    return (
-        <>
-            <Breadcrumb data={item} />
-            <BlogSingle id={id} />
-        </>
-    );
+  return (
+    <>
+      <Breadcrumb data={item} />
+      <BlogSingle id={id} />
+    </>
+  );
 }
