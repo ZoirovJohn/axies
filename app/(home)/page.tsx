@@ -8,7 +8,7 @@ import TodaysPicks from "../components/block/TodaysPicks";
 import TopSeller2 from "../components/block/TopSeller2";
 
 export const metadata: Metadata = {
-  title: "Axies | NFT Marketplace React/Next Js Template | Home 1",
+  title: "Axies | NFT Marketplace",
 };
 
 export default function page(): JSX.Element {

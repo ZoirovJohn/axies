@@ -3,31 +3,31 @@ import Breadcrumb from "@/app/components/breadcrumb";
 import { Metadata } from "next";
 
 const item = {
-    title: "Sign Up",
-    breadcrumb: [
-        {
-            name: "Home",
-            path: "/",
-        },
-        {
-            name: "Page",
-            path: "/signup",
-        },
-        {
-            name: "Sign Up",
-        },
-    ],
+  title: "Sign Up",
+  breadcrumb: [
+    {
+      name: "Home",
+      path: "/",
+    },
+    {
+      name: "Page",
+      path: "/signup",
+    },
+    {
+      name: "Sign Up",
+    },
+  ],
 };
 
 export const metadata: Metadata = {
-    title: "Axies | NFT Marketplace React/Next Js Template | Sign Up",
+  title: "Axies | NFT Marketplace",
 };
 
 export default function page(): JSX.Element {
-    return (
-        <>
-            <Breadcrumb data={item} />
-            <Signup />
-        </>
-    );
+  return (
+    <>
+      <Breadcrumb data={item} />
+      <Signup />
+    </>
+  );
 }

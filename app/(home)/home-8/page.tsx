@@ -4,7 +4,7 @@ import Home8Sidebar from "@/app/components/sidebar/Home8Sidebar";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-    title: "Axies | NFT Marketplace React/Next Js Template | Home 8",
+    title: "Axies | NFT Marketplace",
 };
 
 export default function page(): JSX.Element {
