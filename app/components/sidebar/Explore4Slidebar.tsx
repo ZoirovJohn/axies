@@ -1,205 +1,195 @@
 "use client";
+import dynamic from "next/dynamic";
 import { useState } from "react";
-import { Collapse } from "react-collapse";
+
+// Dynamically import Collapse to avoid SSR issues
+const Collapse = dynamic(() => import("react-collapse"), { ssr: false });
 
 export default function Explore4Slidebar(): JSX.Element {
-    const [getStatusCollapse, setStatusCollapse] = useState<boolean>(true);
-    const [getCatCollapse, setCatCollapse] = useState<boolean>(true);
-    const [getChainsCollapse, setChainsCollapse] = useState<boolean>(true);
-    const [getCollectionsCollapse, setCollectionsCollapse] =
-        useState<boolean>(true);
+  const [getStatusCollapse, setStatusCollapse] = useState(true);
+  const [getCatCollapse, setCatCollapse] = useState(true);
+  const [getChainsCollapse, setChainsCollapse] = useState(true);
+  const [getCollectionsCollapse, setCollectionsCollapse] = useState(true);
 
-    const statusHandler = () => {
-        setStatusCollapse(!getStatusCollapse);
-    };
+  // Store the address list
+  const addresses = [
+    "서울 (Seoul)",
+    "부산 (Busan)",
+    "인천 (Incheon)",
+    "대구 (Daegu)",
+    "대전 (Daejeon)",
+    "제주 (Jeju)",
+    "평택 (Pyeongtaek)",
+    "안산 (Ansan)",
+    "김포 (Gimpo)",
+    "구미 (Gumi)",
+    "전주 (Jeonju)",
+  ];
 
-    const catHandler = () => {
-        setCatCollapse(!getCatCollapse);
-    };
+  const [showAll, setShowAll] = useState(false);
+  const [hovering, setHovering] = useState(false); // State for hovering
+  const [selectedBelowFive, setSelectedBelowFive] = useState(false); // Track if any item below 5 is selected
+  const [mouseLeaving, setMouseLeaving] = useState(false); // State to track if the mouse is leaving
 
-    const chainsHandler = () => {
-        setChainsCollapse(!getChainsCollapse);
-    };
+  // Function to handle hover over the 5th element
+  const handleHover = (index: number) => {
+    if (index === 4) {
+      setTimeout(() => {
+        setShowAll(true); // Show all after a small delay
+      }, 200); // Adjust the delay time (in milliseconds) for the effect
+    }
+  };
 
-    const collectionsHandler = () => {
-        setCollectionsCollapse(!getCollectionsCollapse);
-    };
+  const handleLeave = () => {
+    // If the mouse leaves and no item below 5 is selected, close the "show all" section
+    if (!selectedBelowFive) {
+      setMouseLeaving(true); // Mark the mouse as leaving
+      setTimeout(() => {
+        if (mouseLeaving && !selectedBelowFive) {
+          setShowAll(false); // Hide all after a delay if the mouse has left
+        }
+      }, 200); // Delay to match the hover effect
+    }
+  };
 
-    return (
-        <>
-            <div id="side-bar" className="side-bar style-3">
-                <div className="widget widget-category mgbt-24 boder-bt">
-                    <div onClick={statusHandler} className="title-wg-category">
-                        <h4 className="title-widget style-2">Status</h4>
-                        <i className="icon-fl-down-2" />
-                    </div>
-                    <Collapse isOpened={getStatusCollapse}>
-                        <div className="content-wg-category">
-                            <form action="#">
-                                <label>
-                                    Buy Now
-                                    <input type="checkbox" />
-                                    <span className="btn-checkbox" />
-                                </label>
-                                <br />
-                                <label>
-                                    On Auctions
-                                    <input type="checkbox" />
-                                    <span className="btn-checkbox" />
-                                </label>
-                                <br />
-                                <label className="mgbt-none">
-                                    Has Offers
-                                    <input type="checkbox" />
-                                    <span className="btn-checkbox" />
-                                </label>
-                                <br />
-                            </form>
-                        </div>
-                    </Collapse>
-                </div>
-                <div className="widget widget-category mgbt-24 boder-bt">
-                    <div onClick={catHandler} className="title-wg-category">
-                        <h4 className="title-widget style-2">Categories</h4>
-                        <i className="icon-fl-down-2" />
-                    </div>
-                    <Collapse isOpened={getCatCollapse}>
-                        <div className="content-wg-category">
-                            <form action="#">
-                                <label>
-                                    Art
-                                    <input type="checkbox" />
-                                    <span className="btn-checkbox" />
-                                </label>
-                                <br />
-                                <label>
-                                    Music
-                                    <input type="checkbox" />
-                                    <span className="btn-checkbox" />
-                                </label>
-                                <br />
-                                <label>
-                                    Domain Names
-                                    <input type="checkbox" />
-                                    <span className="btn-checkbox" />
-                                </label>
-                                <br />
-                                <label>
-                                    Virtual Worlds
-                                    <input type="checkbox" />
-                                    <span className="btn-checkbox" />
-                                </label>
-                                <br />
-                                <label>
-                                    Trading Cards
-                                    <input type="checkbox" />
-                                    <span className="btn-checkbox" />
-                                </label>
-                                <br />
-                                <label>
-                                    Collectibles
-                                    <input type="checkbox" />
-                                    <span className="btn-checkbox" />
-                                </label>
-                                <br />
-                                <label>
-                                    Sports
-                                    <input type="checkbox" />
-                                    <span className="btn-checkbox" />
-                                </label>
-                                <br />
-                                <label className="mgbt-none">
-                                    Utility
-                                    <input type="checkbox" />
-                                    <span className="btn-checkbox" />
-                                </label>
-                                <br />
-                            </form>
-                        </div>
-                    </Collapse>
-                </div>
-                <div className="widget widget-category mgbt-24 boder-bt">
-                    <div onClick={chainsHandler} className="title-wg-category">
-                        <h4 className="title-widget style-2">Chains</h4>
-                        <i className="icon-fl-down-2" />
-                    </div>
-                    <Collapse isOpened={getChainsCollapse}>
-                        <div className="content-wg-category">
-                            <form action="#">
-                                <label>
-                                    Ethereum
-                                    <input type="checkbox" />
-                                    <span className="btn-checkbox" />
-                                </label>
-                                <br />
-                                <label>
-                                    Polygon
-                                    <input type="checkbox" />
-                                    <span className="btn-checkbox" />
-                                </label>
-                                <br />
-                                <label className="mgbt-none">
-                                    Klaytn
-                                    <input type="checkbox" />
-                                    <span className="btn-checkbox" />
-                                </label>
-                                <br />
-                            </form>
-                        </div>
-                    </Collapse>
-                </div>
-                <div className="widget widget-category">
-                    <div
-                        onClick={collectionsHandler}
-                        className="title-wg-category"
-                    >
-                        <h4 className="title-widget style-2">Collections</h4>
-                        <i className="icon-fl-down-2" />
-                    </div>
-                    <Collapse isOpened={getCollectionsCollapse}>
-                        <div className="content-wg-category">
-                            <form action="#">
-                                <label>
-                                    Abstraction
-                                    <input type="checkbox" />
-                                    <span className="btn-checkbox" />
-                                </label>
-                                <br />
-                                <label>
-                                    Patternlicious
-                                    <input type="checkbox" />
-                                    <span className="btn-checkbox" />
-                                </label>
-                                <br />
-                                <label>
-                                    Skecthify
-                                    <input type="checkbox" />
-                                    <span className="btn-checkbox" />
-                                </label>
-                                <br />
-                                <label>
-                                    Cartoonism
-                                    <input type="checkbox" />
-                                    <span className="btn-checkbox" />
-                                </label>
-                                <br />
-                                <label>
-                                    Virtuland
-                                    <input type="checkbox" />
-                                    <span className="btn-checkbox" />
-                                </label>
-                                <br />
-                                <label className="mgbt-none">
-                                    Papercut
-                                    <input type="checkbox" />
-                                    <span className="btn-checkbox" />
-                                </label>
-                                <br />
-                            </form>
-                        </div>
-                    </Collapse>
-                </div>
-            </div>
-        </>
-    );
+  const handleSelection = (index: number) => {
+    if (index >= 5) {
+      setSelectedBelowFive(true); // Mark as selected when item is below 5
+    }
+  };
+
+  const handleDeselect = (index: number) => {
+    if (index >= 5) {
+      setSelectedBelowFive(false); // Mark as deselected when item is below 5 and unchecked
+    }
+  };
+
+  return (
+    <div id="side-bar" className="side-bar style-3">
+      {/* Status Filter */}
+      <div className="widget widget-category mgbt-24 boder-bt">
+        <div
+          onClick={() => setStatusCollapse(!getStatusCollapse)}
+          className="title-wg-category"
+        >
+          <h4 className="title-widget style-2">Address</h4>
+          <i className="icon-fl-down-2" />
+        </div>
+        <Collapse isOpened={getStatusCollapse}>
+          <div
+            className="content-wg-category"
+            style={{ display: "flex", flexDirection: "column" }}
+            onMouseLeave={handleLeave} // Trigger handleLeave when mouse leaves the container
+          >
+            <form>
+              {addresses.slice(0, 5).map((address, index) => (
+                <label
+                  key={index}
+                  style={{ display: "block", marginBottom: "10px" }}
+                  onMouseEnter={() => {
+                    setHovering(true); // Set hovering state
+                    handleHover(index);
+                  }} // Handle hover
+                  onMouseLeave={() => {
+                    setHovering(false); // Reset hovering state
+                  }} // Reset when leaving hover
+                >
+                  {address}
+                  <input
+                    type="checkbox"
+                    onChange={() => handleSelection(index)} // Select below 5
+                  />
+                  <span className="btn-checkbox" />
+                </label>
+              ))}
+              {showAll &&
+                addresses.slice(5).map((address, index) => (
+                  <label
+                    key={index + 5}
+                    style={{
+                      display: "block",
+                      marginBottom: "10px",
+                      opacity: showAll ? 1 : 0, // Smooth transition effect
+                      transition: "opacity 0.5s ease", // CSS transition for smooth effect
+                    }}
+                  >
+                    {address}
+                    <input
+                      type="checkbox"
+                      onChange={() => handleSelection(index + 5)} // Select below 5
+                      onClick={() => handleDeselect(index + 5)} // Deselect if unchecked
+                    />
+                    <span className="btn-checkbox" />
+                  </label>
+                ))}
+            </form>
+          </div>
+        </Collapse>
+      </div>
+
+      {/* Categories Filter */}
+      <div className="widget widget-category mgbt-24 boder-bt">
+        <div
+          onClick={() => setCatCollapse(!getCatCollapse)}
+          className="title-wg-category"
+        >
+          <h4 className="title-widget style-2">Categories</h4>
+          <i className="icon-fl-down-2" />
+        </div>
+        <Collapse isOpened={getCatCollapse}>
+          <div
+            className="content-wg-category"
+            style={{ display: "flex", flexDirection: "column" }}
+          >
+            <form>
+              {["Art", "Music", "Collectibles", "Sports"].map((item, index) => (
+                <label
+                  key={index}
+                  style={{ display: "block", marginBottom: "10px" }}
+                  className={index === 7 ? "mgbt-none" : ""}
+                >
+                  {item}
+                  <input type="checkbox" />
+                  <span className="btn-checkbox" />
+                </label>
+              ))}
+            </form>
+          </div>
+        </Collapse>
+      </div>
+
+      {/* Chains Filter */}
+      <div className="widget widget-category mgbt-24 boder-bt">
+        <div
+          onClick={() => setChainsCollapse(!getChainsCollapse)}
+          className="title-wg-category"
+        >
+          <h4 className="title-widget style-2">Chains</h4>
+          <i className="icon-fl-down-2" />
+        </div>
+        <Collapse isOpened={getChainsCollapse}>
+          <div
+            className="content-wg-category"
+            style={{ display: "flex", flexDirection: "column" }}
+          >
+            <form>
+              {["Ethereum", "Polygon", "Klaytn"].map((chain, index) => (
+                <label
+                  key={index}
+                  style={{ display: "block", marginBottom: "10px" }}
+                  className={index === 2 ? "mgbt-none" : ""}
+                >
+                  {chain}
+                  <input type="checkbox" />
+                  <span className="btn-checkbox" />
+                </label>
+              ))}
+            </form>
+          </div>
+        </Collapse>
+      </div>
+
+       {/* Price */}
+    </div>
+  );
 }

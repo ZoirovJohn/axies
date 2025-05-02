@@ -5,7 +5,7 @@ type NavigationType = {
   dropdown?: NavigationType[];
 };
 
-const authMember = true;
+const authMember = null;
 
 let navigation: NavigationType[];
 

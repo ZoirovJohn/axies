@@ -7,6 +7,9 @@ export default function EditProfile(): JSX.Element {
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [previewUrls, setPreviewUrls] = useState<string[]>([]);
   const [getSelectCover, setSelectCover] = useState<number | null>(null);
+  const [activeSection, setActiveSection] = useState<
+    "followers" | "followings" | "favorites" | null
+  >(null);
 
   // multi image upload
   const multiConverHandler = (e: ChangeEvent<HTMLInputElement>) => {
@@ -60,6 +63,8 @@ export default function EditProfile(): JSX.Element {
                           required
                         />
                       </fieldset>
+                    </div>
+                    <div className="info-account">
                       <fieldset>
                         <h4 className="title-infor-account">Bio</h4>
                         <textarea
@@ -69,32 +74,194 @@ export default function EditProfile(): JSX.Element {
                           defaultValue={""}
                         />
                       </fieldset>
-                    </div>
-                    <div className="info-social">
-                      <h4 className="title-create-item">Additional infos</h4>
-                      <fieldset>
-                        <a className="connect">
-                          <i className="fas fa-users" />
-                          Followers
-                        </a>
-                      </fieldset>
-                      <fieldset>
-                        <a className="connect">
-                          <i className="fas fa-user-plus" />
-                          Followings
-                        </a>
-                      </fieldset>
-                      <fieldset>
-                        <a className="connect">
-                          <i className="fas fa-heart" />
-                          My Favorites
-                        </a>
-                      </fieldset>
+                      <button
+                        className="tf-button-submit mg-t-15"
+                        type="submit"
+                      >
+                        Update Profile
+                      </button>
                     </div>
                   </div>
-                  <button className="tf-button-submit mg-t-15" type="submit">
-                    Update Profile
-                  </button>
+
+                  {/* Social buttons in a row */}
+                  <div
+                    className="info-social"
+                    style={{
+                      display: "flex",
+                      gap: "1rem",
+                      marginTop: "2rem",
+                      flexWrap: "wrap",
+                    }}
+                  >
+                    <fieldset style={{ border: "none", padding: 0 }}>
+                      <a
+                        className="connect"
+                        onClick={() => setActiveSection("followers")}
+                      >
+                        <i className="fas fa-users" />
+                        Followers
+                      </a>
+                    </fieldset>
+                    <fieldset style={{ border: "none", padding: 0 }}>
+                      <a
+                        className="connect"
+                        onClick={() => setActiveSection("followings")}
+                      >
+                        <i className="fas fa-user-plus" />
+                        Followings
+                      </a>
+                    </fieldset>
+                    <fieldset style={{ border: "none", padding: 0 }}>
+                      <a
+                        className="connect"
+                        onClick={() => setActiveSection("favorites")}
+                      >
+                        <i className="fas fa-heart" />
+                        My Favorites
+                      </a>
+                    </fieldset>
+                  </div>
+
+                  {/* Section content */}
+                  {activeSection && (
+                    <div
+                      className="section-content"
+                      style={{
+                        marginTop: "2.5rem",
+                        padding: "1rem",
+                        // backgroundColor: "#fafafa",
+                        borderRadius: "6px",
+                        border: "1px solid #e0e0e0",
+                      }}
+                    >
+                      {activeSection === "followers" && (
+                        <div
+                          style={{
+                            display: "flex",
+                            gap: "1.5rem",
+                            flexWrap: "wrap",
+                          }}
+                        >
+                          {[1, 2, 3, 4].map((num, index) => (
+                            <div
+                              key={index}
+                              style={{
+                                display: "flex",
+                                flexDirection: "column",
+                                alignItems: "center",
+                                width: "100px",
+                              }}
+                            >
+                              <Image
+                                src={`/assets/images/avatar/avt-${num}.webp`}
+                                alt={`Follower ${index + 1}`}
+                                width={70}
+                                height={70}
+                                style={{ borderRadius: "50%" }}
+                              />
+                              <h6
+                                style={{
+                                  marginTop: "8px",
+                                  fontSize: "14px",
+                                  textAlign: "center",
+                                }}
+                              >
+                                Follower Name {index + 1}
+                              </h6>
+                              <fieldset style={{ border: "none", padding: 0 }}>
+                                <a className="unfollow">
+                                  <i className="fas fa-users" />
+                                  UnFollow
+                                </a>
+                              </fieldset>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                      {activeSection === "followings" && (
+                        <div
+                          style={{
+                            display: "flex",
+                            gap: "1.5rem",
+                            flexWrap: "wrap",
+                          }}
+                        >
+                          {[1, 2, 3, 4].map((num, index) => (
+                            <div
+                              key={index}
+                              style={{
+                                display: "flex",
+                                flexDirection: "column",
+                                alignItems: "center",
+                                width: "100px",
+                              }}
+                            >
+                              <Image
+                                src={`/assets/images/avatar/avt-${num}.webp`}
+                                alt={`Follower ${index + 1}`}
+                                width={70}
+                                height={70}
+                                style={{ borderRadius: "50%" }}
+                              />
+                              <h6
+                                style={{
+                                  marginTop: "8px",
+                                  fontSize: "14px",
+                                  textAlign: "center",
+                                }}
+                              >
+                                Followings Name {index + 1}
+                              </h6>
+                              <fieldset style={{ border: "none", padding: 0 }}>
+                                <a className="follow">
+                                  <i className="fas fa-users" />
+                                  Follow
+                                </a>
+                              </fieldset>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                      {activeSection === "favorites" && (
+                        <div
+                          style={{
+                            display: "flex",
+                            gap: "1.5rem",
+                            flexWrap: "wrap",
+                          }}
+                        >
+                          {[1, 2, 3, 4, 5, 1, 2, 3, 4, 5].map((num, index) => (
+                            <div
+                              key={index}
+                              style={{
+                                display: "flex",
+                                flexDirection: "column",
+                                alignItems: "center",
+                                width: "180px",
+                              }}
+                            >
+                              <Image
+                                src={`/assets/images/avatar/avt-${num}.webp`}
+                                alt={`Follower ${index + 1}`}
+                                width={140}
+                                height={140}
+                                style={{ borderRadius: "10%" }}
+                              />
+                              <h6
+                                style={{
+                                  marginTop: "8px",
+                                  fontSize: "14px",
+                                  textAlign: "center",
+                                }}
+                              >
+                                Product Name {index + 1}
+                              </h6>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  )}
                 </form>
               </div>
             </div>
