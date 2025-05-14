@@ -31,7 +31,7 @@ export default function MobileNavigation() {
             </div>
             {navigation.map((item) => (
               <SubMenu
-                className={isActiveMenu(item?.dropdown, path) ? "active" : ""}
+                className={isActiveMenu(item?.dropdown ?? [], path) ? "active" : ""}
                 key={item.id}
                 label={item.name}
               >
