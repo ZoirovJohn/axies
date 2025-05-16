@@ -1,79 +1,52 @@
-type NavigationType = {
+// hooks/useNavigation.ts
+import { useTranslation } from "next-i18next";
+
+export type NavigationType = {
   id: number;
   name: string;
   path: string;
   dropdown?: NavigationType[];
 };
 
-const authMember = true;
+export const useNavigation = (authMember: boolean = true): NavigationType[] => {
+  const { t } = useTranslation("common");
 
-let navigation: NavigationType[];
+  if (authMember) {
+    return [
+      { id: 1, name: t("Home"), path: "/" },
+      { id: 2, name: t("Products"), path: "/explore-4" },
+      { id: 3, name: t("Live Auctions"), path: "/live-auctions" },
+      { id: 4, name: t("Blogs"), path: "/blog" },
+      { id: 5, name: t("Creators"), path: "/authors-1" },
+      {
+        id: 6,
+        name: t("More"),
+        path: "/",
+        dropdown: [
+          { id: 1, name: t("Ranking"), path: "/ranking" },
+          { id: 2, name: t("My Profile"), path: "/edit-profile" },
+          { id: 3, name: t("Create NFT"), path: "/create-item" },
+          { id: 4, name: t("Contact"), path: "/contact-1" },
+          { id: 5, name: t("FAQ"), path: "/faq" },
+        ],
+      },
+    ];
+  }
 
-if (authMember) {
-  navigation = [
-    { id: 1, name: "Home", path: "/" },
-    { id: 2, name: "Products", path: "/explore-4" },
-    { id: 3, name: "Live Auctions", path: "/live-auctions" },
-    { id: 4, name: "Blogs", path: "/blog" },
-    { id: 5, name: "Creators", path: "/authors-1" },
+  return [
+    { id: 1, name: t("Home"), path: "/" },
+    { id: 2, name: t("Products"), path: "/explore-4" },
+    { id: 3, name: t("Live Auctions"), path: "/live-auctions" },
+    { id: 4, name: t("Blogs"), path: "/blog" },
+    { id: 5, name: t("Creators"), path: "/authors-1" },
     {
       id: 6,
-      name: "More",
-      path: "/",
-      dropdown: [
-        {
-          id: 1,
-          name: "Ranking",
-          path: "/ranking",
-        },
-        {
-          id: 2,
-          name: "My Profile",
-          path: "/edit-profile",
-        },
-        {
-          id: 3,
-          name: "Create NFT",
-          path: "/create-item",
-        },
-        {
-          id: 4,
-          name: "Contact",
-          path: "/contact-1",
-        },
-        {
-          id: 5,
-          name: "FAQ",
-          path: "/faq",
-        },
-      ],
-    },
-  ];
-} else {
-  navigation = [
-    { id: 1, name: "Home", path: "/" },
-    { id: 2, name: "Products", path: "/explore-4" },
-    { id: 3, name: "Live Auctions", path: "/live-auctions" },
-    { id: 4, name: "Blogs", path: "/blog" },
-    { id: 5, name: "Creators", path: "/authors-1" },
-    {
-      id: 6,
-      name: "Register",
+      name: t("Register"),
       path: "#",
       dropdown: [
-        {
-          id: 1,
-          name: "Login",
-          path: "/login",
-        },
-        {
-          id: 2,
-          name: "Sing Up",
-          path: "/signup",
-        },
+        { id: 1, name: t("Login"), path: "/login" },
+        { id: 2, name: t("Sign Up"), path: "/signup" },
       ],
     },
   ];
-}
-
-export { navigation };
+};

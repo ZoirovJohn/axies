@@ -1,14 +1,17 @@
-import { navigation } from "@/data/navigation";
+import { useNavigation } from "@/data/navigation";
 import useMatchMedia from "@/hooks/useMatchMedia";
 import isActiveMenu from "@/utils/isActiveMenu";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useTranslation } from "next-i18next";
 
 export default function Navigation(): JSX.Element {
   const path = usePathname();
-
-  // checking media query
   const isMatch = useMatchMedia("(max-width: 991px)");
+  const { i18n } = useTranslation();
+
+  // navigation updates automatically on language change because useTranslation triggers re-render
+  const navigation = useNavigation(true);
 
   return (
     <>
@@ -16,7 +19,7 @@ export default function Navigation(): JSX.Element {
         <nav
           id={isMatch ? "main-nav-mobi" : "main-nav"}
           className="main-nav"
-          style={isMatch ? { display: "none" } : { display: "block" }}
+          style={{ display: isMatch ? "none" : "block" }}
         >
           <ul id="menu-primary-menu" className="menu">
             {navigation.map((item) => {
@@ -88,9 +91,7 @@ export default function Navigation(): JSX.Element {
             })}
           </ul>
         </nav>
-      ) : (
-        ""
-      )}
+      ) : null}
     </>
   );
 }
