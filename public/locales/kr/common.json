@@ -22,5 +22,20 @@
   "HeroSlider31": "몬스터 ",
   "HeroSlider32": "NFT",
   "HeroSlider-explore": "탐색",
-  "HeroSlider-create": "만들기"
+  "HeroSlider-create": "만들기",
+  "PopularCollectionHome-1": "인기 컬렉션",
+  "PopularCollectionHome-2": "더 보기",
+  "TodaysPicksHome-title": "오늘의 추천",
+  "TodaysPicksHome-explore": "더 보기",
+  "TodaysPicksHome-loadMore": "더 불러오기",
+  "TopSellerHome1": "베스트 셀러",
+  "CreateSellNFTHome-1": "NFT 생성 및 판매",
+  "CreateSellNFTHome-2": "지갑 설정하기",
+  "CreateSellNFTHome-3": "NFT 구매에 적합한 지갑입니다. Coinbase 계정을 이미 가지고 있을 수 있지만, 대부분은 NFT 구매용으로 설정되어 있지 않습니다.",
+  "CreateSellNFTHome-4": "컬렉션 만들기",
+  "CreateSellNFTHome-5": "NFT 컬렉션을 설정하고 NFT를 만드는 것은 쉽습니다! 이 가이드는 첫 번째 컬렉션을 설정하는 방법을 설명합니다.",
+  "CreateSellNFTHome-6": "NFT 추가하기",
+  "CreateSellNFTHome-7": "쾌락을 비난하고 고통을 찬양하는 잘못된 개념이 어떻게 생겨났는지 설명해야 합니다.",
+  "CreateSellNFTHome-8": "판매 목록에 등록하기",
+  "CreateSellNFTHome-9": "경매, 고정 가격, 하락 가격 중에서 선택할 수 있습니다. NFT를 어떻게 판매할지는 여러분의 선택입니다!"
 }

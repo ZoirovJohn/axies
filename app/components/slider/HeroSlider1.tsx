@@ -33,7 +33,6 @@ export default function HeroSlider1(): JSX.Element {
                   <div className="ibthemes-container ">
                     <div className="wrap-heading flat-slider flex">
                       <div className="content">
-                        {/* <h2 className="heading">Discover, find,</h2> */}
                         <h2 className="heading">{t("HeroSlider11")}</h2>
                         <h1 className="heading mb-style">
                           <span

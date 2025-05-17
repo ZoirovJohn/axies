@@ -6,8 +6,11 @@ import "swiper/css/pagination";
 import ProductCard2 from "../card/ProductCard2";
 import { product2 } from "@/data/product";
 import Link from "next/link";
+import { useTranslation } from "next-i18next";
 
 export default function PopularCollection(): JSX.Element {
+  const { t } = useTranslation("common");
+
   return (
     <>
       <section className="tf-section live-auctions style4 no-pt-mb mobie-style">
@@ -15,9 +18,11 @@ export default function PopularCollection(): JSX.Element {
           <div className="row">
             <div className="col-md-12">
               <div className="heading-live-auctions">
-                <h2 className="tf-title pb-17 text-left">Popular Collection</h2>
+                <h2 className="tf-title pb-17 text-left">
+                  {t("PopularCollectionHome-1")}
+                </h2>
                 <Link href="/explore-3" className="exp style2">
-                  EXPLORE MORE
+                  {t("PopularCollectionHome-2")}
                 </Link>
               </div>
             </div>

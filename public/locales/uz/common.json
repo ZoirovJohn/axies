@@ -22,5 +22,20 @@
   "HeroSlider31": "Monster ",
   "HeroSlider32": "NFTlar",
   "HeroSlider-explore": "Ko‘rib chiqish",
-  "HeroSlider-create": "Yaratish"
+  "HeroSlider-create": "Yaratish",
+  "PopularCollectionHome-1": "Ommabop kolleksiya",
+  "PopularCollectionHome-2": "KO'PROQ KO'RISH",
+  "TodaysPicksHome-title": "Bugungi tanlov",
+  "TodaysPicksHome-explore": "Ko‘proq ko‘rish",
+  "TodaysPicksHome-loadMore": "Yana yuklash",
+  "TopSellerHome1": "Eng ko'p sotilgan",
+  "CreateSellNFTHome-1": "NFTlaringizni yarating va soting",
+  "CreateSellNFTHome-2": "Hamyoningizni sozlang",
+  "CreateSellNFTHome-3": "NFT xarid qilish uchun ishlaydigan hamyon. Sizda Coinbase hisobingiz bo‘lishi mumkin, lekin ko‘pchilik NFT sotib olishga sozlanmagan.",
+  "CreateSellNFTHome-4": "Kolleksiyangizni yarating",
+  "CreateSellNFTHome-5": "NFT kolleksiyasini yaratish va NFTlar qo‘shish juda oson! Bu qo‘llanma sizning birinchi kolleksiyangizni qanday sozlashni tushuntiradi.",
+  "CreateSellNFTHome-6": "NFTlaringizni qo‘shing",
+  "CreateSellNFTHome-7": "Bu zavqni yomonlash va og‘riqni maqtash haqidagi noto‘g‘ri tushuncha qanday paydo bo‘lganini tushuntirishim kerak.",
+  "CreateSellNFTHome-8": "Sotuvga qo‘ying",
+  "CreateSellNFTHome-9": "Auksionlar, qat'iy narxlar yoki pasayuvchi narx variantlaridan birini tanlang. NFTlaringizni qanday sotishni o‘zingiz hal qilasiz!"
 }
