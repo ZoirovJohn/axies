@@ -8,6 +8,7 @@ import "./../public/assets/css/style.css";
 import MobileNavigation from "./components/header/MobileNavigation";
 import { usePathname } from "next/navigation";
 import { useEffect } from "react";
+import { appWithTranslation, useTranslation } from "next-i18next";
 
 // rubik font
 const rubik = Rubik({
@@ -23,22 +24,24 @@ const urbanist = Urbanist({
   variable: "--urbanist-font",
 });
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+function RootLayout({ children }: { children: React.ReactNode }) {
   const path = usePathname();
+  const { i18n } = useTranslation();
 
   useEffect(() => {
+    // Initialize i18n with Korean as default
+    if (i18n.language !== "kr") {
+      i18n.changeLanguage("kr");
+    }
+
     // Dynamically import bootstrap only on the client side
     import("bootstrap").then(() => {
       console.log("Bootstrap loaded on the client-side");
     });
-  }, []);
+  }, [i18n]);
 
   return (
-    <html lang="en">
+    <html lang={i18n.language || "kr"}>
       <body className={`body ${rubik.className} ${urbanist.className}`}>
         <Providers>
           <div id="wrapper">
@@ -57,3 +60,6 @@ export default function RootLayout({
     </html>
   );
 }
+
+// Export with i18n support
+export default RootLayout;

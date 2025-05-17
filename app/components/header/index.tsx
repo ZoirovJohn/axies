@@ -24,7 +24,7 @@ export default function Header(): JSX.Element {
   const path = usePathname();
   const { t, i18n } = useTranslation("common");
   const [anchorEl2, setAnchorEl2] = useState<null | HTMLElement>(null);
-  const [lang, setLang] = useState<string | null>("en");
+  const [lang, setLang] = useState<string | null>("kr"); // Default to Korean
   const drop = Boolean(anchorEl2);
   const router = useRouter();
   const pathname = usePathname();
@@ -37,9 +37,17 @@ export default function Header(): JSX.Element {
   const isSticky2 = useStickyMenu(250);
 
   useEffect(() => {
+    // Check localStorage first, if not available use the current i18n language
     const saved = localStorage.getItem("locale");
-    if (saved) setLang(saved);
-  }, []);
+    if (saved) {
+      setLang(saved);
+      i18n.changeLanguage(saved);
+    } else {
+      // If no localStorage preference, use the default (kr) and save it
+      localStorage.setItem("locale", "kr");
+      i18n.changeLanguage("kr");
+    }
+  }, [i18n]);
 
   // HANDLERS
 
@@ -177,12 +185,12 @@ export default function Header(): JSX.Element {
                           {lang !== null ? (
                             <img
                               src={`/assets/images/flag/lang${lang}.png`}
-                              alt={"usaFlag"}
+                              alt={"languageFlag"}
                             />
                           ) : (
                             <img
-                              src={`/assets/images/flag/langen.png`}
-                              alt={"usaFlag"}
+                              src={`/assets/images/flag/langkr.png`}
+                              alt={"koreanFlag"}
                             />
                           )}
                         </Box>
