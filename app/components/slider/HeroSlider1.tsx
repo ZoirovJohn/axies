@@ -6,10 +6,12 @@ import "swiper/css/navigation";
 import useDarkModeCheck from "@/hooks/useDarkModeCheck";
 import Link from "next/link";
 import Image from "next/image";
+import { useTranslation } from "next-i18next";
 
 export default function HeroSlider1(): JSX.Element {
   // is dark hook
   const isDark = useDarkModeCheck();
+  const { t } = useTranslation("common");
 
   return (
     <>
@@ -31,31 +33,31 @@ export default function HeroSlider1(): JSX.Element {
                   <div className="ibthemes-container ">
                     <div className="wrap-heading flat-slider flex">
                       <div className="content">
-                        <h2 className="heading">Discover, find,</h2>
+                        {/* <h2 className="heading">Discover, find,</h2> */}
+                        <h2 className="heading">{t("HeroSlider11")}</h2>
                         <h1 className="heading mb-style">
                           <span
                             className={`tf-text ${isDark ? "s1" : "style"}`}
                           >
-                            Sell extraordinary
+                            {t("HeroSlider12")}
                           </span>
                         </h1>
-                        <h1 className="heading">Monster NFTs</h1>
+                        <h1 className="heading">{t("HeroSlider13")}</h1>
                         <p className="sub-heading mg-t-29 mg-bt-44">
-                          Marketplace for monster character cllections non
-                          fungible token NFTs
+                          {t("HeroSlider14")}
                         </p>
                         <div className="flat-bt-slider flex style2">
                           <Link
                             href="/explore-4"
                             className="sc-button header-slider style style-1 rocket fl-button pri-1"
                           >
-                            <span>Explore</span>
+                            <span>{t("HeroSlider-explore")}</span>
                           </Link>
                           <Link
                             href="/create-item"
                             className="sc-button header-slider style style-1 note fl-button pri-1"
                           >
-                            <span>Create</span>
+                            <span>{t("HeroSlider-create")}</span>
                           </Link>
                         </div>
                       </div>
@@ -85,29 +87,28 @@ export default function HeroSlider1(): JSX.Element {
                 <div className="slider-item">
                   <div className="ibthemes-container">
                     <div className="wrap-heading flat-slider text-center two">
-                      <h2 className="heading">Discover, and collect</h2>
+                      <h2 className="heading">{t("HeroSlider21")}</h2>
                       <h1 className="heading">
                         <span className={`tf-text ${isDark ? "s1" : "style"}`}>
-                          extraordinary{" "}
+                          {t("HeroSlider22")}{" "}
                         </span>
-                        <span>Monster NFTs</span>
+                        <span>{t("HeroSlider13")}</span>
                       </h1>
                       <p className="sub-heading mg-t-29 mg-bt-50">
-                        Marketplace for monster character cllections non
-                        fungible token NFTs
+                        {t("HeroSlider14")}
                       </p>
                       <div className="flat-bt-slider flex">
                         <Link
                           href="/explore-1"
                           className="sc-button header-slider style style-1 rocket fl-button pri-1"
                         >
-                          <span>Explore</span>
+                          <span>{t("HeroSlider-explore")}</span>
                         </Link>
                         <Link
                           href="/create-item"
                           className="sc-button header-slider style style-1 note fl-button pri-1"
                         >
-                          <span>Create</span>
+                          <span>{t("HeroSlider-create")}</span>
                         </Link>
                       </div>
                     </div>
@@ -136,28 +137,27 @@ export default function HeroSlider1(): JSX.Element {
                       />
                     </div>
                     <div className="wrap-heading flat-slider h3 three">
-                      <h2 className="heading">Discover, and collect</h2>
-                      <h2 className="heading">extraordinary</h2>
+                      <h2 className="heading">{t("HeroSlider21")}</h2>
+                      <h2 className="heading">{t("HeroSlider22")}</h2>
                       <h2 className="heading h3">
-                        <span className="fill">Monster </span>
-                        NFTs
+                        <span className="fill">{t("HeroSlider31")}</span>
+                        {t("HeroSlider32")}
                       </h2>
                       <p className="sub-heading mt-29 mb-35">
-                        Marketplace for monster character cllections non
-                        fungible token NFTs
+                        {t("HeroSlider14")}
                       </p>
                       <div className="flat-bt-slider flex style2">
                         <a
                           href="/explore-1"
                           className="sc-button header-slider style style-1 rocket fl-button pri-1"
                         >
-                          <span>Explore</span>
+                          <span>{t("HeroSlider-explore")}</span>
                         </a>
                         <Link
                           href="/create-item"
                           className="sc-button header-slider style style-1 note fl-button pri-1"
                         >
-                          <span>Create</span>
+                          <span>{t("HeroSlider-create")}</span>
                         </Link>
                       </div>
                     </div>
