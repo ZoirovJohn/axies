@@ -10,8 +10,7 @@ export default function Navigation(): JSX.Element {
   const isMatch = useMatchMedia("(max-width: 991px)");
   const { i18n } = useTranslation();
 
-  // navigation updates automatically on language change because useTranslation triggers re-render
-  const navigation = useNavigation(true);
+  const navigation = useNavigation(false); // TODO
 
   return (
     <>
