@@ -1,4 +1,6 @@
 // hooks/useNavigation.ts
+import { userVar } from "@/apollo/store";
+import { useReactiveVar } from "@apollo/client";
 import { useTranslation } from "next-i18next";
 
 export type NavigationType = {
@@ -10,6 +12,8 @@ export type NavigationType = {
 
 export const useNavigation = (authMember: boolean = true): NavigationType[] => {
   const { t } = useTranslation("common");
+  const user = useReactiveVar(userVar);
+  console.log("user:", user);
 
   if (authMember) {
     return [

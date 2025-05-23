@@ -4,13 +4,16 @@ import isActiveMenu from "@/utils/isActiveMenu";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useTranslation } from "next-i18next";
+import { useReactiveVar } from "@apollo/client";
+import { userVar } from "@/apollo/store";
 
 export default function Navigation(): JSX.Element {
   const path = usePathname();
   const isMatch = useMatchMedia("(max-width: 991px)");
   const { i18n } = useTranslation();
+  const user = useReactiveVar(userVar);
 
-  const navigation = useNavigation(false); // TODO
+  const navigation = useNavigation(user ? true : false); // TODO
 
   return (
     <>

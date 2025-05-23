@@ -8,7 +8,7 @@ import "./../public/assets/css/style.css";
 import MobileNavigation from "./components/header/MobileNavigation";
 import { usePathname } from "next/navigation";
 import { useEffect } from "react";
-import { appWithTranslation, useTranslation } from "next-i18next";
+import { useTranslation } from "react-i18next";
 
 // rubik font
 const rubik = Rubik({
@@ -24,17 +24,21 @@ const urbanist = Urbanist({
   variable: "--urbanist-font",
 });
 
-function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const path = usePathname();
   const { i18n } = useTranslation();
 
   useEffect(() => {
-    // Initialize i18n with Korean as default
+    // Ensure Korean is used as the default language
     if (i18n.language !== "kr") {
       i18n.changeLanguage("kr");
     }
 
-    // Dynamically import bootstrap only on the client side
+    // Load Bootstrap on client side
     import("bootstrap").then(() => {
       console.log("Bootstrap loaded on the client-side");
     });
@@ -47,10 +51,8 @@ function RootLayout({ children }: { children: React.ReactNode }) {
           <div id="wrapper">
             <div id="page" className="clearfix">
               <Header />
-              {/* mobile sidebar navigation */}
               <MobileNavigation />
               {children}
-              {/* if the route path is /home-8 then the footer will not show */}
               {path !== "/home-8" && <Footer />}
             </div>
           </div>
@@ -60,6 +62,3 @@ function RootLayout({ children }: { children: React.ReactNode }) {
     </html>
   );
 }
-
-// Export with i18n support
-export default RootLayout;
