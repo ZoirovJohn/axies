@@ -13,7 +13,7 @@ export default function Navigation(): JSX.Element {
   const { i18n } = useTranslation();
   const user = useReactiveVar(userVar);
 
-  const navigation = useNavigation(user ? true : false); // TODO
+  const navigation = useNavigation(user.memberNick ? true : false); // TODO
 
   return (
     <>

@@ -1,6 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image"; // Import the Image component from Next.js
 import logoImg from "../../../public/assets/images/avatar/avt-1.webp";
+import { logOut } from "@/app/(auth)";
+import router from "next/router";
+import { useReactiveVar } from "@apollo/client";
+import { userVar } from "@/apollo/store";
 
 const ProfileComponent = () => {
   const [isNotificationActive, setNotificationActive] =
@@ -12,7 +16,8 @@ const ProfileComponent = () => {
   const profileRef = useRef<HTMLDivElement>(null);
   const tab: string[] = ["Explore", "Unlock"];
 
-  const authMember = true;
+  // const authMember = true;
+  const authMember = useReactiveVar(userVar);
 
   const avatarHandler = () => {
     setIsAuthorActive((prevState) => !prevState);
@@ -28,6 +33,11 @@ const ProfileComponent = () => {
     if (!profileRef.current?.contains(target)) {
       setIsAuthorActive(false);
     }
+  };
+
+  const logoutHandler = () => {
+    logOut();
+    router.push("/").then();
   };
 
   useEffect(() => {
@@ -123,7 +133,7 @@ const ProfileComponent = () => {
               </div>
             </div>
           </div>
-          {authMember && (
+          {authMember.memberNick && (
             <div className="profile" ref={profileRef}>
               <Image
                 height={100}
@@ -150,7 +160,7 @@ const ProfileComponent = () => {
                 >
                   <div className="links">
                     <button
-                      onClick={handleLogout}
+                      onClick={logoutHandler}
                       style={{
                         backgroundColor: "transparent",
                         border: "none",

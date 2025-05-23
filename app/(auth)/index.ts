@@ -4,6 +4,7 @@ import { userVar } from "../../apollo/store";
 import { CustomJwtPayload } from "../types/customJwtPayload";
 import { sweetMixinErrorAlert } from "../sweetAlert";
 import { LOGIN, SIGN_UP } from "../../apollo/user/mutation";
+import i18n from "i18next";
 
 export function getJwtToken(): any {
   if (typeof window !== "undefined") {
@@ -107,7 +108,7 @@ const requestSignUpJwtToken = async ({
 
   try {
     console.log("r s jwt");
-    
+
     const result = await apolloClient.mutate({
       mutation: SIGN_UP,
       variables: {
@@ -175,6 +176,8 @@ export const updateUserInfo = (jwtToken: any) => {
 
 export const logOut = () => {
   deleteStorage();
+  const langToUse = localStorage.getItem("locale") || "kr";
+  if (i18n.language !== langToUse) i18n.changeLanguage(langToUse);
   deleteUserInfo();
   window.location.reload();
   // window.location.href = "/"
