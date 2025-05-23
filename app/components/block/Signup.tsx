@@ -74,7 +74,6 @@ export default function Signup(): JSX.Element {
                     id="contactform"
                     onSubmit={(e) => {
                       e.preventDefault();
-                      console.log("Submitted");
                       doSignUp();
                     }}
                   >

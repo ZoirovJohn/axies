@@ -1,4 +1,43 @@
+"use client";
+import { logIn } from "@/app/(auth)";
+import { sweetMixinErrorAlert } from "@/app/sweetAlert";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useCallback, useState } from "react";
+
 export default function Login(): JSX.Element {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const [input, setInput] = useState({
+    nick: "",
+    password: "",
+    phone: "",
+    type: "USER",
+  });
+
+  const doLogin = useCallback(async () => {
+    console.warn(input);
+    try {
+      console.log("doSignup worked");
+      await logIn(input.nick, input.password);
+      const referrer = searchParams.get("referrer") ?? "/";
+      router.push(referrer);
+    } catch (err: any) {
+      await sweetMixinErrorAlert(err.message);
+    }
+  }, [input]);
+
+  // HANDLERS
+
+  const handleInput = useCallback((name: any, value: any) => {
+    setInput((prev) => {
+      console.log("name:", name);
+      console.log("value:", value);
+
+      return { ...prev, [name]: value };
+    });
+  }, []);
+
   return (
     <>
       <section className="tf-login tf-section">
@@ -30,24 +69,33 @@ export default function Login(): JSX.Element {
                   <h5>Or login with email</h5>
                 </div>
                 <div className="form-inner">
-                  <form action="#" id="contactform">
+                  <form
+                    action="#"
+                    id="contactform"
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      doLogin();
+                    }}
+                  >
                     <input
-                      id="email"
-                      name="email"
+                      id="name"
+                      name="name"
                       tabIndex={1}
-                      aria-required="true"
-                      type="email"
-                      placeholder="Your Email Address"
-                      required
-                    />
-                    <input
-                      id="password"
-                      name="password"
-                      tabIndex={2}
                       aria-required="true"
                       required
                       type="text"
-                      placeholder="Password"
+                      placeholder="Your Full Name"
+                      onChange={(e) => handleInput("nick", e.target.value)}
+                    />
+                    <input
+                      id="pass"
+                      name="pass"
+                      tabIndex={3}
+                      aria-required="true"
+                      type="text"
+                      placeholder="Set Your Password"
+                      required
+                      onChange={(e) => handleInput("password", e.target.value)}
                     />
 
                     <div className="row-form style-1">
@@ -58,7 +106,9 @@ export default function Login(): JSX.Element {
                       </label>
                       <a className="forgot-pass">Forgot Password ?</a>
                     </div>
-                    <button className="submit">Login</button>
+                    <button className="submit" type="submit">
+                      Login
+                    </button>
                   </form>
                 </div>
                 <h5
