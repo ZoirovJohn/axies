@@ -1,4 +1,4 @@
-import { CustomJwtPayload } from "@/app/types/customJwtPayload";
+import { CustomJwtPayload } from "@/libs/types/customJwtPayload";
 import { makeVar } from "@apollo/client";
 
 // import { CustomJwtPayload } from "../libs/types/customJwtPayload";

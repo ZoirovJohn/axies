@@ -1,5 +1,8 @@
-import { PropertyLocation, PropertyStatus, PropertyType } from '../../enums/property.enum';
-import { Direction } from '../../enums/common.enum';
+// import { PropertyLocation, PropertyStatus, PropertyType } from '../../enums/property.enum';
+// import { Direction } from '../../enums/common.enum';
+
+import { Direction } from "@/libs/enums/common.enum";
+import { PropertyLocation, PropertyStatus, PropertyType } from "@/libs/enums/property.enum";
 
 export interface PropertyInput {
 	propertyType: PropertyType;

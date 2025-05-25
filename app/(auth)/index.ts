@@ -1,7 +1,7 @@
 import decodeJWT from "jwt-decode";
 import { initializeApollo } from "../../apollo/client";
 import { userVar } from "../../apollo/store";
-import { CustomJwtPayload } from "../types/customJwtPayload";
+import { CustomJwtPayload } from "../../libs/types/customJwtPayload";
 import { sweetMixinErrorAlert } from "../sweetAlert";
 import { LOGIN, SIGN_UP } from "../../apollo/user/mutation";
 import i18n from "i18next";
