@@ -5,6 +5,14 @@ import Link from "next/link";
 import Image from "next/image";
 import FilterSection from "../element/FilterSection";
 import { useTranslation } from "next-i18next";
+import { useState } from "react";
+import { Property } from "@/libs/dto/property/property";
+import { useMutation, useQuery } from "@apollo/client";
+import { GET_PROPERTIES } from "@/apollo/user/query";
+import { LIKE_TARGET_PROPERTY } from "@/apollo/user/mutation";
+import { T } from "@/libs/types/common";
+import { PropertiesInquiry } from "@/libs/dto/property/property.input";
+import { useSearchParams } from "next/navigation";
 
 export default function TodaysPicks({
   style,
@@ -12,6 +20,47 @@ export default function TodaysPicks({
   style?: string;
 }): JSX.Element {
   const { t } = useTranslation("common");
+  const [properties, setProperties] = useState<Property[]>([]);
+  const [total, setTotal] = useState<number>(0);
+
+  /** APOLLO REQUESTS **/
+  const searchParams = useSearchParams();
+  const inputParam = searchParams.get("input");
+
+  const searchFilter = {
+    page: 1,
+    limit: 8,
+    sort: "createdAt",
+    direction: "DESC",
+    search: {
+      squaresRange: {
+        start: 0,
+        end: 500000,
+      },
+      pricesRange: {
+        start: 0,
+        end: 200000000,
+      },
+    },
+  };
+
+  const {
+    loading: getPropertiesLoading,
+    data: getPropertiesData,
+    error: getPropertiesError,
+    refetch: getPropertiesRefetch,
+  } = useQuery(GET_PROPERTIES, {
+    fetchPolicy: "network-only",
+    variables: { input: searchFilter },
+    notifyOnNetworkStatusChange: true,
+    onCompleted: (data: T) => {
+      setProperties(data?.getProperties?.list);
+      setTotal(data?.getProperties?.metaCounter[0]?.total);
+    },
+  });
+
+  console.log("properties:", properties);
+  console.log("searchFilter:", searchFilter);
 
   return (
     <>
@@ -28,18 +77,18 @@ export default function TodaysPicks({
                 </Link>
               </div>
             </div>
-            <FilterSection />
-            {product3.slice(0, 8).map((item) => (
+            {/* <FilterSection /> */}
+            {properties.slice(0, 8).map((item) => (
               <div
-                key={item.id}
+                key={item._id}
                 className="col-xl-3 col-lg-4 col-md-6 col-sm-6"
               >
-                <ProductCard3 data={item} />
+                <ProductCard3 property={item} />
               </div>
             ))}
             <div className="col-md-12 wrap-inner load-more text-center mg-t-4">
               <Link
-                href="/explore-3"
+                href="/explore-4"
                 id="loadmore"
                 className="sc-button loadmore fl-button pri-3"
               >

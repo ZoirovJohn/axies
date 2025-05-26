@@ -44,15 +44,15 @@ export const UPDATE_PROPERTY_BY_ADMIN = gql`
   mutation UpdatePropertyByAdmin($input: PropertyUpdate!) {
     updatePropertyByAdmin(input: $input) {
       _id
-      propertyType
+      propertyCollection
       propertyStatus
       propertyLocation
       propertyAddress
       propertyTitle
       propertyPrice
-      propertySquare
-      propertyBeds
-      propertyRooms
+      propertyRarityScore
+      propertyEditions
+      propertyTraitGroups
       propertyViews
       propertyLikes
       propertyImages
@@ -73,15 +73,15 @@ export const REMOVE_PROPERTY_BY_ADMIN = gql`
   mutation RemovePropertyByAdmin($input: String!) {
     removePropertyByAdmin(propertyId: $input) {
       _id
-      propertyType
+      propertyCollection
       propertyStatus
       propertyLocation
       propertyAddress
       propertyTitle
       propertyPrice
-      propertySquare
-      propertyBeds
-      propertyRooms
+      propertyRarityScore
+      propertyEditions
+      propertyTraitGroups
       propertyViews
       propertyLikes
       propertyImages

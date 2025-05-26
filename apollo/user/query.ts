@@ -86,15 +86,15 @@ export const GET_PROPERTY = gql`
   query GetProperty($input: String!) {
     getProperty(propertyId: $input) {
       _id
-      propertyType
+      propertyCollection
       propertyStatus
       propertyLocation
       propertyAddress
       propertyTitle
       propertyPrice
-      propertySquare
-      propertyBeds
-      propertyRooms
+      propertyRarityScore
+      propertyEditions
+      propertyTraitGroups
       propertyViews
       propertyLikes
       propertyImages
@@ -142,15 +142,15 @@ export const GET_PROPERTIES = gql`
     getProperties(input: $input) {
       list {
         _id
-        propertyType
+        propertyCollection
         propertyStatus
         propertyLocation
         propertyAddress
         propertyTitle
         propertyPrice
-        propertySquare
-        propertyBeds
-        propertyRooms
+        propertyRarityScore
+        propertyEditions
+        propertyTraitGroups
         propertyViews
         propertyLikes
         propertyComments
@@ -210,15 +210,15 @@ export const GET_AGENT_PROPERTIES = gql`
     getAgentProperties(input: $input) {
       list {
         _id
-        propertyType
+        propertyCollection
         propertyStatus
         propertyLocation
         propertyAddress
         propertyTitle
         propertyPrice
-        propertySquare
-        propertyBeds
-        propertyRooms
+        propertyRarityScore
+        propertyEditions
+        propertyTraitGroups
         propertyViews
         propertyLikes
         propertyImages
@@ -244,15 +244,15 @@ export const GET_FAVORITES = gql`
     getFavorites(input: $input) {
       list {
         _id
-        propertyType
+        propertyCollection
         propertyStatus
         propertyLocation
         propertyAddress
         propertyTitle
         propertyPrice
-        propertySquare
-        propertyBeds
-        propertyRooms
+        propertyRarityScore
+        propertyEditions
+        propertyTraitGroups
         propertyViews
         propertyLikes
         propertyComments
@@ -307,15 +307,15 @@ export const GET_VISITED = gql`
     getVisited(input: $input) {
       list {
         _id
-        propertyType
+        propertyCollection
         propertyStatus
         propertyLocation
         propertyAddress
         propertyTitle
         propertyPrice
-        propertySquare
-        propertyBeds
-        propertyRooms
+        propertyRarityScore
+        propertyEditions
+        propertyTraitGroups
         propertyViews
         propertyLikes
         propertyComments
