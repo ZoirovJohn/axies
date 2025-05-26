@@ -109,7 +109,7 @@ export default function ProductCard3({ property }: Props): JSX.Element {
             <h5> {property.propertyPrice} ETH</h5>
           </div>
         </div>
-        <div className="card-bottom">
+        {/* <div className="card-bottom">
           <a
             href="#"
             data-bs-toggle="modal"
@@ -121,7 +121,7 @@ export default function ProductCard3({ property }: Props): JSX.Element {
           <Link href="/activity-1" className="view-history reload">
             View History
           </Link>
-        </div>
+        </div> */}
       </div>
     </>
   );
