@@ -9,6 +9,7 @@ import {
 } from "@mui/material";
 import { useCallback, useState } from "react";
 import { useRouter } from "next/navigation";
+import { PropertyLocation } from "@/libs/enums/property.enum";
 
 interface FilterType {
   searchFilter: PropertiesInquiry;
@@ -22,20 +23,6 @@ export default function Explore4Slidebar(props: FilterType): JSX.Element {
   const [getCatCollapse, setCatCollapse] = useState(true);
   const [getChainsCollapse, setChainsCollapse] = useState(true);
   const router = useRouter();
-
-  const addresses = [
-    "SEOUL",
-    "BUSAN",
-    "INCHEON",
-    "DAEGU",
-    "DAEJEON",
-    "JEJU",
-    "PYEONGTAEK",
-    "ANSAN",
-    "GIMPO",
-    "GUMI",
-    "JEONJU",
-  ];
 
   const [showAll, setShowAll] = useState(false);
   const [hovering, setHovering] = useState(false);
@@ -57,7 +44,7 @@ export default function Explore4Slidebar(props: FilterType): JSX.Element {
         if (mouseLeaving && !selectedBelowFive) {
           setShowAll(false);
         }
-      }, 200);
+      }, 400);
     }
   };
 
@@ -191,15 +178,31 @@ export default function Explore4Slidebar(props: FilterType): JSX.Element {
               })
             }
             style={{
-              backgroundColor: "blue",
+              backgroundColor: "rgb(81, 66, 252)",
               color: "white",
-              padding: "8px 16px",
+              padding: "8px 10px 8px 5px",
               border: "none",
               borderRadius: "4px",
               cursor: "pointer",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
             }}
           >
-            Submit
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              style={{ width: "30px", height: "30px" }}
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 1010.5 3a7.5 7.5 0 006.15 13.65z"
+              />
+            </svg>
           </button>
         </Stack>
       </Stack>
@@ -223,49 +226,53 @@ export default function Explore4Slidebar(props: FilterType): JSX.Element {
             onMouseLeave={handleLeave}
           >
             <form>
-              {addresses.slice(0, 5).map((address, index) => (
-                <label
-                  key={index}
-                  style={{ display: "block", marginBottom: "10px" }}
-                  className="block mb-2"
-                  onMouseEnter={() => {
-                    setHovering(true);
-                    handleHover(index);
-                  }}
-                  onMouseLeave={() => setHovering(false)}
-                >
-                  {address}
-                  <input
-                    type="checkbox"
-                    value={address}
-                    onChange={propertyLocationSelectHandler} // ✅ Updated
-                  />
-                  <span className="btn-checkbox" />
-                </label>
-              ))}
-
-              {showAll &&
-                addresses.slice(5).map((address, index) => (
+              {Object.values(PropertyLocation)
+                .slice(0, 5)
+                .map((address, index) => (
                   <label
-                    key={index + 5}
-                    className="block mb-2 transition-opacity duration-300"
-                    style={{
-                      display: "block",
-                      marginBottom: "10px",
-                      opacity: showAll ? 1 : 0,
-                      transition: "opacity 0.5s ease",
+                    key={index}
+                    style={{ display: "block", marginBottom: "10px" }}
+                    className="block mb-2"
+                    onMouseEnter={() => {
+                      setHovering(true);
+                      handleHover(index);
                     }}
+                    onMouseLeave={() => setHovering(false)}
                   >
                     {address}
                     <input
                       type="checkbox"
                       value={address}
                       onChange={propertyLocationSelectHandler} // ✅ Updated
-                      onClick={() => handleDeselect(index + 5)}
                     />
                     <span className="btn-checkbox" />
                   </label>
                 ))}
+
+              {showAll &&
+                Object.values(PropertyLocation)
+                  .slice(5)
+                  .map((address, index) => (
+                    <label
+                      key={index + 5}
+                      className="block mb-2 transition-opacity duration-300"
+                      style={{
+                        display: "block",
+                        marginBottom: "10px",
+                        opacity: showAll ? 1 : 0,
+                        transition: "opacity 0.5s ease",
+                      }}
+                    >
+                      {address}
+                      <input
+                        type="checkbox"
+                        value={address}
+                        onChange={propertyLocationSelectHandler} // ✅ Updated
+                        onClick={() => handleDeselect(index + 5)}
+                      />
+                      <span className="btn-checkbox" />
+                    </label>
+                  ))}
             </form>
           </div>
         )}
