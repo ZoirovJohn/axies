@@ -1096,7 +1096,7 @@
 }
 
 .sc-card-product .tags {
-  width: 49px;
+  width: 59px;
   height: 24px;
   line-height: 24px;
   text-align: center;
@@ -2173,7 +2173,7 @@
 }
 
 .sc-card-product .card-title .tags {
-  width: 49px;
+  width: 59px;
   height: 24px;
   line-height: 24px;
   text-align: center;
@@ -4474,7 +4474,8 @@ section.today-picks {
   display: flex;
   -webkit-box-pack: justify;
   -ms-flex-pack: justify;
-  justify-content: space-between;
+  /* justify-content: space-between; */
+  gap: 29px;
   -ms-flex-wrap: wrap;
   flex-wrap: wrap;
 }

@@ -81,8 +81,8 @@ export default function Explore4({
           </div>
           <div className="col-xl-9 col-lg-9 col-md-12">
             <div className="box-epxlore">
-              {product1.slice(0, 6).map((item) => (
-                <ProductCard6 key={item.id} data={item} />
+              {properties.slice(0, 6).map((item) => (
+                <ProductCard6 key={item._id} property={item} />
               ))}
             </div>
             <div className="btn-auction center">
