@@ -7,35 +7,59 @@ import { useEffect, useState } from "react";
 import { PropertiesInquiry } from "@/libs/dto/property/property.input";
 import { useSearchParams } from "next/navigation";
 import { Direction } from "@/libs/enums/common.enum";
-
-const defaultInput: PropertiesInquiry = {
-  page: 1,
-  limit: 6,
-  sort: "createdAt",
-  direction: Direction.DESC,
-  search: {
-    squaresRange: {
-      start: 0,
-      end: 500,
-    },
-    pricesRange: {
-      start: 0,
-      end: 2000000,
-    },
-  },
-};
+import { useMutation, useQuery } from "@apollo/client";
+import { GET_PROPERTIES } from "@/apollo/user/query";
+import { T } from "@/libs/types/common";
+import { Property } from "@/libs/dto/property/property";
+import { LIKE_TARGET_PROPERTY } from "@/apollo/user/mutation";
 
 export default function Explore4({
-  initialInput,
-}: {
-  initialInput?: PropertiesInquiry;
-}): JSX.Element {
+  initialInput = {
+    page: 1,
+    limit: 6,
+    sort: "createdAt",
+    direction: "DESC",
+    search: {
+      squaresRange: {
+        start: 0,
+        end: 500,
+      },
+      pricesRange: {
+        start: 0,
+        end: 2000000,
+      },
+    },
+  },
+}: any): JSX.Element {
   const searchParams = useSearchParams();
   const inputParam = searchParams.get("input");
-
+  const [properties, setProperties] = useState<Property[]>([]);
+  console.log("inputParam:", inputParam);
   const [searchFilter, setSearchFilter] = useState<PropertiesInquiry>(
-    inputParam ? JSON.parse(inputParam) : initialInput || defaultInput
+    inputParam ? JSON.parse(inputParam) : initialInput
   );
+  console.log("searchFilter:", searchFilter);
+
+  /** APOLLO REQUESTS **/
+  const [likeTargetProperty] = useMutation(LIKE_TARGET_PROPERTY);
+
+  const {
+    loading: getPropertiesLoading,
+    data: getPropertiesData,
+    error: getPropertiesError,
+    refetch: getPropertiesRefetch,
+  } = useQuery(GET_PROPERTIES, {
+    fetchPolicy: "network-only",
+    variables: { input: searchFilter },
+    notifyOnNetworkStatusChange: true,
+    onCompleted: (data: T) => {
+      setProperties(data?.getProperties?.list);
+    },
+  });
+
+  console.log("properties:", properties);
+
+  /** LIFECYCLES **/
 
   useEffect(() => {
     if (inputParam) {
@@ -52,7 +76,7 @@ export default function Explore4({
             <Explore4Slidebar
               searchFilter={searchFilter}
               setSearchFilter={setSearchFilter}
-              initialInput={initialInput || defaultInput}
+              initialInput={initialInput}
             />
           </div>
           <div className="col-xl-9 col-lg-9 col-md-12">
@@ -75,22 +99,3 @@ export default function Explore4({
     </section>
   );
 }
-
-Explore4.defaultProps = {
-  initialInput: {
-    page: 1,
-    limit: 6,
-    sort: "createdAt",
-    direction: "DESC",
-    search: {
-      squaresRange: {
-        start: 0,
-        end: 500,
-      },
-      pricesRange: {
-        start: 0,
-        end: 2000000,
-      },
-    },
-  },
-};

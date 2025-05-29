@@ -24,7 +24,7 @@ export interface PropertyInput {
 interface PISearch {
 	memberId?: string;
 	locationList?: PropertyLocation[];
-	typeList?: PropertyCollection[];
+	collectionList?: PropertyCollection[];
 	roomsList?: Number[];
 	options?: string[];
 	bedsList?: Number[];

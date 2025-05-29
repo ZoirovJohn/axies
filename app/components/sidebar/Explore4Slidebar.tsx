@@ -7,7 +7,7 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { useRouter } from "next/navigation";
 
 interface FilterType {
@@ -24,17 +24,17 @@ export default function Explore4Slidebar(props: FilterType): JSX.Element {
   const router = useRouter();
 
   const addresses = [
-    "서울 (Seoul)",
-    "부산 (Busan)",
-    "인천 (Incheon)",
-    "대구 (Daegu)",
-    "대전 (Daejeon)",
-    "제주 (Jeju)",
-    "평택 (Pyeongtaek)",
-    "안산 (Ansan)",
-    "김포 (Gimpo)",
-    "구미 (Gumi)",
-    "전주 (Jeonju)",
+    "SEOUL",
+    "BUSAN",
+    "INCHEON",
+    "DAEGU",
+    "DAEJEON",
+    "JEJU",
+    "PYEONGTAEK",
+    "ANSAN",
+    "GIMPO",
+    "GUMI",
+    "JEONJU",
   ];
 
   const [showAll, setShowAll] = useState(false);
@@ -69,17 +69,91 @@ export default function Explore4Slidebar(props: FilterType): JSX.Element {
     if (index >= 5) setSelectedBelowFive(false);
   };
 
-  const refreshHandler = async () => {
-    try {
-      setSearchText("");
-      await router.push(
-        `/property?input=${encodeURIComponent(JSON.stringify(initialInput))}`,
-        { scroll: false }
-      );
-    } catch (err: any) {
-      console.log("ERROR, refreshHandler:", err);
-    }
-  };
+  const propertyLocationSelectHandler = useCallback(
+    async (e: any) => {
+      try {
+        const isChecked = e.target.checked;
+        const value = e.target.value;
+
+        let updatedSearch = { ...searchFilter.search };
+
+        if (isChecked) {
+          updatedSearch.locationList = [
+            ...(searchFilter?.search?.locationList || []),
+            value,
+          ];
+        } else if (searchFilter?.search?.locationList?.includes(value)) {
+          const filtered = searchFilter.search.locationList.filter(
+            (item: string) => item !== value
+          );
+
+          if (filtered.length > 0) {
+            updatedSearch.locationList = filtered;
+          } else {
+            const { locationList, ...rest } = searchFilter.search;
+            updatedSearch = rest;
+          }
+        }
+
+        const newInput = {
+          ...searchFilter,
+          search: updatedSearch,
+        };
+
+        await router.push(`/explore-4?input=${JSON.stringify(newInput)}`, {
+          scroll: false,
+        });
+
+        console.log("propertyLocationSelectHandler:", e.target.value);
+      } catch (err: any) {
+        console.log("ERROR, propertyLocationSelectHandler:", err);
+      }
+    },
+    [searchFilter]
+  );
+
+  const propertyCollectionSelectHandler = useCallback(
+    async (e: any) => {
+      try {
+        const isChecked = e.target.checked;
+        const value = e.target.value;
+
+        let updatedSearch = { ...searchFilter.search };
+
+        if (isChecked) {
+          updatedSearch.collectionList = [
+            ...(searchFilter?.search?.collectionList || []),
+            value,
+          ];
+        } else if (searchFilter?.search?.collectionList?.includes(value)) {
+          const filtered = searchFilter.search.collectionList.filter(
+            (item: string) => item !== value
+          );
+
+          if (filtered.length > 0) {
+            updatedSearch.collectionList = filtered;
+          } else {
+            const { collectionList, ...rest } = searchFilter.search;
+            updatedSearch = rest;
+          }
+        }
+
+        const newInput = {
+          ...searchFilter,
+          search: updatedSearch,
+        };
+
+        await router.push(`/explore-4?input=${JSON.stringify(newInput)}`, {
+          scroll: false,
+        });
+
+        console.log("propertyCollectionSelectHandler:", e.target.value);
+      } catch (err: any) {
+        console.log("ERROR, propertyCollectionSelectHandler:", err);
+      }
+    },
+    [searchFilter, router]
+  );
 
   return (
     <div id="side-bar" className="side-bar style-3">
@@ -129,13 +203,13 @@ export default function Explore4Slidebar(props: FilterType): JSX.Element {
           </button>
         </Stack>
       </Stack>
-      {/* Address Filter */}
+      {/* Location Filter */}
       <div className="widget widget-category mgbt-24 boder-bt">
         <div
           onClick={() => setStatusCollapse(!getStatusCollapse)}
           className="title-wg-category cursor-pointer flex justify-between items-center"
         >
-          <h4 className="title-widget style-2">Address</h4>
+          <h4 className="title-widget style-2">Location</h4>
           <i
             className={`icon-fl-down-2 transition-transform ${
               getStatusCollapse ? "rotate-180" : ""
@@ -163,11 +237,13 @@ export default function Explore4Slidebar(props: FilterType): JSX.Element {
                   {address}
                   <input
                     type="checkbox"
-                    onChange={() => handleSelection(index)}
+                    value={address}
+                    onChange={propertyLocationSelectHandler} // ✅ Updated
                   />
                   <span className="btn-checkbox" />
                 </label>
               ))}
+
               {showAll &&
                 addresses.slice(5).map((address, index) => (
                   <label
@@ -176,14 +252,15 @@ export default function Explore4Slidebar(props: FilterType): JSX.Element {
                     style={{
                       display: "block",
                       marginBottom: "10px",
-                      opacity: showAll ? 1 : 0, // Smooth transition effect
-                      transition: "opacity 0.5s ease", // CSS transition for smooth effect
+                      opacity: showAll ? 1 : 0,
+                      transition: "opacity 0.5s ease",
                     }}
                   >
                     {address}
                     <input
                       type="checkbox"
-                      onChange={() => handleSelection(index + 5)}
+                      value={address}
+                      onChange={propertyLocationSelectHandler} // ✅ Updated
                       onClick={() => handleDeselect(index + 5)}
                     />
                     <span className="btn-checkbox" />
@@ -200,7 +277,7 @@ export default function Explore4Slidebar(props: FilterType): JSX.Element {
           onClick={() => setCatCollapse(!getCatCollapse)}
           className="title-wg-category cursor-pointer flex justify-between items-center"
         >
-          <h4 className="title-widget style-2">Categories</h4>
+          <h4 className="title-widget style-2">Collections</h4>
           <i
             className={`icon-fl-down-2 transition-transform ${
               getCatCollapse ? "rotate-180" : ""
@@ -213,14 +290,18 @@ export default function Explore4Slidebar(props: FilterType): JSX.Element {
             style={{ display: "flex", flexDirection: "column" }}
           >
             <form>
-              {["Art", "Music", "Collectibles", "Sports"].map((item, index) => (
+              {["ART", "MUSIC", "COLLECTIBLE", "SPORTS"].map((item, index) => (
                 <label
                   key={index}
                   className="block mb-2"
                   style={{ display: "block", marginBottom: "10px" }}
                 >
                   {item}
-                  <input type="checkbox" />
+                  <input
+                    type="checkbox"
+                    value={item}
+                    onChange={propertyCollectionSelectHandler}
+                  />
                   <span className="btn-checkbox" />
                 </label>
               ))}

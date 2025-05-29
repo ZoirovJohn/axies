@@ -66,8 +66,8 @@ const Filter = (props: FilterType) => {
       );
     }
 
-    if (searchFilter?.search?.typeList?.length == 0) {
-      delete searchFilter.search.typeList;
+    if (searchFilter?.search?.collectionList?.length == 0) {
+      delete searchFilter.search.collectionList;
       router.push(
         `/property?input=${encodeURIComponent(
           JSON.stringify({
@@ -169,7 +169,7 @@ const Filter = (props: FilterType) => {
           );
         }
 
-        if (searchFilter?.search?.typeList?.length == 0) {
+        if (searchFilter?.search?.collectionList?.length == 0) {
           alert("error");
         }
 
@@ -193,20 +193,23 @@ const Filter = (props: FilterType) => {
                 ...searchFilter,
                 search: {
                   ...searchFilter.search,
-                  typeList: [...(searchFilter?.search?.typeList || []), value],
+                  collectionList: [
+                    ...(searchFilter?.search?.collectionList || []),
+                    value,
+                  ],
                 },
               })
             )}`,
             { scroll: false }
           );
-        } else if (searchFilter?.search?.typeList?.includes(value)) {
+        } else if (searchFilter?.search?.collectionList?.includes(value)) {
           await router.push(
             `/property?input=${encodeURIComponent(
               JSON.stringify({
                 ...searchFilter,
                 search: {
                   ...searchFilter.search,
-                  typeList: searchFilter?.search?.typeList?.filter(
+                  collectionList: searchFilter?.search?.collectionList?.filter(
                     (item: string) => item !== value
                   ),
                 },
@@ -216,7 +219,7 @@ const Filter = (props: FilterType) => {
           );
         }
 
-        if (searchFilter?.search?.typeList?.length == 0) {
+        if (searchFilter?.search?.collectionList?.length == 0) {
           alert("error");
         }
 
@@ -571,7 +574,7 @@ const Filter = (props: FilterType) => {
               size="small"
               value={type}
               onChange={propertyTypeSelectHandler}
-              checked={(searchFilter?.search?.typeList || []).includes(
+              checked={(searchFilter?.search?.collectionList || []).includes(
                 type as PropertyCollection
               )}
             />
