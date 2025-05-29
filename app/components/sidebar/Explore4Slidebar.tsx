@@ -1,17 +1,28 @@
 "use client";
-import dynamic from "next/dynamic";
+import { PropertiesInquiry } from "@/libs/dto/property/property.input";
+import {
+  IconButton,
+  OutlinedInput,
+  Stack,
+  Tooltip,
+  Typography,
+} from "@mui/material";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
-// Dynamically import Collapse to avoid SSR issues
-const Collapse = dynamic(() => import("react-collapse"), { ssr: false });
+interface FilterType {
+  searchFilter: PropertiesInquiry;
+  setSearchFilter: any;
+  initialInput: PropertiesInquiry;
+}
 
-export default function Explore4Slidebar(): JSX.Element {
+export default function Explore4Slidebar(props: FilterType): JSX.Element {
+  const { searchFilter, setSearchFilter, initialInput } = props;
   const [getStatusCollapse, setStatusCollapse] = useState(true);
   const [getCatCollapse, setCatCollapse] = useState(true);
   const [getChainsCollapse, setChainsCollapse] = useState(true);
-  const [getCollectionsCollapse, setCollectionsCollapse] = useState(true);
+  const router = useRouter();
 
-  // Store the address list
   const addresses = [
     "서울 (Seoul)",
     "부산 (Busan)",
@@ -27,77 +38,132 @@ export default function Explore4Slidebar(): JSX.Element {
   ];
 
   const [showAll, setShowAll] = useState(false);
-  const [hovering, setHovering] = useState(false); // State for hovering
-  const [selectedBelowFive, setSelectedBelowFive] = useState(false); // Track if any item below 5 is selected
-  const [mouseLeaving, setMouseLeaving] = useState(false); // State to track if the mouse is leaving
+  const [hovering, setHovering] = useState(false);
+  const [searchText, setSearchText] = useState<string>("");
+  const [selectedBelowFive, setSelectedBelowFive] = useState(false);
+  const [mouseLeaving, setMouseLeaving] = useState(false);
 
-  // Function to handle hover over the 5th element
+  /** HANDLERS **/
   const handleHover = (index: number) => {
     if (index === 4) {
-      setTimeout(() => {
-        setShowAll(true); // Show all after a small delay
-      }, 200); // Adjust the delay time (in milliseconds) for the effect
+      setTimeout(() => setShowAll(true), 200);
     }
   };
 
   const handleLeave = () => {
-    // If the mouse leaves and no item below 5 is selected, close the "show all" section
     if (!selectedBelowFive) {
-      setMouseLeaving(true); // Mark the mouse as leaving
+      setMouseLeaving(true);
       setTimeout(() => {
         if (mouseLeaving && !selectedBelowFive) {
-          setShowAll(false); // Hide all after a delay if the mouse has left
+          setShowAll(false);
         }
-      }, 200); // Delay to match the hover effect
+      }, 200);
     }
   };
 
   const handleSelection = (index: number) => {
-    if (index >= 5) {
-      setSelectedBelowFive(true); // Mark as selected when item is below 5
-    }
+    if (index >= 5) setSelectedBelowFive(true);
   };
 
   const handleDeselect = (index: number) => {
-    if (index >= 5) {
-      setSelectedBelowFive(false); // Mark as deselected when item is below 5 and unchecked
+    if (index >= 5) setSelectedBelowFive(false);
+  };
+
+  const refreshHandler = async () => {
+    try {
+      setSearchText("");
+      await router.push(
+        `/property?input=${encodeURIComponent(JSON.stringify(initialInput))}`,
+        { scroll: false }
+      );
+    } catch (err: any) {
+      console.log("ERROR, refreshHandler:", err);
     }
   };
 
   return (
     <div id="side-bar" className="side-bar style-3">
-      {/* Status Filter */}
+      {/* 🔍 Find Your Home Search */}
+      <Stack className={"find-your-home"} mb={"40px"}>
+        <h4 className="title-widget style-2">Find your NFT</h4>
+        <Stack
+          className={"transition-transform"}
+          direction="row"
+          alignItems="center"
+          spacing={1}
+        >
+          <OutlinedInput
+            value={searchText}
+            type="text"
+            className="search-input"
+            placeholder="What are you looking for?"
+            onChange={(e) => setSearchText(e.target.value)}
+            onKeyDown={(event) => {
+              if (event.key === "Enter") {
+                setSearchFilter({
+                  ...searchFilter,
+                  search: { ...searchFilter.search, text: searchText },
+                });
+              }
+            }}
+          />
+          {/* Submit Button */}
+          <button
+            type="button"
+            onClick={() =>
+              setSearchFilter({
+                ...searchFilter,
+                search: { ...searchFilter.search, text: searchText },
+              })
+            }
+            style={{
+              backgroundColor: "blue",
+              color: "white",
+              padding: "8px 16px",
+              border: "none",
+              borderRadius: "4px",
+              cursor: "pointer",
+            }}
+          >
+            Submit
+          </button>
+        </Stack>
+      </Stack>
+      {/* Address Filter */}
       <div className="widget widget-category mgbt-24 boder-bt">
         <div
           onClick={() => setStatusCollapse(!getStatusCollapse)}
-          className="title-wg-category"
+          className="title-wg-category cursor-pointer flex justify-between items-center"
         >
           <h4 className="title-widget style-2">Address</h4>
-          <i className="icon-fl-down-2" />
+          <i
+            className={`icon-fl-down-2 transition-transform ${
+              getStatusCollapse ? "rotate-180" : ""
+            }`}
+          />
         </div>
-        <Collapse isOpened={getStatusCollapse}>
+        {getStatusCollapse && (
           <div
-            className="content-wg-category"
+            className="content-wg-category flex flex-col"
             style={{ display: "flex", flexDirection: "column" }}
-            onMouseLeave={handleLeave} // Trigger handleLeave when mouse leaves the container
+            onMouseLeave={handleLeave}
           >
             <form>
               {addresses.slice(0, 5).map((address, index) => (
                 <label
                   key={index}
                   style={{ display: "block", marginBottom: "10px" }}
+                  className="block mb-2"
                   onMouseEnter={() => {
-                    setHovering(true); // Set hovering state
+                    setHovering(true);
                     handleHover(index);
-                  }} // Handle hover
-                  onMouseLeave={() => {
-                    setHovering(false); // Reset hovering state
-                  }} // Reset when leaving hover
+                  }}
+                  onMouseLeave={() => setHovering(false)}
                 >
                   {address}
                   <input
                     type="checkbox"
-                    onChange={() => handleSelection(index)} // Select below 5
+                    onChange={() => handleSelection(index)}
                   />
                   <span className="btn-checkbox" />
                 </label>
@@ -106,6 +172,7 @@ export default function Explore4Slidebar(): JSX.Element {
                 addresses.slice(5).map((address, index) => (
                   <label
                     key={index + 5}
+                    className="block mb-2 transition-opacity duration-300"
                     style={{
                       display: "block",
                       marginBottom: "10px",
@@ -116,37 +183,41 @@ export default function Explore4Slidebar(): JSX.Element {
                     {address}
                     <input
                       type="checkbox"
-                      onChange={() => handleSelection(index + 5)} // Select below 5
-                      onClick={() => handleDeselect(index + 5)} // Deselect if unchecked
+                      onChange={() => handleSelection(index + 5)}
+                      onClick={() => handleDeselect(index + 5)}
                     />
                     <span className="btn-checkbox" />
                   </label>
                 ))}
             </form>
           </div>
-        </Collapse>
+        )}
       </div>
 
       {/* Categories Filter */}
       <div className="widget widget-category mgbt-24 boder-bt">
         <div
           onClick={() => setCatCollapse(!getCatCollapse)}
-          className="title-wg-category"
+          className="title-wg-category cursor-pointer flex justify-between items-center"
         >
           <h4 className="title-widget style-2">Categories</h4>
-          <i className="icon-fl-down-2" />
+          <i
+            className={`icon-fl-down-2 transition-transform ${
+              getCatCollapse ? "rotate-180" : ""
+            }`}
+          />
         </div>
-        <Collapse isOpened={getCatCollapse}>
+        {getCatCollapse && (
           <div
-            className="content-wg-category"
+            className="content-wg-category flex flex-col"
             style={{ display: "flex", flexDirection: "column" }}
           >
             <form>
               {["Art", "Music", "Collectibles", "Sports"].map((item, index) => (
                 <label
                   key={index}
+                  className="block mb-2"
                   style={{ display: "block", marginBottom: "10px" }}
-                  className={index === 7 ? "mgbt-none" : ""}
                 >
                   {item}
                   <input type="checkbox" />
@@ -155,29 +226,33 @@ export default function Explore4Slidebar(): JSX.Element {
               ))}
             </form>
           </div>
-        </Collapse>
+        )}
       </div>
 
       {/* Chains Filter */}
       <div className="widget widget-category mgbt-24 boder-bt">
         <div
           onClick={() => setChainsCollapse(!getChainsCollapse)}
-          className="title-wg-category"
+          className="title-wg-category cursor-pointer flex justify-between items-center"
         >
           <h4 className="title-widget style-2">Chains</h4>
-          <i className="icon-fl-down-2" />
+          <i
+            className={`icon-fl-down-2 transition-transform ${
+              getChainsCollapse ? "rotate-180" : ""
+            }`}
+          />
         </div>
-        <Collapse isOpened={getChainsCollapse}>
+        {getChainsCollapse && (
           <div
-            className="content-wg-category"
+            className="content-wg-category flex flex-col"
             style={{ display: "flex", flexDirection: "column" }}
           >
             <form>
               {["Ethereum", "Polygon", "Klaytn"].map((chain, index) => (
                 <label
                   key={index}
+                  className="block mb-2"
                   style={{ display: "block", marginBottom: "10px" }}
-                  className={index === 2 ? "mgbt-none" : ""}
                 >
                   {chain}
                   <input type="checkbox" />
@@ -186,10 +261,8 @@ export default function Explore4Slidebar(): JSX.Element {
               ))}
             </form>
           </div>
-        </Collapse>
+        )}
       </div>
-
-       {/* Price */}
     </div>
   );
 }

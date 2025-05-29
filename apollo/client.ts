@@ -13,8 +13,8 @@ import { getMainDefinition } from "@apollo/client/utilities";
 import { onError } from "@apollo/client/link/error";
 import { TokenRefreshLink } from "apollo-link-token-refresh";
 import { socketVar } from "./store";
-import { sweetErrorAlert } from "@/app/sweetAlert";
 import { getJwtToken } from "@/app/(auth)";
+import { sweetErrorAlert } from "@/app/sweetAlert";
 
 let apolloClient: ApolloClient<NormalizedCacheObject>;
 

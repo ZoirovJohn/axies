@@ -1,6 +1,6 @@
 import Swal from "sweetalert2";
 import "animate.css";
-import { Messages } from "./config";
+import { Messages } from "../libs/config";
 
 export const sweetErrorHandling = async (err: any) => {
   await Swal.fire({
