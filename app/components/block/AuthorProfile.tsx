@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ProductCard6 from "../card/ProductCard6";
 import Link from "next/link";
 import Image from "next/image";
@@ -12,12 +12,29 @@ import { T } from "@/libs/types/common";
 import { PropertyCollection, PropertyStatus } from "@/libs/enums/property.enum";
 import { useReactiveVar } from "@apollo/client";
 import { selectedPropertyAuthorVar } from "@/apollo/store";
+import { REACT_APP_API_URL } from "@/libs/config";
+import { useRouter } from "next/navigation";
 
 export default function AuthorProfile(): JSX.Element {
   const selectedPropertyAuthor = useReactiveVar(selectedPropertyAuthorVar);
+  const router = useRouter();
+  useEffect(() => {
+    if (!selectedPropertyAuthor) {
+      alert("Author not found.");
+      router.push("/");
+    }
+  }, []);
   const [getCurrentTab, setCurrentTab] = useState<string>("ALL");
   const [agentProperties, setAgentProperties] = useState<Property[]>([]);
   const [propertiesCount, setPropertiesCount] = useState<number>(0);
+  const member = agentProperties[0]?.memberData;
+  const memberImagePath: string = member?.memberImage
+    ? `${REACT_APP_API_URL}/${member?.memberImage}`
+    : "/img/banner/header1.svg";
+  const properties = (agentProperties || []).filter(
+    (property) =>
+      getCurrentTab === "ALL" || property.propertyCollection === getCurrentTab
+  );
   const [searchFilter, setSearchFilter] = useState<PropertiesInquiry>({
     page: 1,
     limit: 5,
@@ -65,19 +82,28 @@ export default function AuthorProfile(): JSX.Element {
                   height={500}
                   width={500}
                   style={{ height: "276px", width: "276px" }}
-                  src="/assets/images/avatar/avt-author-tab.jpg"
+                  src={memberImagePath}
                   alt="Image"
                   className="avatar"
                 />
               </div>
               <div className="infor-profile">
                 <span>Author Profile</span>
-                <h2 className="title">Trista Francis</h2>
-                <p className="content">
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                  Laborum obcaecati dignissimos quae quo ad iste ipsum officiis
-                  deleniti asperiores sit.
-                </p>
+                <h2 className="title">
+                  {agentProperties[0]?.memberData?.memberNick ?? "Author Name"}
+                </h2>
+                {propertiesCount ? (
+                  <p className="content">
+                    {agentProperties[0]?.memberData?.memberNick} has created{" "}
+                    {propertiesCount} properties till now.
+                  </p>
+                ) : (
+                  <p className="content">
+                    {agentProperties[0]?.memberData?.memberNick} has not created
+                    any properties till now.
+                  </p>
+                )}
+
                 <form>
                   <input
                     type="text"
@@ -137,28 +163,35 @@ export default function AuthorProfile(): JSX.Element {
             </ul>
             <div className="content-tab active">
               <div className="row">
-                {(agentProperties || [])
-                  .filter(
-                    (property) => getCurrentTab==="ALL" || property.propertyCollection === getCurrentTab
-                  )
-                  .slice(0, 80)
-                  .map((item) => (
-                    <div
-                      key={item._id}
-                      className="col-xl-3 col-lg-4 col-md-6 col-12"
+                {properties.length === 0 ? (
+                  <div className="col-12 text-center">
+                    <h3
+                      style={{
+                        color: "rgb(81, 66, 252)",
+                        paddingBottom: "40px",
+                      }}
                     >
-                      <ProductCard6 key={item._id} property={item} />
-                    </div>
-                  ))}
+                      No Properties Found
+                    </h3>{" "}
+                  </div>
+                ) : (
+                  (agentProperties || [])
+                    .filter(
+                      (property) =>
+                        getCurrentTab === "ALL" ||
+                        property.propertyCollection === getCurrentTab
+                    )
+                    .slice(0, 80)
+                    .map((item) => (
+                      <div
+                        key={item._id}
+                        className="col-xl-3 col-lg-4 col-md-6 col-12"
+                      >
+                        <ProductCard6 property={item} />
+                      </div>
+                    ))
+                )}
               </div>
-            </div>
-            <div className="col-md-12 wrap-inner load-more text-center">
-              <Link
-                href="/authors-2"
-                className="sc-button loadmore fl-button pri-3"
-              >
-                <span>Load More</span>
-              </Link>
             </div>
           </div>
         </div>
