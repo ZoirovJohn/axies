@@ -1,16 +1,17 @@
 "use client";
-
 import { useNavigation } from "@/data/navigation";
 import isActiveMenu from "@/utils/isActiveMenu";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-
 import { Sidebar, Menu, MenuItem, SubMenu } from "react-pro-sidebar";
+import { useReactiveVar } from "@apollo/client";
+import { userVar } from "@/apollo/store";
 
 export default function MobileNavigation() {
   const path = usePathname();
-  const navigation = useNavigation(true); // Pass `true` if the user is authenticated
+  const user = useReactiveVar(userVar);
+  const navigation = useNavigation(user.memberNick ? true : false); // Pass `true` if the user is authenticated
 
   return (
     <div

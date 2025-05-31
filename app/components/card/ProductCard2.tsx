@@ -10,6 +10,7 @@ import {
 import { Member } from "@/libs/dto/member/member";
 import { MeLiked } from "@/libs/dto/property/property";
 import { REACT_APP_API_URL } from "@/app/config";
+import { selectedPropertyAuthorVar } from "@/apollo/store";
 
 interface Props {
   property: {
@@ -79,14 +80,22 @@ export default function ProductCard2({ property }: Props): JSX.Element {
               </div>
               <div className="content">
                 <h4>
-                  <Link href="authors-1">
+                  <Link
+                    href="authors-2"
+                    onClick={() => selectedPropertyAuthorVar(property.memberId)}
+                  >
                     {property.propertyTitle.slice(0, 22) + "..."}
                   </Link>
                 </h4>
                 <div className="infor">
                   <span>Created by</span>
                   <span className="name">
-                    <Link href="authors-2">
+                    <Link
+                      href="authors-2"
+                      onClick={() =>
+                        selectedPropertyAuthorVar(property.memberId)
+                      }
+                    >
                       {property.memberData?.memberNick}
                     </Link>
                   </span>
@@ -104,7 +113,10 @@ export default function ProductCard2({ property }: Props): JSX.Element {
               </span>
             </button>
           </div>
-          <Link href="authors-2">
+          <Link
+            href="authors-2"
+            onClick={() => selectedPropertyAuthorVar(property.memberId)}
+          >
             <div className="media-images-collection">
               <div className="box-left">
                 <Image

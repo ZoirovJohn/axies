@@ -9,7 +9,7 @@ import Link from "next/link";
 import { useTranslation } from "next-i18next";
 import { useState } from "react";
 import { Property } from "@/libs/dto/property/property";
-import { useQuery } from "@apollo/client";
+import { useQuery, useReactiveVar } from "@apollo/client";
 import { GET_PROPERTIES } from "@/apollo/user/query";
 import { PropertiesInquiry } from "@/libs/dto/property/property.input";
 import { Direction } from "@/libs/enums/common.enum";

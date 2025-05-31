@@ -1,5 +1,4 @@
 "use client";
-import { product1 } from "@/data/product";
 import { useState } from "react";
 import ProductCard6 from "../card/ProductCard6";
 import Link from "next/link";
@@ -10,28 +9,25 @@ import { GET_PROPERTIES } from "@/apollo/user/query";
 import { PropertiesInquiry } from "@/libs/dto/property/property.input";
 import { Direction } from "@/libs/enums/common.enum";
 import { T } from "@/libs/types/common";
-import { PropertyCollection } from "@/libs/enums/property.enum";
+import { PropertyCollection, PropertyStatus } from "@/libs/enums/property.enum";
+import { useReactiveVar } from "@apollo/client";
+import { selectedPropertyAuthorVar } from "@/apollo/store";
 
 export default function AuthorProfile(): JSX.Element {
-  const [getCurrentTab, setCurrentTab] = useState<string>("ART");
-  const [properties, setProperties] = useState<Property[]>([]);
+  const selectedPropertyAuthor = useReactiveVar(selectedPropertyAuthorVar);
+  const [getCurrentTab, setCurrentTab] = useState<string>("ALL");
+  const [agentProperties, setAgentProperties] = useState<Property[]>([]);
   const [propertiesCount, setPropertiesCount] = useState<number>(0);
   const [searchFilter, setSearchFilter] = useState<PropertiesInquiry>({
     page: 1,
-    limit: 9000,
+    limit: 5,
     sort: "createdAt",
-    direction: Direction.DESC,
     search: {
-      squaresRange: {
-        start: 0,
-        end: 500,
-      },
-      pricesRange: {
-        start: 0.001,
-        end: 500,
-      },
+      memberId: selectedPropertyAuthor,
     },
   });
+  console.log("selectedPropertyAuthor:", selectedPropertyAuthor);
+  console.log("agentProperties:", agentProperties);
 
   /** APOLLO REQUESTS **/
   // const [likeTargetProperty] = useMutation(LIKE_TARGET_PROPERTY);
@@ -46,12 +42,12 @@ export default function AuthorProfile(): JSX.Element {
     variables: { input: searchFilter },
     notifyOnNetworkStatusChange: true,
     onCompleted: (data: T) => {
-      setProperties(data?.getProperties?.list);
+      setAgentProperties(data?.getProperties?.list);
       setPropertiesCount(data?.getProperties?.metaCounter[0]?.total);
     },
   });
 
-  console.log("AuthorProfile properties:", properties);
+  console.log("AuthorProfile properties:", agentProperties);
 
   // tab handler
   const tabHandler = (select: string) => {
@@ -125,25 +121,25 @@ export default function AuthorProfile(): JSX.Element {
               </div>
             </div>
             <ul className="menu-tab flex">
-              {Object.values(PropertyCollection).map((tab, index) => (
-                <li
-                  key={index}
-                  onClick={() => tabHandler(tab)}
-                  className={`tablinks ${
-                    tab.includes(getCurrentTab)
-                      ? "active"
-                      : ""
-                  }`}
-                >
-                  {tab}
-                </li>
-              ))}
+              {["ALL", "ART", "MUSIC", "COLLECTIBLE", "SPORTS"].map(
+                (tab, index) => (
+                  <li
+                    key={index}
+                    onClick={() => tabHandler(tab)}
+                    className={`tablinks ${
+                      tab.includes(getCurrentTab) ? "active" : ""
+                    }`}
+                  >
+                    {tab}
+                  </li>
+                )
+              )}
             </ul>
             <div className="content-tab active">
               <div className="row">
-                {properties
+                {(agentProperties || [])
                   .filter(
-                    (property) => property.propertyCollection === getCurrentTab
+                    (property) => getCurrentTab==="ALL" || property.propertyCollection === getCurrentTab
                   )
                   .slice(0, 80)
                   .map((item) => (

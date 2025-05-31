@@ -9,7 +9,6 @@ import Backend from "i18next-http-backend";
 import { useEffect, useState } from "react";
 import { ApolloProvider } from "@apollo/client";
 import { useApollo } from "../apollo/client"; // 🔁 Adjust path as needed
-import { userVar } from "../apollo/store"; // import your reactive var
 
 // Initialize i18n if not already done
 if (!i18n.isInitialized) {

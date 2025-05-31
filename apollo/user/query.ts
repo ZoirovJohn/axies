@@ -221,6 +221,8 @@ export const GET_AGENT_PROPERTIES = gql`
         propertyTraitGroups
         propertyViews
         propertyLikes
+        propertyComments
+        propertyRank
         propertyImages
         propertyDesc
         propertyBarter
@@ -231,6 +233,33 @@ export const GET_AGENT_PROPERTIES = gql`
         constructedAt
         createdAt
         updatedAt
+        memberData {
+          _id
+          memberType
+          memberStatus
+          memberAuthType
+          memberNick
+          memberPhone
+          memberFullName
+          memberImage
+          memberAddress
+          memberDesc
+          memberProperties
+          memberArticles
+          memberFollowers
+          memberFollowings
+          memberPoints
+          memberLikes
+          memberViews
+          memberComments
+          memberRank
+          memberWarnings
+          memberBlocks
+          deletedAt
+          createdAt
+          updatedAt
+          accessToken
+        }
       }
       metaCounter {
         total
