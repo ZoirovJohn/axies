@@ -27,8 +27,8 @@ export default function Explore4({
         end: 500,
       },
       pricesRange: {
-        start: 0,
-        end: 2000000,
+        start: 0.001,
+        end: 500,
       },
     },
   },
@@ -36,13 +36,14 @@ export default function Explore4({
   const searchParams = useSearchParams();
   const inputParam = searchParams.get("input");
   const [properties, setProperties] = useState<Property[]>([]);
-  const [loadMore, setLoadMore] = useState(false);
+  const [propertiesCount, setPropertiesCount] = useState<number>(0);
+  const [showMore, setShowMore] = useState(false);
   const router = useRouter();
   // console.log("inputParam:", inputParam);
   const [searchFilter, setSearchFilter] = useState<PropertiesInquiry>(
     inputParam ? JSON.parse(inputParam) : initialInput
   );
-  // console.log("searchFilter:", searchFilter);
+  console.log("searchFilter:", searchFilter);
 
   /** APOLLO REQUESTS **/
   const [likeTargetProperty] = useMutation(LIKE_TARGET_PROPERTY);
@@ -58,6 +59,7 @@ export default function Explore4({
     notifyOnNetworkStatusChange: true,
     onCompleted: (data: T) => {
       setProperties(data?.getProperties?.list);
+      setPropertiesCount(data?.getProperties?.metaCounter[0]?.total);
     },
   });
 
@@ -74,9 +76,9 @@ export default function Explore4({
 
   // HANDLERS
 
-  const loadMoreHandler = useCallback(async () => {
+  const showHandler = useCallback(async () => {
     try {
-      const newLimit = loadMore ? 6 : 12;
+      const newLimit = showMore ? 6 : 12;
       const newInput = {
         ...searchFilter,
         limit: newLimit,
@@ -87,11 +89,11 @@ export default function Explore4({
       });
 
       setSearchFilter(newInput);
-      setLoadMore(!loadMore); // toggle the state
+      setShowMore(!showMore); // toggle the state
     } catch (err: any) {
-      console.log("ERROR in loadMoreHandler:", err);
+      console.log("ERROR in showHandler:", err);
     }
-  }, [loadMore, searchFilter, router]);
+  }, [showMore, searchFilter, router]);
 
   return (
     <section className="tf-explore tf-section">
@@ -106,17 +108,26 @@ export default function Explore4({
           </div>
           <div className="col-xl-9 col-lg-9 col-md-12">
             <div className="box-epxlore">
-              {properties.slice(0, searchFilter.limit).map((item) => (
-                <ProductCard6 key={item._id} property={item} />
-              ))}
+              {properties.length === 0 ? (
+                <h3>No Properties Found</h3>
+              ) : (
+                properties
+                  .slice(0, searchFilter.limit)
+                  .map((item) => (
+                    <ProductCard6 key={item._id} property={item} />
+                  ))
+              )}
             </div>
             <div className="btn-auction center">
-              <Button
-                className="sc-button loadmore fl-button pri-3"
-                onClick={loadMoreHandler}
-              >
-                <span>{loadMore ? "Load Less" : "Load More"}</span>
-              </Button>
+              {propertiesCount > 6 && (
+                <Button
+                  className="sc-button loadmore fl-button pri-3"
+                  onClick={showHandler}
+                  sx={{ borderRadius: "32px" }}
+                >
+                  <span>{showMore ? "Show Less" : "Show More"}</span>
+                </Button>
+              )}
             </div>
           </div>
         </div>

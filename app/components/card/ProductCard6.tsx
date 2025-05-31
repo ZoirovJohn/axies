@@ -7,9 +7,11 @@ import {
   PropertyLocation,
   PropertyStatus,
 } from "@/libs/enums/property.enum";
+import Button from "@mui/material/Button";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
+import ShoppingBasketIcon from "@mui/icons-material/ShoppingBasket";
 
 interface Props {
   property: {
@@ -110,10 +112,21 @@ export default function ProductCard6({ property }: Props): JSX.Element {
         </div>
         <div className="card-bottom style-explode">
           <div className="price">
-            <span>Current Bid</span>
+            <span>{property.propertyLocation}</span>
             <div className="price-details">
               <h5>{property.propertyPrice} ETH</h5>
               <span>= ${(2731 * property.propertyPrice).toLocaleString()}</span>
+            </div>
+          </div>
+          <div className="price">
+            <div className="price-details">
+              <a
+                data-bs-toggle="modal"
+                data-bs-target="#popup_bid"
+                className="sc-button loadmore style bag fl-button pri-3"
+              >
+                <span>Shop</span>
+              </a>
             </div>
           </div>
         </div>

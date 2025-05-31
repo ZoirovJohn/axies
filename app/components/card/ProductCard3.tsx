@@ -81,7 +81,9 @@ export default function ProductCard3({ property }: Props): JSX.Element {
           <h5 className="style2">
             <Link href="/item-details-1">{property.propertyTitle}</Link>
           </h5>
-          <div className="tags">{property.propertyAddress}</div>
+          <div className="tags">
+            {property.propertyAddress.slice(0, 5) + "..."}
+          </div>
         </div>
         <div className="meta-info">
           <div className="author">

@@ -7,9 +7,10 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
-import { useCallback, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { PropertyLocation } from "@/libs/enums/property.enum";
+import { end } from "@popperjs/core";
 
 interface FilterType {
   searchFilter: PropertiesInquiry;
@@ -44,12 +45,8 @@ export default function Explore4Slidebar(props: FilterType): JSX.Element {
         if (mouseLeaving && !selectedBelowFive) {
           setShowAll(false);
         }
-      }, 400);
+      }, 600);
     }
-  };
-
-  const handleSelection = (index: number) => {
-    if (index >= 5) setSelectedBelowFive(true);
   };
 
   const handleDeselect = (index: number) => {
@@ -69,6 +66,12 @@ export default function Explore4Slidebar(props: FilterType): JSX.Element {
             ...(searchFilter?.search?.locationList || []),
             value,
           ];
+
+          const extendedList = Object.values(PropertyLocation).slice(5);
+          if (extendedList.includes(value)) {
+            setShowAll(true);
+            setSelectedBelowFive(true);
+          }
         } else if (searchFilter?.search?.locationList?.includes(value)) {
           const filtered = searchFilter.search.locationList.filter(
             (item: string) => item !== value
@@ -76,9 +79,20 @@ export default function Explore4Slidebar(props: FilterType): JSX.Element {
 
           if (filtered.length > 0) {
             updatedSearch.locationList = filtered;
+
+            const stillSelectedExtended = filtered.some((item) =>
+              Object.values(PropertyLocation).slice(5).includes(item)
+            );
+
+            if (!stillSelectedExtended) {
+              setShowAll(false);
+              setSelectedBelowFive(false);
+            }
           } else {
             const { locationList, ...rest } = searchFilter.search;
             updatedSearch = rest;
+            setShowAll(false);
+            setSelectedBelowFive(false);
           }
         }
 
@@ -91,12 +105,12 @@ export default function Explore4Slidebar(props: FilterType): JSX.Element {
           scroll: false,
         });
 
-        console.log("propertyLocationSelectHandler:", e.target.value);
+        console.log("propertyLocationSelectHandler:", value);
       } catch (err: any) {
         console.log("ERROR, propertyLocationSelectHandler:", err);
       }
     },
-    [searchFilter]
+    [searchFilter, router]
   );
 
   const propertyCollectionSelectHandler = useCallback(
@@ -137,6 +151,59 @@ export default function Explore4Slidebar(props: FilterType): JSX.Element {
         console.log("propertyCollectionSelectHandler:", e.target.value);
       } catch (err: any) {
         console.log("ERROR, propertyCollectionSelectHandler:", err);
+      }
+    },
+    [searchFilter, router]
+  );
+
+  const selectedPriceLabelsRef = useRef<string[]>([]); // local-only tracking
+
+  const propertyPriceSelectHandler = useCallback(
+    async (e: any) => {
+      try {
+        const isChecked = e.target.checked;
+        const value = e.target.value;
+
+        const priceMap: Record<string, { start: number; end: number }> = {
+          "0.001 – 0.05 ETH": { start: 0.001, end: 0.05 },
+          "0.05 – 0.5 ETH": { start: 0.05, end: 0.5 },
+          "0.5 – 2 ETH": { start: 0.5, end: 2 },
+          "2 – 5+ ETH": { start: 2, end: 5 },
+        };
+
+        if (isChecked) {
+          selectedPriceLabelsRef.current.push(value);
+        } else {
+          selectedPriceLabelsRef.current =
+            selectedPriceLabelsRef.current.filter((label) => label !== value);
+        }
+
+        const selectedLabels = selectedPriceLabelsRef.current;
+        const updatedSearch = { ...searchFilter.search };
+
+        if (selectedLabels.length > 0) {
+          const selectedRanges = selectedLabels.map((label) => priceMap[label]);
+          const starts = selectedRanges.map((r) => r.start);
+          const ends = selectedRanges.map((r) => r.end);
+
+          updatedSearch.pricesRange = {
+            start: Math.min(...starts),
+            end: Math.max(...ends),
+          };
+        } else {
+          updatedSearch.pricesRange = { start: 0.001, end: 500 };
+        }
+
+        const newInput = {
+          ...searchFilter,
+          search: updatedSearch,
+        };
+
+        await router.push(`/explore-4?input=${JSON.stringify(newInput)}`, {
+          scroll: false,
+        });
+      } catch (err: any) {
+        console.log("ERROR in propertyPriceSelectHandler:", err);
       }
     },
     [searchFilter, router]
@@ -317,13 +384,13 @@ export default function Explore4Slidebar(props: FilterType): JSX.Element {
         )}
       </div>
 
-      {/* Chains Filter */}
+      {/* Price Filter */}
       <div className="widget widget-category mgbt-24 boder-bt">
         <div
           onClick={() => setChainsCollapse(!getChainsCollapse)}
           className="title-wg-category cursor-pointer flex justify-between items-center"
         >
-          <h4 className="title-widget style-2">Chains</h4>
+          <h4 className="title-widget style-2">Price</h4>
           <i
             className={`icon-fl-down-2 transition-transform ${
               getChainsCollapse ? "rotate-180" : ""
@@ -336,14 +403,24 @@ export default function Explore4Slidebar(props: FilterType): JSX.Element {
             style={{ display: "flex", flexDirection: "column" }}
           >
             <form>
-              {["Ethereum", "Polygon", "Klaytn"].map((chain, index) => (
+              {[
+                "0.001 – 0.05 ETH",
+                "0.05 – 0.5 ETH",
+                "0.5 – 2 ETH",
+                "2 – 5+ ETH",
+              ].map((price, index) => (
                 <label
                   key={index}
                   className="block mb-2"
                   style={{ display: "block", marginBottom: "10px" }}
                 >
-                  {chain}
-                  <input type="checkbox" />
+                  {price}
+                  <input
+                    type="checkbox"
+                    value={price}
+                    onChange={propertyPriceSelectHandler}
+                    className="mr-2"
+                  />
                   <span className="btn-checkbox" />
                 </label>
               ))}
