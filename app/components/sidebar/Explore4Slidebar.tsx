@@ -310,7 +310,7 @@ export default function Explore4Slidebar(props: FilterType): JSX.Element {
                     <input
                       type="checkbox"
                       value={address}
-                      onChange={propertyLocationSelectHandler} // ✅ Updated
+                      onChange={propertyLocationSelectHandler} 
                     />
                     <span className="btn-checkbox" />
                   </label>
@@ -334,7 +334,7 @@ export default function Explore4Slidebar(props: FilterType): JSX.Element {
                       <input
                         type="checkbox"
                         value={address}
-                        onChange={propertyLocationSelectHandler} // ✅ Updated
+                        onChange={propertyLocationSelectHandler} 
                         onClick={() => handleDeselect(index + 5)}
                       />
                       <span className="btn-checkbox" />
