@@ -4,11 +4,54 @@ import { useState } from "react";
 import ProductCard6 from "../card/ProductCard6";
 import Link from "next/link";
 import Image from "next/image";
-
-const tabs = ["ALL", "ART", "MUSIC", "COLLECTIBLES", "SPORTS"];
+import { Property } from "@/libs/dto/property/property";
+import { useQuery } from "@apollo/client";
+import { GET_PROPERTIES } from "@/apollo/user/query";
+import { PropertiesInquiry } from "@/libs/dto/property/property.input";
+import { Direction } from "@/libs/enums/common.enum";
+import { T } from "@/libs/types/common";
+import { PropertyCollection } from "@/libs/enums/property.enum";
 
 export default function AuthorProfile(): JSX.Element {
-  const [getCurrentTab, setCurrentTab] = useState<string>("all");
+  const [getCurrentTab, setCurrentTab] = useState<string>("ART");
+  const [properties, setProperties] = useState<Property[]>([]);
+  const [propertiesCount, setPropertiesCount] = useState<number>(0);
+  const [searchFilter, setSearchFilter] = useState<PropertiesInquiry>({
+    page: 1,
+    limit: 9000,
+    sort: "createdAt",
+    direction: Direction.DESC,
+    search: {
+      squaresRange: {
+        start: 0,
+        end: 500,
+      },
+      pricesRange: {
+        start: 0.001,
+        end: 500,
+      },
+    },
+  });
+
+  /** APOLLO REQUESTS **/
+  // const [likeTargetProperty] = useMutation(LIKE_TARGET_PROPERTY);
+
+  const {
+    loading: getPropertiesLoading,
+    data: getPropertiesData,
+    error: getPropertiesError,
+    refetch: getPropertiesRefetch,
+  } = useQuery(GET_PROPERTIES, {
+    fetchPolicy: "network-only",
+    variables: { input: searchFilter },
+    notifyOnNetworkStatusChange: true,
+    onCompleted: (data: T) => {
+      setProperties(data?.getProperties?.list);
+      setPropertiesCount(data?.getProperties?.metaCounter[0]?.total);
+    },
+  });
+
+  console.log("AuthorProfile properties:", properties);
 
   // tab handler
   const tabHandler = (select: string) => {
@@ -82,12 +125,12 @@ export default function AuthorProfile(): JSX.Element {
               </div>
             </div>
             <ul className="menu-tab flex">
-              {tabs.map((tab, index) => (
+              {Object.values(PropertyCollection).map((tab, index) => (
                 <li
                   key={index}
-                  onClick={() => tabHandler(tab.toLocaleLowerCase())}
+                  onClick={() => tabHandler(tab)}
                   className={`tablinks ${
-                    tab.toLocaleLowerCase().includes(getCurrentTab)
+                    tab.includes(getCurrentTab)
                       ? "active"
                       : ""
                   }`}
@@ -98,17 +141,17 @@ export default function AuthorProfile(): JSX.Element {
             </ul>
             <div className="content-tab active">
               <div className="row">
-                {product1
-                  .filter((item) =>
-                    getCurrentTab === "all" ? item : item.type === getCurrentTab
+                {properties
+                  .filter(
+                    (property) => property.propertyCollection === getCurrentTab
                   )
-                  .slice(0, 8)
+                  .slice(0, 80)
                   .map((item) => (
                     <div
-                      key={item.id}
+                      key={item._id}
                       className="col-xl-3 col-lg-4 col-md-6 col-12"
                     >
-                      <ProductCard6 data={item} />
+                      <ProductCard6 key={item._id} property={item} />
                     </div>
                   ))}
               </div>
