@@ -79,7 +79,9 @@ export default function ProductCard2({ property }: Props): JSX.Element {
               </div>
               <div className="content">
                 <h4>
-                  <Link href="authors-1">{property.propertyTitle}</Link>
+                  <Link href="authors-1">
+                    {property.propertyTitle.slice(0, 22) + "..."}
+                  </Link>
                 </h4>
                 <div className="infor">
                   <span>Created by</span>
@@ -124,7 +126,7 @@ export default function ProductCard2({ property }: Props): JSX.Element {
                     src={
                       property?.propertyImages[1]
                         ? `${REACT_APP_API_URL}/${property?.propertyImages[1]}`
-                        : "/img/banner/header1.svg"
+                        : `${REACT_APP_API_URL}/${property?.propertyImages[0]}`
                     }
                     alt="Popular Image"
                   />
@@ -134,7 +136,7 @@ export default function ProductCard2({ property }: Props): JSX.Element {
                     src={
                       property?.propertyImages[2]
                         ? `${REACT_APP_API_URL}/${property?.propertyImages[2]}`
-                        : "/img/banner/header1.svg"
+                        : `${REACT_APP_API_URL}/${property?.propertyImages[0]}`
                     }
                     alt="Popular Image"
                   />
@@ -144,9 +146,9 @@ export default function ProductCard2({ property }: Props): JSX.Element {
                     height={400}
                     width={400}
                     src={
-                      property?.propertyImages[2]
-                        ? `${REACT_APP_API_URL}/${property?.propertyImages[2]}`
-                        : "/img/banner/header1.svg"
+                      property?.propertyImages[3]
+                        ? `${REACT_APP_API_URL}/${property?.propertyImages[3]}`
+                        : `${REACT_APP_API_URL}/${property?.propertyImages[0]}`
                     }
                     alt="Popular Image"
                   />
