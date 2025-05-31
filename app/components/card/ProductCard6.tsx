@@ -92,7 +92,7 @@ export default function ProductCard6({ property }: Props): JSX.Element {
                 src={
                   property?.memberData?.memberImage
                     ? `${REACT_APP_API_URL}/${property?.memberData?.memberImage}`
-                    : "/img/avatar/avt-1.jpg"
+                    : "/assets/images/avatar/avt-28.jpg"
                 }
                 alt="Image"
               />

@@ -2,22 +2,52 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
+import {
+  PropertyCollection,
+  PropertyLocation,
+  PropertyStatus,
+} from "@/libs/enums/property.enum";
+import { Member } from "@/libs/dto/member/member";
+import { MeLiked } from "@/libs/dto/property/property";
+import { REACT_APP_API_URL } from "@/app/config";
 
 interface Props {
-  data: {
-    id: number;
-    hert: number;
-    gallery: string[];
-    author: {
-      avatar: string;
-      title: string;
-      name: string;
-    };
+  property: {
+    _id: string;
+    propertyCollection: PropertyCollection;
+    propertyStatus: PropertyStatus;
+    propertyLocation: PropertyLocation;
+    propertyAddress: string;
+    propertyTitle: string;
+    propertyPrice: number;
+    propertyRarityScore: number;
+    propertyEditions: number;
+    propertyTraitGroups: number;
+    propertyViews: number;
+    propertyLikes: number;
+    propertyComments: number;
+    propertyRank: number;
+    propertyImages: string[];
+    propertyDesc?: string;
+    propertyBarter: boolean;
+    propertyRent: boolean;
+    memberId: string;
+    soldAt?: Date;
+    deletedAt?: Date;
+    constructedAt?: Date;
+    createdAt: Date;
+    updatedAt: Date;
+    /** from aggregation **/
+    meLiked?: MeLiked[];
+    memberData?: Member;
   };
 }
 
-export default function ProductCard2({ data }: Props): JSX.Element {
+export default function ProductCard2({ property }: Props): JSX.Element {
   const [isHeartToggle, setHeartToggle] = useState<number>(0);
+  const imagePath: string = property?.memberData?.memberImage
+    ? `${REACT_APP_API_URL}/${property?.memberData?.memberImage}`
+    : "/assets/images/avatar/avt-28.jpg";
 
   // heart toggle
   const heartToggle = () => {
@@ -38,7 +68,7 @@ export default function ProductCard2({ data }: Props): JSX.Element {
                   <Image
                     height={100}
                     width={100}
-                    src={data.author.avatar}
+                    src={imagePath}
                     alt="Avatar"
                     className="avatar"
                   />
@@ -49,12 +79,14 @@ export default function ProductCard2({ data }: Props): JSX.Element {
               </div>
               <div className="content">
                 <h4>
-                  <Link href="authors-1">{data.author.title}</Link>
+                  <Link href="authors-1">{property.propertyTitle}</Link>
                 </h4>
                 <div className="infor">
                   <span>Created by</span>
                   <span className="name">
-                    <Link href="authors-2">{data.author.name}</Link>
+                    <Link href="authors-2">
+                      {property.memberData?.memberNick}
+                    </Link>
                   </span>
                 </div>
               </div>
@@ -65,7 +97,9 @@ export default function ProductCard2({ data }: Props): JSX.Element {
                 isHeartToggle === 1 ? "active" : ""
               } `}
             >
-              <span className="number-like">{data.hert + isHeartToggle}</span>
+              <span className="number-like">
+                {property.propertyLikes + isHeartToggle}
+              </span>
             </button>
           </div>
           <Link href="authors-2">
@@ -74,7 +108,11 @@ export default function ProductCard2({ data }: Props): JSX.Element {
                 <Image
                   height={500}
                   width={500}
-                  src={data.gallery[0]}
+                  src={
+                    property?.propertyImages[0]
+                      ? `${REACT_APP_API_URL}/${property?.propertyImages[0]}`
+                      : "/img/banner/header1.svg"
+                  }
                   alt="Popular Image"
                 />
               </div>
@@ -83,13 +121,21 @@ export default function ProductCard2({ data }: Props): JSX.Element {
                   <Image
                     height={200}
                     width={200}
-                    src={data.gallery[1]}
+                    src={
+                      property?.propertyImages[1]
+                        ? `${REACT_APP_API_URL}/${property?.propertyImages[1]}`
+                        : "/img/banner/header1.svg"
+                    }
                     alt="Popular Image"
                   />
                   <Image
                     height={200}
                     width={200}
-                    src={data.gallery[2]}
+                    src={
+                      property?.propertyImages[2]
+                        ? `${REACT_APP_API_URL}/${property?.propertyImages[2]}`
+                        : "/img/banner/header1.svg"
+                    }
                     alt="Popular Image"
                   />
                 </div>
@@ -97,7 +143,11 @@ export default function ProductCard2({ data }: Props): JSX.Element {
                   <Image
                     height={400}
                     width={400}
-                    src={data.gallery[3]}
+                    src={
+                      property?.propertyImages[2]
+                        ? `${REACT_APP_API_URL}/${property?.propertyImages[2]}`
+                        : "/img/banner/header1.svg"
+                    }
                     alt="Popular Image"
                   />
                 </div>

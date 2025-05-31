@@ -4,12 +4,55 @@ import { Navigation } from "swiper";
 import "swiper/css";
 import "swiper/css/pagination";
 import ProductCard2 from "../card/ProductCard2";
-import { product2 } from "@/data/product";
+import { product1, product2 } from "@/data/product";
 import Link from "next/link";
 import { useTranslation } from "next-i18next";
+import { useState } from "react";
+import { Property } from "@/libs/dto/property/property";
+import { useQuery } from "@apollo/client";
+import { GET_PROPERTIES } from "@/apollo/user/query";
+import { PropertiesInquiry } from "@/libs/dto/property/property.input";
+import { Direction } from "@/libs/enums/common.enum";
+import { T } from "@/libs/types/common";
 
 export default function PopularCollection(): JSX.Element {
   const { t } = useTranslation("common");
+  const [properties, setProperties] = useState<Property[]>([]);
+  const [searchFilter, setSearchFilter] = useState<PropertiesInquiry>({
+    page: 1,
+    limit: 9000,
+    sort: "createdAt",
+    direction: Direction.DESC,
+    search: {
+      squaresRange: {
+        start: 0,
+        end: 500,
+      },
+      pricesRange: {
+        start: 0.001,
+        end: 500,
+      },
+    },
+  });
+
+  /** APOLLO REQUESTS **/
+  // const [likeTargetProperty] = useMutation(LIKE_TARGET_PROPERTY);
+
+  const {
+    loading: getPropertiesLoading,
+    data: getPropertiesData,
+    error: getPropertiesError,
+    refetch: getPropertiesRefetch,
+  } = useQuery(GET_PROPERTIES, {
+    fetchPolicy: "network-only",
+    variables: { input: searchFilter },
+    notifyOnNetworkStatusChange: true,
+    onCompleted: (data: T) => {
+      setProperties(data?.getProperties?.list);
+    },
+  });
+
+  console.log("PopularCollection properties:", properties);
 
   return (
     <>
@@ -46,9 +89,9 @@ export default function PopularCollection(): JSX.Element {
                       },
                     }}
                   >
-                    {product2.map((item) => (
-                      <SwiperSlide key={item.id}>
-                        <ProductCard2 data={item} />
+                    {properties.map((item) => (
+                      <SwiperSlide key={item._id}>
+                        <ProductCard2 key={item._id} property={item} />
                       </SwiperSlide>
                     ))}
                   </Swiper>
