@@ -285,10 +285,11 @@ export default function BlogSingle({ id = 1 }: { id?: number }): JSX.Element {
                       </Link>
                       <span>
                         <span className="sub-recent-post">
-                          Lorem ipsum dolor sit amer....
+                          복잡한 네비게이션, 불분명한 버튼, 일관성 없는 레이아웃
+                          등은 사용자 혼란을 유발할 수 있습니다.{" "}
                         </span>
                         <Link href="/blog" className="day-recent-post">
-                          2021년 8월 12일
+                          2024년 8월 12일
                         </Link>
                       </span>
                     </div>
