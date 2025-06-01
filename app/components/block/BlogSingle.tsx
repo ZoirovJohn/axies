@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import { blog } from "@/data/blog";
 import Image from "next/image";
 import Link from "next/link";
@@ -207,10 +207,11 @@ export default function BlogSingle({ id = 1 }: { id?: number }): JSX.Element {
                       </Link>
                       <span>
                         <span className="sub-recent-post">
-                          Lorem ipsum dolor sit amet....
+                          모바일 페이지 로딩 속도를 개선하여 사용자 경험을
+                          향상시키는 6가지 팁을 알아보세요.
                         </span>
                         <Link href="/blog" className="day-recent-post">
-                          2021년 8월 10일
+                          2024년 8월 10일
                         </Link>
                       </span>
                     </div>
@@ -232,10 +233,11 @@ export default function BlogSingle({ id = 1 }: { id?: number }): JSX.Element {
                       </Link>
                       <span>
                         <span className="sub-recent-post">
-                          Lorem ipsum dolor sit amer....
+                          사용자 친화적이고 시각적으로 뛰어난 웹사이트를 만드는
+                          실전 디자인 전략을 소개합니다.
                         </span>
                         <Link href="/blog-details" className="day-recent-post">
-                          2021년 8월 22일
+                          2024년 8월 22일
                         </Link>
                       </span>
                     </div>
@@ -257,10 +259,11 @@ export default function BlogSingle({ id = 1 }: { id?: number }): JSX.Element {
                       </Link>
                       <span>
                         <span className="sub-recent-post">
-                          Lorem ipsum dolor sit amer....
+                          좋은 첫인상을 남기고 사용자 경험을 향상시키는 데 있어
+                          웹 디자인은 핵심적인 역할을 합니다.{" "}
                         </span>
                         <Link href="/blog" className="day-recent-post">
-                          2021년 8월 20일
+                          2024년 8월 20일
                         </Link>
                       </span>
                     </div>
