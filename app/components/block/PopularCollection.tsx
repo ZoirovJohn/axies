@@ -52,8 +52,6 @@ export default function PopularCollection(): JSX.Element {
     },
   });
 
-  console.log("PopularCollection properties:", properties);
-
   return (
     <>
       <section className="tf-section live-auctions style4 no-pt-mb mobie-style">
