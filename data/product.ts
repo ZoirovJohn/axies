@@ -877,6 +877,12 @@ interface Product6Type {
   id: number;
   img: string;
   title: string;
+  volume: number;
+  up: number;
+  down: number;
+  floorPrice: number;
+  owners: number;
+  assets: number;
   author: {
     img: string;
     name: string;
@@ -887,55 +893,91 @@ export const product6: Product6Type[] = [
   {
     id: 1,
     img: "/assets/images/box-item/img1rank.webp",
-    title: `"Hamlet Contemplates Yorick's Yorick's`,
+    title: `"CryptBat Contemplates Yorick's Yorick's`,
+    volume: 1000,
+    up: 54,
+    down: 12,
+    floorPrice: 0.5,
+    owners: 100,
+    assets: 200,
     author: {
-      img: "/assets/images/avatar/author_rank.webp",
-      name: "SalvadorDali",
+      img: "/assets/images/avatar/avt-2.webp",
+      name: "Thomas",
     },
   },
   {
     id: 2,
     img: "/assets/images/box-item/img2rank.webp",
-    title: `"Hamlet Contemplates Yorick's Yorick's`,
+    title: `"EchoFang Contemplates Yorick's Yorick's`,
+    volume: 800,
+    up: 30,
+    down: 5,
+    floorPrice: 0.3,
+    owners: 80,
+    assets: 150,
     author: {
       img: "/assets/images/avatar/author_rank.webp",
-      name: "SalvadorDali",
+      name: "Lera",
     },
   },
   {
     id: 3,
     img: "/assets/images/box-item/img3rank.webp",
-    title: `"Hamlet Contemplates Yorick's Yorick's`,
+    title: `"PulseNFT Contemplates Yorick's Yorick's`,
+    volume: 900,
+    up: 25,
+    down: 10,
+    floorPrice: 0.4,
+    owners: 90,
+    assets: 180,
     author: {
-      img: "/assets/images/avatar/author_rank.webp",
-      name: "SalvadorDali",
+      img: "/assets/images/avatar/avt-4.webp",
+      name: "Angelina",
     },
   },
   {
     id: 4,
     img: "/assets/images/box-item/img4rank.webp",
-    title: `"Hamlet Contemplates Yorick's Yorick's`,
+    title: `"CryptoKit Contemplates Yorick's Yorick's`,
+    volume: 700,
+    up: 20,
+    down: 5,
+    floorPrice: 0.2,
+    owners: 70,
+    assets: 160,
     author: {
-      img: "/assets/images/avatar/author_rank.webp",
-      name: "SalvadorDali",
+      img: "/assets/images/avatar/avt-6.webp",
+      name: "Thommy",
     },
   },
   {
     id: 5,
     img: "/assets/images/box-item/img5rank.webp",
-    title: `"Hamlet Contemplates Yorick's Yorick's`,
+    title: `"ChainFox Contemplates Yorick's Yorick's`,
+    volume: 600,
+    up: 15,
+    down: 3,
+    floorPrice: 0.1,
+    owners: 60,
+    assets: 140,
     author: {
-      img: "/assets/images/avatar/author_rank.webp",
-      name: "SalvadorDali",
+      img: "/assets/images/avatar/avt-8.webp",
+      name: "Toxir",
     },
   },
   {
     id: 6,
     img: "/assets/images/box-item/img6rank.webp",
-    title: `"Hamlet Contemplates Yorick's Yorick's`,
+    title: `"SlyBlock Contemplates Yorick's Yorick's`,
+    volume: 500,
+    up: 10,
+    down: 2,
+    floorPrice: 0.05,
+    owners: 50,
+    assets: 120,
     author: {
-      img: "/assets/images/avatar/author_rank.webp",
-      name: "SalvadorDali",
+      img: "/assets/images/avatar/avt-7.webp",
+      name: "Zaza",
     },
   },
 ];

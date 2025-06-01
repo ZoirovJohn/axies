@@ -3,31 +3,31 @@ import Ranking from "../components/block/Ranking";
 import Breadcrumb from "../components/breadcrumb";
 
 const item = {
-    title: "Ranking",
-    breadcrumb: [
-        {
-            name: "Home",
-            path: "/",
-        },
-        {
-            name: "Page",
-            path: "/ranking",
-        },
-        {
-            name: "Ranking",
-        },
-    ],
+  title: "Ranking",
+  breadcrumb: [
+    {
+      name: "Home",
+      path: "/",
+    },
+    {
+      name: "Page",
+      path: "/ranking",
+    },
+    {
+      name: "Ranking",
+    },
+  ],
 };
 
 export const metadata: Metadata = {
-    title: "Axies | NFT Marketplace",
+  title: "Axies | NFT Marketplace",
 };
 
 export default function page(): JSX.Element {
-    return (
-        <>
-            <Breadcrumb data={item} />
-            <Ranking />
-        </>
-    );
+  return (
+    <>
+      <Breadcrumb data={item} />
+      <Ranking />
+    </>
+  );
 }
