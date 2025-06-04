@@ -135,9 +135,7 @@ export default function EditProfile(): JSX.Element {
                       style={{
                         marginTop: "2.5rem",
                         padding: "1rem",
-                        // backgroundColor: "#fafafa",
                         borderRadius: "6px",
-                        // border: "1px solid #e0e0e0",
                       }}
                     >
                       {activeSection === "followers" && (

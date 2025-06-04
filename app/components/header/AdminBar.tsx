@@ -5,6 +5,7 @@ import { logOut } from "@/app/(auth)";
 import router from "next/router";
 import { useReactiveVar } from "@apollo/client";
 import { userVar } from "@/apollo/store";
+import { REACT_APP_API_URL } from "@/app/config";
 
 const ProfileComponent = () => {
   const [isNotificationActive, setNotificationActive] =
@@ -15,9 +16,12 @@ const ProfileComponent = () => {
   const menuRef = useRef(null);
   const profileRef = useRef<HTMLDivElement>(null);
   const tab: string[] = ["Explore", "Unlock"];
+  const authMember = useReactiveVar(userVar);
+  const imagePath: string = authMember?.memberImage
+      ? `${REACT_APP_API_URL}/${authMember?.memberImage}`
+      : "/assets/images/avatar/avt-28.jpg";
 
   // const authMember = true;
-  const authMember = useReactiveVar(userVar);
 
   const avatarHandler = () => {
     setIsAuthorActive((prevState) => !prevState);
@@ -140,7 +144,7 @@ const ProfileComponent = () => {
                 width={100}
                 onClick={avatarHandler}
                 className="avatar"
-                src={logoImg}
+                src={imagePath}
                 alt="avatar"
               />
               {isAuthorActive && (
