@@ -20,11 +20,10 @@ export default function UploadProfile(): JSX.Element {
 
   return (
     <div className="text-center">
-      {/* Container Box with Fixed Styling */}
       <div
         style={{
           width: "300px",
-          margin: "0 auto",
+          margin: "20px auto",
           border: "2px solid #e5e7eb",
           borderRadius: "8px",
           padding: "12px",
@@ -32,7 +31,6 @@ export default function UploadProfile(): JSX.Element {
           boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
         }}
       >
-        {/* 5×6 Avatar Grid with Explicit Grid Styling */}
         <div
           style={{
             display: "grid",

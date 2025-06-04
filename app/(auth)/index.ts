@@ -175,6 +175,8 @@ export const updateUserInfo = (jwtToken: any) => {
 };
 
 export const logOut = () => {
+  console.log("logout worked");
+  
   deleteStorage();
   const langToUse = localStorage.getItem("locale") || "kr";
   if (i18n.language !== langToUse) i18n.changeLanguage(langToUse);

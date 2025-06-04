@@ -93,7 +93,9 @@ export default function EditProfile(): JSX.Element {
                       flexWrap: "wrap",
                     }}
                   >
-                    <fieldset style={{ border: "none", padding: 0 }}>
+                    <fieldset
+                      style={{ border: "none", padding: 0, margin: "20px 0" }}
+                    >
                       <a
                         className="connect"
                         onClick={() => setActiveSection("followers")}
@@ -102,7 +104,9 @@ export default function EditProfile(): JSX.Element {
                         Followers
                       </a>
                     </fieldset>
-                    <fieldset style={{ border: "none", padding: 0 }}>
+                    <fieldset
+                      style={{ border: "none", padding: 0, margin: "20px 0" }}
+                    >
                       <a
                         className="connect"
                         onClick={() => setActiveSection("followings")}
@@ -111,7 +115,9 @@ export default function EditProfile(): JSX.Element {
                         Followings
                       </a>
                     </fieldset>
-                    <fieldset style={{ border: "none", padding: 0 }}>
+                    <fieldset
+                      style={{ border: "none", padding: 0, margin: "20px 0" }}
+                    >
                       <a
                         className="connect"
                         onClick={() => setActiveSection("favorites")}
@@ -131,7 +137,7 @@ export default function EditProfile(): JSX.Element {
                         padding: "1rem",
                         // backgroundColor: "#fafafa",
                         borderRadius: "6px",
-                        border: "1px solid #e0e0e0",
+                        // border: "1px solid #e0e0e0",
                       }}
                     >
                       {activeSection === "followers" && (
@@ -237,7 +243,7 @@ export default function EditProfile(): JSX.Element {
                                 display: "flex",
                                 flexDirection: "column",
                                 alignItems: "center",
-                                width: "180px",
+                                width: "170px",
                               }}
                             >
                               <Image

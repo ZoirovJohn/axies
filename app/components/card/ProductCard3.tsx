@@ -48,7 +48,7 @@ export default function ProductCard3({ property }: Props): JSX.Element {
   const imagePath: string = property?.propertyImages[0]
     ? `${REACT_APP_API_URL}/${property?.propertyImages[0]}`
     : "/img/banner/header1.svg";
-  console.log("memberImage:", property?.memberData?.memberImage);
+  // console.log("memberImage:", property?.memberData?.memberImage);
 
   // heart toggle
   const heartToggle = () => {
