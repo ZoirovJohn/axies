@@ -1,27 +1,89 @@
 "use client";
-import { useState, ChangeEvent } from "react";
-import UploadProfile from "../element/UploadProfile";
+import { useState, ChangeEvent, useEffect, useCallback } from "react";
 import Image from "next/image";
+import { MemberUpdate } from "@/libs/dto/member/member.update";
+import { useMutation, useReactiveVar } from "@apollo/client";
+import { UPDATE_MEMBER } from "@/apollo/user/mutation";
+import { userVar } from "@/apollo/store";
+import { Messages, REACT_APP_API_URL } from "@/app/config";
+import { updateStorage, updateUserInfo } from "@/app/(auth)";
+import { sweetErrorHandling, sweetMixinSuccessAlert } from "@/app/sweetAlert";
+import useDarkModeCheck from "@/hooks/useDarkModeCheck";
 
-export default function EditProfile(): JSX.Element {
-  const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
-  const [previewUrls, setPreviewUrls] = useState<string[]>([]);
-  const [getSelectCover, setSelectCover] = useState<number | null>(null);
+export default function EditProfile({
+  initialValues = {
+    _id: "",
+    memberImage: "",
+    memberNick: "",
+    memberPhone: "",
+    memberAddress: "",
+  },
+}: any): JSX.Element {
   const [activeSection, setActiveSection] = useState<
     "followers" | "followings" | "favorites" | null
   >(null);
+  const [updateData, setUpdateData] = useState<MemberUpdate>(initialValues);
+  const user = useReactiveVar(userVar);
+  const [selectedAvatar, setSelectedAvatar] = useState<string | null>(null);
+  const imagePath: string = user?.memberImage
+    ? `${REACT_APP_API_URL}/${user?.memberImage}`
+    : "/assets/images/avatar/avt-28.jpg";
+  const isDark = useDarkModeCheck();
 
-  // multi image upload
-  const multiConverHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    const files = Array.from(e.target.files || []);
+  const avatars = Array.from(
+    { length: 30 },
+    (_, i) => `/assets/images/avatar/avt-${i + 1}.webp`
+  );
 
+  const updateProfileImage = () => {
+    if (selectedAvatar) {
+      console.log("Profile updated with:", selectedAvatar);
+    }
+  };
+
+  /** APOLLO REQUESTS **/
+  const [updateMember] = useMutation(UPDATE_MEMBER);
+
+  /** LIFECYCLES **/
+  useEffect(() => {
+    setUpdateData({
+      ...updateData,
+      memberNick: user.memberNick,
+      memberPhone: user.memberPhone,
+      memberAddress: user.memberAddress,
+      memberImage: user.memberImage,
+    });
+    console.log("User data updated:", updateData);
+  }, [user]);
+
+  /** HANDLERS **/
+  const updatePropertyHandler = useCallback(async () => {
+    try {
+      if (!user._id) throw new Error(Messages.error2);
+      updateData._id = user._id;
+      const result = await updateMember({
+        variables: {
+          input: updateData,
+        },
+      });
+      //@ts-ignore
+      const jwtToken = result.data.updateMember?.accessToken;
+      await updateStorage({ jwtToken });
+      updateUserInfo(result.data.updateMember?.accessToken);
+      await sweetMixinSuccessAlert("Information updated successfuly");
+    } catch (err: any) {
+      sweetErrorHandling(err).then();
+    }
+  }, [updateData]);
+
+  const doDisabledCheck = () => {
     if (
-      files?.length <= 2 &&
-      Number(files?.length) + Number(selectedFiles?.length) <= 2
+      updateData.memberNick === "" ||
+      updateData.memberPhone === "" ||
+      updateData.memberAddress === "" ||
+      updateData.memberImage === ""
     ) {
-      setSelectedFiles([...selectedFiles, ...files.slice(0, 2)]);
-      const urls = files.map((file) => URL.createObjectURL(file));
-      setPreviewUrls([...previewUrls, ...urls]);
+      return true;
     }
   };
 
@@ -30,8 +92,121 @@ export default function EditProfile(): JSX.Element {
       <div className="tf-create-item tf-section">
         <div className="ibthemes-container">
           <div className="row">
+            {/* Large Image Preview */}
             <div className="col-xl-3 col-lg-4 col-md-6 col-12">
-              <UploadProfile />
+              <div className="text-center">
+                <div
+                  style={{
+                    width: "300px",
+                    margin: "20px auto",
+                    border: "2px solid #e5e7eb",
+                    borderRadius: "8px",
+                    padding: "12px",
+                    backgroundColor: "#f9fafb",
+                    boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
+                  }}
+                >
+                  <div
+                    style={{
+                      width: "100%",
+                      aspectRatio: "1/1",
+                      marginBottom: "16px",
+                      borderRadius: "8px",
+                      overflow: "hidden",
+                      position: "relative",
+                      border: "2px solid #d1d5db",
+                    }}
+                  >
+                    <Image
+                      src={selectedAvatar || imagePath}
+                      alt="Selected Avatar"
+                      layout="fill"
+                      objectFit="cover"
+                      sizes="300px"
+                    />
+                  </div>
+
+                  {/* Avatar Grid */}
+                  <div
+                    style={{
+                      display: "grid",
+                      gridTemplateColumns: "repeat(5, 1fr)",
+                      gap: "8px",
+                      marginBottom: "16px",
+                    }}
+                  >
+                    {avatars.map((avatar, idx) => (
+                      <div
+                        key={idx}
+                        onClick={() => setSelectedAvatar(avatar)}
+                        style={{
+                          cursor: "pointer",
+                          borderRadius: "4px",
+                          overflow: "hidden",
+                          border:
+                            selectedAvatar === avatar
+                              ? "2px solid #3b82f6"
+                              : "none",
+                          transition: "transform 0.2s",
+                          aspectRatio: "1/1",
+                          width: "100%",
+                          height: "0",
+                          paddingBottom: "100%",
+                          position: "relative",
+                        }}
+                        onMouseOver={(e) => {
+                          e.currentTarget.style.transform = "scale(1.05)";
+                        }}
+                        onMouseOut={(e) => {
+                          e.currentTarget.style.transform = "scale(1)";
+                        }}
+                      >
+                        <div
+                          style={{
+                            position: "absolute",
+                            top: "0",
+                            left: "0",
+                            width: "100%",
+                            height: "100%",
+                          }}
+                        >
+                          <Image
+                            src={avatar}
+                            alt={`Avatar ${idx + 1}`}
+                            layout="fill"
+                            objectFit="cover"
+                            sizes="50px"
+                          />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Button */}
+                  <button
+                    onClick={updateProfileImage}
+                    style={{
+                      width: "100%",
+                      padding: "8px 16px",
+                      backgroundColor: "#3b82f6",
+                      color: "white",
+                      borderRadius: "6px",
+                      fontWeight: "500",
+                      cursor: "pointer",
+                      border: "none",
+                      transition: "background-color 0.2s",
+                    }}
+                    onMouseOver={(e) => {
+                      e.currentTarget.style.backgroundColor = "#2563eb";
+                    }}
+                    onMouseOut={(e) => {
+                      e.currentTarget.style.backgroundColor = "#3b82f6";
+                    }}
+                  >
+                    Update Profile Logo
+                  </button>
+                </div>
+              </div>
             </div>
             <div className="col-xl-9 col-lg-8 col-md-12 col-12">
               <div className="form-upload-profile">
@@ -40,10 +215,17 @@ export default function EditProfile(): JSX.Element {
                     <div className="info-account">
                       <h4 className="title-create-item">Account info</h4>
                       <fieldset>
-                        <h4 className="title-infor-account">Display name</h4>
+                        <h4 className="title-infor-account">Username</h4>
                         <input
                           type="text"
-                          placeholder="Trista Francis"
+                          placeholder="Your Username"
+                          value={updateData.memberNick}
+                          onChange={({ target: { value } }) =>
+                            setUpdateData({ ...updateData, memberNick: value })
+                          }
+                          style={{
+                            color: isDark ? "#e3e3ed" : "#1f1f2c",
+                          }}
                           required
                         />
                       </fieldset>
@@ -51,25 +233,46 @@ export default function EditProfile(): JSX.Element {
                         <h4 className="title-infor-account">Phone</h4>
                         <input
                           type="tel"
-                          placeholder="+82 10 0101 1010"
+                          placeholder="Your Phone"
+                          value={updateData.memberPhone}
+                          onChange={({ target: { value } }) =>
+                            setUpdateData({ ...updateData, memberPhone: value })
+                          }
+                          style={{
+                            color: isDark ? "#e3e3ed" : "#1f1f2c",
+                          }}
                           required
                         />
                       </fieldset>
                       <fieldset>
-                        <h4 className="title-infor-account">Email</h4>
+                        <h4 className="title-infor-account">Address</h4>
                         <input
-                          type="email"
-                          placeholder="Enter your email"
+                          type="text"
+                          placeholder="Your Address"
+                          value={updateData.memberAddress}
+                          onChange={({ target: { value } }) =>
+                            setUpdateData({
+                              ...updateData,
+                              memberAddress: value,
+                            })
+                          }
+                          style={{
+                            color: isDark ? "#e3e3ed" : "#1f1f2c",
+                          }}
                           required
                         />
                       </fieldset>
                     </div>
                     <div className="info-account">
                       <fieldset>
+                        {/* TODO: Add a file input for profile image */}
                         <h4 className="title-infor-account">Bio</h4>
                         <textarea
                           tabIndex={4}
                           rows={5}
+                          style={{
+                            color: isDark ? "#e3e3ed" : "#1f1f2c",
+                          }}
                           required
                           defaultValue={""}
                         />
@@ -77,6 +280,8 @@ export default function EditProfile(): JSX.Element {
                       <button
                         className="tf-button-submit mg-t-15"
                         type="submit"
+                        onClick={updatePropertyHandler}
+                        disabled={doDisabledCheck()}
                       >
                         Update Profile
                       </button>

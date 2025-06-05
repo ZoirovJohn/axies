@@ -1,11 +1,17 @@
 "use client";
 import Image from "next/image";
 import { useState } from "react";
+import { useReactiveVar } from "@apollo/client";
+import { userVar } from "@/apollo/store";
+import { REACT_APP_API_URL } from "@/app/config";
 
 export default function UploadProfile(): JSX.Element {
   const [selectedAvatar, setSelectedAvatar] = useState<string | null>(null);
+  const user = useReactiveVar(userVar);
+  const imagePath: string = user?.memberImage
+    ? `${REACT_APP_API_URL}/${user?.memberImage}`
+    : "/assets/images/avatar/avt-28.jpg";
 
-  // Create array of 30 avatar images (5×6 grid)
   const avatars = Array.from(
     { length: 30 },
     (_, i) => `/assets/images/avatar/avt-${i + 1}.webp`
@@ -13,7 +19,6 @@ export default function UploadProfile(): JSX.Element {
 
   const updateProfileImage = () => {
     if (selectedAvatar) {
-      // Handle profile update logic
       console.log("Profile updated with:", selectedAvatar);
     }
   };
@@ -31,6 +36,28 @@ export default function UploadProfile(): JSX.Element {
           boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
         }}
       >
+        {/* Large Image Preview */}
+        <div
+          style={{
+            width: "100%",
+            aspectRatio: "1/1",
+            marginBottom: "16px",
+            borderRadius: "8px",
+            overflow: "hidden",
+            position: "relative",
+            border: "2px solid #d1d5db",
+          }}
+        >
+          <Image
+            src={selectedAvatar || imagePath}
+            alt="Selected Avatar"
+            layout="fill"
+            objectFit="cover"
+            sizes="300px"
+          />
+        </div>
+
+        {/* Avatar Grid */}
         <div
           style={{
             display: "grid",
@@ -50,7 +77,6 @@ export default function UploadProfile(): JSX.Element {
                 border:
                   selectedAvatar === avatar ? "2px solid #3b82f6" : "none",
                 transition: "transform 0.2s",
-                // Force aspect ratio to be square
                 aspectRatio: "1/1",
                 width: "100%",
                 height: "0",
@@ -79,10 +105,6 @@ export default function UploadProfile(): JSX.Element {
                   layout="fill"
                   objectFit="cover"
                   sizes="50px"
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                  }}
                 />
               </div>
             </div>
