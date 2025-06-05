@@ -107,7 +107,7 @@ export default function Explore4({
             />
           </div>
           <div className="col-xl-9 col-lg-9 col-md-12">
-            <div className="box-epxlore">
+            <div className="box-explore">
               {properties.length === 0 ? (
                 <h3 style={{ color: "rgb(81, 66, 252)" }}>
                   No Properties Found

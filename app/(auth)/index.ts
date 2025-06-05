@@ -159,7 +159,7 @@ export const updateUserInfo = (jwtToken: any) => {
     memberFullName: claims.memberFullName ?? "",
     memberImage:
       claims.memberImage === null || claims.memberImage === undefined
-        ? "/img/profile/defaultUser.svg"
+        ? "/assets/images/avatar/avt-28.jpg"
         : `${claims.memberImage}`,
     memberAddress: claims.memberAddress ?? "",
     memberDesc: claims.memberDesc ?? "",
@@ -176,7 +176,7 @@ export const updateUserInfo = (jwtToken: any) => {
 
 export const logOut = () => {
   console.log("logout worked");
-  
+
   deleteStorage();
   const langToUse = localStorage.getItem("locale") || "kr";
   if (i18n.language !== langToUse) i18n.changeLanguage(langToUse);

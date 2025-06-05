@@ -313,7 +313,7 @@
     width: calc(33.3% - 30px);
   }
 
-  .box-epxlore .sc-card-product {
+  .box-explore .sc-card-product {
     width: 48%;
   }
 
@@ -731,7 +731,7 @@
     justify-content: space-between;
   }
 
-  .box-epxlore {
+  .box-explore {
     margin-top: 30px;
   }
 
@@ -1032,7 +1032,7 @@
   .meta-item-details .item.count-down,
   .tab-authors .author-profile .feature-profile,
   .tab-authors .author-profile .infor-profile,
-  .box-epxlore .sc-card-product,
+  .box-explore .sc-card-product,
   .mainslider.home .image,
   .mainslider.home .wrap-heading .content,
   .box-activity .sc-card-activity.style-2,
