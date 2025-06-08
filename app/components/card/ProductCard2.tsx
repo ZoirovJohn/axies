@@ -126,7 +126,10 @@ export default function ProductCard2({
           </div>
           <Link
             href="authors-2"
-            onClick={() => selectedPropertyAuthorVar(property.memberId)}
+            onClick={() => {
+              selectedPropertyAuthorVar(property.memberId);
+              localStorage.setItem("selectedPropertyAuthor", property.memberId);
+            }}
           >
             <div className="media-images-collection">
               <div className="box-left">
