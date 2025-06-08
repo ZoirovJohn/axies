@@ -10,7 +10,9 @@ import {
 import { Member } from "@/libs/dto/member/member";
 import { MeLiked } from "@/libs/dto/property/property";
 import { REACT_APP_API_URL } from "@/app/config";
-import { selectedPropertyAuthorVar } from "@/apollo/store";
+import { selectedPropertyAuthorVar, userVar } from "@/apollo/store";
+import { useMutation, useReactiveVar } from "@apollo/client";
+import { LIKE_TARGET_PROPERTY } from "@/apollo/user/mutation";
 
 interface Props {
   property: {
@@ -42,21 +44,18 @@ interface Props {
     meLiked?: MeLiked[];
     memberData?: Member;
   };
+  likePropertyHandler: any;
 }
 
-export default function ProductCard2({ property }: Props): JSX.Element {
+export default function ProductCard2({
+  property,
+  likePropertyHandler,
+}: Props): JSX.Element {
   const [isHeartToggle, setHeartToggle] = useState<number>(0);
+  const user = useReactiveVar(userVar);
   const imagePath: string = property?.memberData?.memberImage
     ? `${REACT_APP_API_URL}/${property?.memberData?.memberImage}`
     : "/assets/images/avatar/avt-28.jpg";
-
-  // heart toggle
-  const heartToggle = () => {
-    if (isHeartToggle === 0) {
-      return setHeartToggle(1);
-    }
-    setHeartToggle(0);
-  };
 
   return (
     <>
@@ -103,14 +102,16 @@ export default function ProductCard2({ property }: Props): JSX.Element {
               </div>
             </div>
             <button
-              onClick={heartToggle}
+              onClick={() => {
+                likePropertyHandler(user, property?._id);
+              }}
               className={`wishlist-button public heart ${
-                isHeartToggle === 1 ? "active" : ""
+                property?.meLiked && property?.meLiked[0]?.myFavorite
+                  ? "active"
+                  : ""
               } `}
             >
-              <span className="number-like">
-                {property.propertyLikes + isHeartToggle}
-              </span>
+              <span className="number-like">{property.propertyLikes}</span>
             </button>
           </div>
           <Link

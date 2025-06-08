@@ -9,11 +9,16 @@ import Link from "next/link";
 import { useTranslation } from "next-i18next";
 import { useState } from "react";
 import { Property } from "@/libs/dto/property/property";
-import { useQuery, useReactiveVar } from "@apollo/client";
+import { useMutation, useQuery, useReactiveVar } from "@apollo/client";
 import { GET_PROPERTIES } from "@/apollo/user/query";
 import { PropertiesInquiry } from "@/libs/dto/property/property.input";
-import { Direction } from "@/libs/enums/common.enum";
+import { Direction, Message } from "@/libs/enums/common.enum";
 import { T } from "@/libs/types/common";
+import {
+  sweetMixinErrorAlert,
+  sweetTopSmallSuccessAlert,
+} from "@/app/sweetAlert";
+import { LIKE_TARGET_PROPERTY } from "@/apollo/user/mutation";
 
 export default function PopularCollection(): JSX.Element {
   const { t } = useTranslation("common");
@@ -36,7 +41,7 @@ export default function PopularCollection(): JSX.Element {
   });
 
   /** APOLLO REQUESTS **/
-  // const [likeTargetProperty] = useMutation(LIKE_TARGET_PROPERTY);
+  const [likeTargetProperty] = useMutation(LIKE_TARGET_PROPERTY);
 
   const {
     loading: getPropertiesLoading,
@@ -51,6 +56,23 @@ export default function PopularCollection(): JSX.Element {
       setProperties(data?.getProperties?.list);
     },
   });
+
+  /** HANDLERS **/
+  const likePropertyHandler = async (user: T, id: string) => {
+    try {
+      if (!id) return;
+      if (!user._id) throw new Error(Message.NOT_AUTHENTICATED);
+
+      await likeTargetProperty({ variables: { input: id } });
+
+      await getPropertiesRefetch({ input: searchFilter });
+
+      await sweetTopSmallSuccessAlert("success", 800);
+    } catch (err: any) {
+      console.log("ERROR, likePropertyHandler");
+      sweetMixinErrorAlert(err.message).then();
+    }
+  };
 
   return (
     <>
@@ -89,7 +111,11 @@ export default function PopularCollection(): JSX.Element {
                   >
                     {properties.map((item) => (
                       <SwiperSlide key={item._id}>
-                        <ProductCard2 key={item._id} property={item} />
+                        <ProductCard2
+                          key={item._id}
+                          property={item}
+                          likePropertyHandler={likePropertyHandler}
+                        />
                       </SwiperSlide>
                     ))}
                   </Swiper>

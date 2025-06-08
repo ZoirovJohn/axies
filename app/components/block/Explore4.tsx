@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import { PropertiesInquiry } from "@/libs/dto/property/property.input";
 import { useSearchParams } from "next/navigation";
-import { Direction } from "@/libs/enums/common.enum";
+import { Direction, Message } from "@/libs/enums/common.enum";
 import { useMutation, useQuery } from "@apollo/client";
 import { GET_PROPERTIES } from "@/apollo/user/query";
 import { T } from "@/libs/types/common";
@@ -14,6 +14,10 @@ import { useRouter } from "next/navigation";
 import { Property } from "@/libs/dto/property/property";
 import { LIKE_TARGET_PROPERTY } from "@/apollo/user/mutation";
 import Button from "@mui/material/Button";
+import {
+  sweetMixinErrorAlert,
+  sweetTopSmallSuccessAlert,
+} from "@/app/sweetAlert";
 
 export default function Explore4({
   initialInput = {
@@ -62,6 +66,23 @@ export default function Explore4({
       setPropertiesCount(data?.getProperties?.metaCounter[0]?.total);
     },
   });
+
+  /** HANDLERS **/
+  const likePropertyHandler = async (user: T, id: string) => {
+    try {
+      if (!id) return;
+      if (!user._id) throw new Error(Message.NOT_AUTHENTICATED);
+
+      await likeTargetProperty({ variables: { input: id } });
+
+      await getPropertiesRefetch({ input: searchFilter });
+
+      await sweetTopSmallSuccessAlert("success", 800);
+    } catch (err: any) {
+      console.log("ERROR, likePropertyHandler");
+      sweetMixinErrorAlert(err.message).then();
+    }
+  };
 
   console.log("properties:", properties);
 
@@ -116,7 +137,11 @@ export default function Explore4({
                 properties
                   .slice(0, searchFilter.limit)
                   .map((item) => (
-                    <ProductCard6 key={item._id} property={item} />
+                    <ProductCard6
+                      key={item._id}
+                      property={item}
+                      likePropertyHandler={likePropertyHandler}
+                    />
                   ))
               )}
             </div>

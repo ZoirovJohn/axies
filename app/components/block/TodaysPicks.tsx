@@ -13,6 +13,8 @@ import { LIKE_TARGET_PROPERTY } from "@/apollo/user/mutation";
 import { T } from "@/libs/types/common";
 import { PropertiesInquiry } from "@/libs/dto/property/property.input";
 import { useSearchParams } from "next/navigation";
+import { Message } from "@/libs/enums/common.enum";
+import { sweetMixinErrorAlert, sweetTopSmallSuccessAlert } from "@/app/sweetAlert";
 
 export default function TodaysPicks({
   style,
@@ -44,6 +46,9 @@ export default function TodaysPicks({
     },
   };
 
+  /** APOLLO REQUESTS **/
+  const [likeTargetProperty] = useMutation(LIKE_TARGET_PROPERTY);
+
   const {
     loading: getPropertiesLoading,
     data: getPropertiesData,
@@ -58,6 +63,23 @@ export default function TodaysPicks({
       setTotal(data?.getProperties?.metaCounter[0]?.total);
     },
   });
+
+  /** HANDLERS **/
+  const likePropertyHandler = async (user: T, id: string) => {
+    try {
+      if (!id) return;
+      if (!user._id) throw new Error(Message.NOT_AUTHENTICATED);
+
+      await likeTargetProperty({ variables: { input: id } });
+
+      await getPropertiesRefetch({ input: searchFilter });
+
+      await sweetTopSmallSuccessAlert("success", 800);
+    } catch (err: any) {
+      console.log("ERROR, likePropertyHandler");
+      sweetMixinErrorAlert(err.message).then();
+    }
+  };
 
   console.log("properties:", properties);
   console.log("searchFilter:", searchFilter);
@@ -83,7 +105,7 @@ export default function TodaysPicks({
                 key={item._id}
                 className="col-xl-3 col-lg-4 col-md-6 col-sm-6"
               >
-                <ProductCard3 property={item} />
+                <ProductCard3 property={item} likePropertyHandler={likePropertyHandler}/>
               </div>
             ))}
             <div className="col-md-12 wrap-inner load-more text-center mg-t-4">

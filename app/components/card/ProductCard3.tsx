@@ -1,4 +1,5 @@
 "use client";
+import { userVar } from "@/apollo/store";
 import { REACT_APP_API_URL } from "@/app/config";
 import { Member } from "@/libs/dto/member/member";
 import { MeLiked } from "@/libs/dto/property/property";
@@ -7,6 +8,7 @@ import {
   PropertyLocation,
   PropertyStatus,
 } from "@/libs/enums/property.enum";
+import { useReactiveVar } from "@apollo/client";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
@@ -41,10 +43,15 @@ interface Props {
     meLiked?: MeLiked[];
     memberData?: Member;
   };
+  likePropertyHandler: any;
 }
 
-export default function ProductCard3({ property }: Props): JSX.Element {
+export default function ProductCard3({
+  property,
+  likePropertyHandler,
+}: Props): JSX.Element {
   const [isHeartToggle, setHeartToggle] = useState<number>(0);
+  const user = useReactiveVar(userVar);
   const imagePath: string = property?.propertyImages[0]
     ? `${REACT_APP_API_URL}/${property?.propertyImages[0]}`
     : "/img/banner/header1.svg";
@@ -67,14 +74,16 @@ export default function ProductCard3({ property }: Props): JSX.Element {
           </Link>
 
           <button
-            onClick={heartToggle}
+            onClick={() => {
+              likePropertyHandler(user, property?._id);
+            }}
             className={`wishlist-button heart ${
-              isHeartToggle === 1 ? "active" : ""
+              property?.meLiked && property?.meLiked[0]?.myFavorite
+                ? "active"
+                : ""
             } `}
           >
-            <span className="number-like">
-              {property.propertyLikes + isHeartToggle}
-            </span>
+            <span className="number-like">{property.propertyLikes}</span>
           </button>
         </div>
         <div className="card-title">
