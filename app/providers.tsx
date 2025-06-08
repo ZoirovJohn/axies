@@ -8,9 +8,10 @@ import LanguageDetector from "i18next-browser-languagedetector";
 import Backend from "i18next-http-backend";
 import { useEffect, useState } from "react";
 import { ApolloProvider } from "@apollo/client";
-import { useApollo } from "../apollo/client"; // 🔁 Adjust path as needed
+import { useApollo } from "../apollo/client";
+import { getJwtToken, updateUserInfo } from "./(auth)";
 
-// Initialize i18n if not already done
+// ✅ Init i18n on first load
 if (!i18n.isInitialized) {
   i18n
     .use(Backend)
@@ -18,8 +19,8 @@ if (!i18n.isInitialized) {
     .use(initReactI18next)
     .init({
       fallbackLng: "kr",
+      lng: "kr", // Always use default first
       defaultNS: "common",
-      lng: "kr",
       interpolation: { escapeValue: false },
       detection: {
         order: ["localStorage", "cookie", "navigator"],
@@ -35,33 +36,26 @@ export function Providers({ children }: { children: React.ReactNode }) {
   const client = useApollo(null);
 
   useEffect(() => {
-    setMounted(true);
-
-    // Locale setup (your existing code)
-    const savedLocale = localStorage.getItem("locale");
-    if (!savedLocale) localStorage.setItem("locale", "kr");
+    // ✅ Fix: Always read and apply the stored locale from localStorage
+    const savedLocale =
+      typeof window !== "undefined" ? localStorage.getItem("locale") : null;
     const langToUse = savedLocale || "kr";
-    if (i18n.language !== langToUse) i18n.changeLanguage(langToUse);
 
-    // // --- NEW: Fetch user data on client ---
-    // async function fetchUser() {
-    //   try {
-    //     // Replace with your actual fetch or Apollo query for current user
-    //     const response = await fetch("/api/currentUser"); // or use Apollo client.query(...)
-    //     console.log("Response:", response);
+    if (i18n.language !== langToUse) {
+      i18n.changeLanguage(langToUse);
+    }
 
-    //     if (response.ok) {
-    //       const userData = await response.json();
-    //       userVar(userData); // update Apollo reactive var
-    //     } else {
-    //       userVar(undefined); // no user
-    //     }
-    //   } catch (error) {
-    //     console.error("Failed to fetch user data", error);
-    //     userVar(undefined);
-    //   }
-    // }
-    // fetchUser();
+    if (!savedLocale) {
+      localStorage.setItem("locale", "kr");
+    }
+
+    // Auth token
+    const token = getJwtToken();
+    if (token) {
+      updateUserInfo(token);
+    }
+
+    setMounted(true);
   }, []);
 
   if (!mounted) return null;

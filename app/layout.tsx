@@ -7,17 +7,15 @@ import BackToTop from "./components/button/BackToTop";
 import "./../public/assets/css/style.css";
 import MobileNavigation from "./components/header/MobileNavigation";
 import { usePathname } from "next/navigation";
-import { useEffect } from "react";
-import { useTranslation } from "react-i18next";
+import { useEffect, useState } from "react";
 
-// rubik font
+// Fonts
 const rubik = Rubik({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700", "800"],
   variable: "--rubik-font",
 });
 
-// urbanist font
 const urbanist = Urbanist({
   subsets: ["latin"],
   weight: ["100", "200", "300", "400", "500", "600", "700", "800"],
@@ -30,22 +28,20 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   const path = usePathname();
-  const { i18n } = useTranslation();
+  const [lang, setLang] = useState("kr");
 
   useEffect(() => {
-    // Ensure Korean is used as the default language
-    if (i18n.language !== "kr") {
-      i18n.changeLanguage("kr");
-    }
+    const storedLang = localStorage.getItem("locale") || "kr";
+    setLang(storedLang);
 
-    // Load Bootstrap on client side
+    // Dynamically load Bootstrap
     import("bootstrap").then(() => {
       console.log("Bootstrap loaded on the client-side");
     });
-  }, [i18n]);
+  }, []);
 
   return (
-    <html lang={i18n.language || "kr"}>
+    <html lang={lang}>
       <body className={`body ${rubik.className} ${urbanist.className}`}>
         <Providers>
           <div id="wrapper">

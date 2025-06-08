@@ -17,6 +17,7 @@ const ProfileComponent = () => {
   const profileRef = useRef<HTMLDivElement>(null);
   const tab: string[] = ["Explore", "Unlock"];
   const authMember = useReactiveVar(userVar);
+  console.log("authMember", authMember);
   const imagePath: string = authMember?.memberImage
       ? `${REACT_APP_API_URL}/${authMember?.memberImage}`
       : "/assets/images/avatar/avt-28.jpg";
