@@ -68,18 +68,21 @@ export const UPDATE_MEMBER = gql`
       memberType
       memberStatus
       memberAuthType
-      memberPhone
       memberNick
+      memberPhone
       memberFullName
       memberImage
       memberAddress
       memberDesc
       memberProperties
-      memberRank
       memberArticles
+      memberFollowers
+      memberFollowings
       memberPoints
       memberLikes
       memberViews
+      memberComments
+      memberRank
       memberWarnings
       memberBlocks
       deletedAt
