@@ -29,19 +29,12 @@ import { FollowInquiry } from "@/libs/dto/follow/follow.input";
 
 export default function AuthorProfile(initialInput: {
   page: 1;
-  limit: 5;
+  limit: 50;
   search: {
     followingId: "";
   };
 }): JSX.Element {
   const selectedPropertyAuthor = useReactiveVar(selectedPropertyAuthorVar);
-  const router = useRouter();
-  // useEffect(() => {
-  //   if (!selectedPropertyAuthor) {
-  //     alert("Author not found.");
-  //     router.push("/");
-  //   }
-  // }, []);
   const [getCurrentTab, setCurrentTab] = useState<string>("ALL");
   const [agentProperties, setAgentProperties] = useState<Property[]>([]);
   const [propertiesCount, setPropertiesCount] = useState<number>(0);
@@ -65,6 +58,7 @@ export default function AuthorProfile(initialInput: {
   });
   const [followInquiry, setFollowInquiry] =
     useState<FollowInquiry>(initialInput);
+  const [follow, setFollow] = useState<boolean>(true);
   console.log("selectedPropertyAuthor:", selectedPropertyAuthor);
   console.log("agentProperties:", agentProperties);
 
@@ -100,12 +94,11 @@ export default function AuthorProfile(initialInput: {
     notifyOnNetworkStatusChange: true,
     onCompleted: (data: T) => {
       setMemberData(data?.getMember);
+      setFollow(
+        memberData?.meFollowed?.[0]?.myFollowing ? true : false
+      );
     },
   });
-
-  useEffect(() => {
-    console.log("memberData77777777777:", memberData);
-  }, [memberData]);
 
   /** HANDLERS **/
   const likePropertyHandler = async (user: T, id: string) => {
@@ -136,7 +129,7 @@ export default function AuthorProfile(initialInput: {
         },
       });
       await sweetTopSmallSuccessAlert("Subscribed!", 800);
-      window.location.reload();
+      setFollow(true);
 
       // await refetch({ input: query });
     } catch (err: any) {
@@ -155,7 +148,7 @@ export default function AuthorProfile(initialInput: {
         },
       });
       await sweetTopSmallSuccessAlert("Unsubscribed!", 800);
-      window.location.reload();
+      setFollow(false);
 
       // await refetch({ input: query });
     } catch (err: any) {
@@ -238,24 +231,26 @@ export default function AuthorProfile(initialInput: {
                 </ul>
                 {memberData?._id !== user?._id && (
                   <>
-                    {memberData?.meFollowed?.[0]?.myFollowing ? (
+                    {follow ? (
                       <div className="btn-profile">
                         <Link
-                          href="/authors-2"
+                          href="/"
                           className="sc-button style-1 follow"
                           style={{
                             color: "white",
                             backgroundColor: "red",
                             borderColor: "red",
                           }}
-                          onClick={() =>
-                            memberData?._id &&
-                            unsubscribeHandler(
-                              memberData._id,
-                              null,
-                              followInquiry
-                            )
-                          }
+                          onClick={(e) => {
+                            e.preventDefault();
+                            if (memberData?._id) {
+                              unsubscribeHandler(
+                                memberData._id,
+                                null,
+                                followInquiry
+                              );
+                            }
+                          }}
                         >
                           UnFollow
                         </Link>
@@ -263,21 +258,22 @@ export default function AuthorProfile(initialInput: {
                     ) : (
                       <div className="btn-profile">
                         <Link
-                          href="/authors-2"
+                          href="/"
                           className="sc-button style-1 follow"
                           style={{
                             color: "white",
                             backgroundColor: "green",
                             borderColor: "green",
                           }}
-                          onClick={() =>
+                          onClick={(e) => {
+                            e.preventDefault();
                             memberData?._id &&
-                            subscribeHandler(
-                              memberData._id,
-                              null,
-                              followInquiry
-                            )
-                          }
+                              subscribeHandler(
+                                memberData._id,
+                                null,
+                                followInquiry
+                              );
+                          }}
                         >
                           Follow
                         </Link>

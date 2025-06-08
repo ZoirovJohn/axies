@@ -81,7 +81,13 @@ export default function ProductCard2({
                 <h4>
                   <Link
                     href="authors-2"
-                    onClick={() => selectedPropertyAuthorVar(property.memberId)}
+                    onClick={() => {
+                      selectedPropertyAuthorVar(property.memberId);
+                      localStorage.setItem(
+                        "selectedPropertyAuthor",
+                        property.memberId
+                      );
+                    }}
                   >
                     {property.propertyTitle.slice(0, 22) + "..."}
                   </Link>
@@ -91,9 +97,13 @@ export default function ProductCard2({
                   <span className="name">
                     <Link
                       href="authors-2"
-                      onClick={() =>
-                        selectedPropertyAuthorVar(property.memberId)
-                      }
+                      onClick={() => {
+                        selectedPropertyAuthorVar(property.memberId);
+                        localStorage.setItem(
+                          "selectedPropertyAuthor",
+                          property.memberId
+                        );
+                      }}
                     >
                       {property.memberData?.memberNick}
                     </Link>

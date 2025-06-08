@@ -68,7 +68,13 @@ export default function ProductCard8({ property }: Props): JSX.Element {
               <h4>
                 <Link
                   href="/authors-2"
-                  onClick={() => selectedPropertyAuthorVar(property.memberId)}
+                  onClick={() => {
+                    selectedPropertyAuthorVar(property.memberId);
+                    localStorage.setItem(
+                      "selectedPropertyAuthor",
+                      property.memberId
+                    );
+                  }}
                 >
                   {property.propertyTitle.slice(0, 19) + "..."}
                 </Link>
@@ -84,7 +90,10 @@ export default function ProductCard8({ property }: Props): JSX.Element {
         </div>
         <Link
           href="/authors-2"
-          onClick={() => selectedPropertyAuthorVar(property.memberId)}
+          onClick={() => {
+            selectedPropertyAuthorVar(property.memberId);
+            localStorage.setItem("selectedPropertyAuthor", property.memberId);
+          }}
         >
           <div className="media-images-collection">
             <div className="box-left">

@@ -23,7 +23,7 @@ export default function page(): JSX.Element {
   return (
     <>
       <Breadcrumb data={item} />
-      <AuthorProfile />
+      <AuthorProfile page={1} limit={50} search={{ followingId: "" }} />
 
       {/* live auction product modal */}
       <LiveAuctionModal />

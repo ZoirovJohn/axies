@@ -25,7 +25,15 @@ export const userVar = makeVar<CustomJwtPayload>({
   memberBlocks: 0,
 });
 
-export const selectedPropertyAuthorVar = makeVar<string | undefined>(undefined);
+function getInitialSelectedPropertyAuthor(): string | undefined {
+  if (typeof window !== "undefined") {
+    return localStorage.getItem("selectedPropertyAuthor") ?? undefined;
+  }
+  return undefined;
+}
 
 // @ts-ignore
+export const selectedPropertyAuthorVar = makeVar<string | undefined>(
+  getInitialSelectedPropertyAuthor()
+);
 export const socketVar = makeVar<WebSocket | undefined>(undefined);
