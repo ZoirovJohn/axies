@@ -58,7 +58,7 @@ export default function AuthorProfile(initialInput: {
   });
   const [followInquiry, setFollowInquiry] =
     useState<FollowInquiry>(initialInput);
-  const [follow, setFollow] = useState<boolean>(true);
+  const [follow, setFollow] = useState<boolean>(false);
   console.log("selectedPropertyAuthor:", selectedPropertyAuthor);
   console.log("agentProperties:", agentProperties);
 
@@ -94,9 +94,9 @@ export default function AuthorProfile(initialInput: {
     notifyOnNetworkStatusChange: true,
     onCompleted: (data: T) => {
       setMemberData(data?.getMember);
-      setFollow(
-        memberData?.meFollowed?.[0]?.myFollowing ? true : false
-      );
+      setFollow(!!memberData?.meFollowed?.[0]?.myFollowing);
+      console.log("follow0000000000000000000000:", follow);
+      
     },
   });
 

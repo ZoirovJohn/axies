@@ -1,3 +1,4 @@
+import { selectedPropertyAuthorVar } from "@/apollo/store";
 import { REACT_APP_API_URL } from "@/app/config";
 import { MeFollowed } from "@/libs/dto/follow/follow";
 import { MeLiked } from "@/libs/dto/property/property";
@@ -68,7 +69,15 @@ export default function AuthorCard5({ agent }: Props): JSX.Element {
           </div>
           <div className="author-infor">
             <h5 className="fs-16">
-              <Link href="/authors-1">{agent.memberNick}</Link>
+              <Link
+                href="/authors-2"
+                onClick={() => {
+                  selectedPropertyAuthorVar(agent._id);
+                  localStorage.setItem("selectedPropertyAuthor", agent._id);
+                }}
+              >
+                {agent.memberNick}
+              </Link>
             </h5>
             <span className="price">AGENT</span>
           </div>
