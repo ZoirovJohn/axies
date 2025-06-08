@@ -31,7 +31,11 @@ export default function RootLayout({
   const [lang, setLang] = useState("kr");
 
   useEffect(() => {
+    console.log("Current locale:", localStorage.getItem("locale"));
+
     const storedLang = localStorage.getItem("locale") || "kr";
+    console.log(`Stored language: ${storedLang}`);
+    
     setLang(storedLang);
 
     // Dynamically load Bootstrap

@@ -19,7 +19,6 @@ if (!i18n.isInitialized) {
     .use(initReactI18next)
     .init({
       fallbackLng: "kr",
-      lng: "kr", // Always use default first
       defaultNS: "common",
       interpolation: { escapeValue: false },
       detection: {
