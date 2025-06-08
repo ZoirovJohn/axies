@@ -84,9 +84,6 @@ export default function ProductCard8({ property }: Props): JSX.Element {
               </div>
             </div>
           </div>
-          <Link href="/login" className="sc-button fl-button pri-3">
-            <span>Following</span>
-          </Link>
         </div>
         <Link
           href="/authors-2"

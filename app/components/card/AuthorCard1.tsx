@@ -8,6 +8,7 @@ import {
 import { MeFollowed } from "@/libs/dto/follow/follow";
 import { MeLiked } from "@/libs/dto/property/property";
 import { REACT_APP_API_URL } from "@/app/config";
+import { selectedPropertyAuthorVar } from "@/apollo/store";
 
 interface Props {
   agent: {
@@ -63,7 +64,15 @@ export default function AuthorCard1({ agent }: Props) {
           </div>
           <div className="author-infor">
             <h5>
-              <Link href="/authors-2">{agent.memberNick}</Link>
+              <Link
+                href="/authors-2"
+                onClick={() => {
+                  selectedPropertyAuthorVar(agent._id);
+                  localStorage.setItem("selectedPropertyAuthor", agent._id);
+                }}
+              >
+                {agent.memberNick}
+              </Link>
             </h5>
             <span className="price">AGENT</span>
           </div>

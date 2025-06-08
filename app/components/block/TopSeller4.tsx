@@ -40,9 +40,6 @@ export default function TopSeller4(): JSX.Element {
 
   const repeatedAgents = getFixedLengthAgents(agents, 12);
 
-  /** APOLLO REQUESTS **/
-  // const [likeTargetProperty] = useMutation(LIKE_TARGET_PROPERTY);
-
   const {
     loading: getPropertiesLoading,
     data: getPropertiesData,
