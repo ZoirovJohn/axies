@@ -4,30 +4,50 @@ import ProductCard6 from "../card/ProductCard6";
 import Link from "next/link";
 import Image from "next/image";
 import { Property } from "@/libs/dto/property/property";
-import { useQuery } from "@apollo/client";
-import { GET_PROPERTIES } from "@/apollo/user/query";
+import { useMutation, useQuery } from "@apollo/client";
+import { GET_MEMBER, GET_PROPERTIES } from "@/apollo/user/query";
 import { PropertiesInquiry } from "@/libs/dto/property/property.input";
-import { Direction } from "@/libs/enums/common.enum";
+import { Direction, Message } from "@/libs/enums/common.enum";
 import { T } from "@/libs/types/common";
 import { PropertyCollection, PropertyStatus } from "@/libs/enums/property.enum";
 import { useReactiveVar } from "@apollo/client";
-import { selectedPropertyAuthorVar } from "@/apollo/store";
-import { REACT_APP_API_URL } from "@/libs/config";
+import { selectedPropertyAuthorVar, userVar } from "@/apollo/store";
+import { Messages, REACT_APP_API_URL } from "@/libs/config";
 import { useRouter } from "next/navigation";
+import {
+  LIKE_TARGET_PROPERTY,
+  SUBSCRIBE,
+  UNSUBSCRIBE,
+} from "@/apollo/user/mutation";
+import {
+  sweetErrorHandling,
+  sweetMixinErrorAlert,
+  sweetTopSmallSuccessAlert,
+} from "@/app/sweetAlert";
+import { Member } from "@/libs/dto/member/member";
+import { FollowInquiry } from "@/libs/dto/follow/follow.input";
 
-export default function AuthorProfile(): JSX.Element {
+export default function AuthorProfile(initialInput: {
+  page: 1;
+  limit: 5;
+  search: {
+    followingId: "";
+  };
+}): JSX.Element {
   const selectedPropertyAuthor = useReactiveVar(selectedPropertyAuthorVar);
   const router = useRouter();
-  useEffect(() => {
-    if (!selectedPropertyAuthor) {
-      alert("Author not found.");
-      router.push("/");
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (!selectedPropertyAuthor) {
+  //     alert("Author not found.");
+  //     router.push("/");
+  //   }
+  // }, []);
   const [getCurrentTab, setCurrentTab] = useState<string>("ALL");
   const [agentProperties, setAgentProperties] = useState<Property[]>([]);
   const [propertiesCount, setPropertiesCount] = useState<number>(0);
   const member = agentProperties[0]?.memberData;
+  const user = useReactiveVar(userVar);
+  const [memberData, setMemberData] = useState<Member | null>(null);
   const memberImagePath: string = member?.memberImage
     ? `${REACT_APP_API_URL}/${member?.memberImage}`
     : "/img/banner/header1.svg";
@@ -43,11 +63,15 @@ export default function AuthorProfile(): JSX.Element {
       memberId: selectedPropertyAuthor,
     },
   });
+  const [followInquiry, setFollowInquiry] =
+    useState<FollowInquiry>(initialInput);
   console.log("selectedPropertyAuthor:", selectedPropertyAuthor);
   console.log("agentProperties:", agentProperties);
 
   /** APOLLO REQUESTS **/
-  // const [likeTargetProperty] = useMutation(LIKE_TARGET_PROPERTY);
+  const [subscribe] = useMutation(SUBSCRIBE);
+  const [unsubscribe] = useMutation(UNSUBSCRIBE);
+  const [likeTargetProperty] = useMutation(LIKE_TARGET_PROPERTY);
 
   const {
     loading: getPropertiesLoading,
@@ -64,7 +88,80 @@ export default function AuthorProfile(): JSX.Element {
     },
   });
 
-  console.log("AuthorProfile properties:", agentProperties);
+  const {
+    loading: getMemberLoading,
+    data: getMemberData,
+    error: getMemberFollowingsError,
+    refetch: getMemberRefetch,
+  } = useQuery(GET_MEMBER, {
+    fetchPolicy: "network-only",
+    variables: { input: selectedPropertyAuthor },
+    skip: !selectedPropertyAuthor,
+    notifyOnNetworkStatusChange: true,
+    onCompleted: (data: T) => {
+      setMemberData(data?.getMember);
+    },
+  });
+
+  useEffect(() => {
+    console.log("memberData77777777777:", memberData);
+  }, [memberData]);
+
+  /** HANDLERS **/
+  const likePropertyHandler = async (user: T, id: string) => {
+    try {
+      if (!id) return;
+      if (!user._id) throw new Error(Message.NOT_AUTHENTICATED);
+
+      await likeTargetProperty({ variables: { input: id } });
+
+      await getPropertiesRefetch({ input: searchFilter });
+
+      await sweetTopSmallSuccessAlert("success", 800);
+    } catch (err: any) {
+      console.log("ERROR, likePropertyHandler");
+      sweetMixinErrorAlert(err.message).then();
+    }
+  };
+
+  const subscribeHandler = async (id: string, refetch: any, query: any) => {
+    try {
+      console.log("id:", id);
+      if (!id) throw new Error(Messages.error1);
+      if (!user._id) throw new Error(Messages.error2);
+
+      await subscribe({
+        variables: {
+          input: id,
+        },
+      });
+      await sweetTopSmallSuccessAlert("Subscribed!", 800);
+      window.location.reload();
+
+      // await refetch({ input: query });
+    } catch (err: any) {
+      sweetErrorHandling(err).then();
+    }
+  };
+
+  const unsubscribeHandler = async (id: string, refetch: any, query: any) => {
+    try {
+      if (!id) throw new Error(Messages.error1);
+      if (!user._id) throw new Error(Messages.error2);
+
+      await unsubscribe({
+        variables: {
+          input: id,
+        },
+      });
+      await sweetTopSmallSuccessAlert("Unsubscribed!", 800);
+      window.location.reload();
+
+      // await refetch({ input: query });
+    } catch (err: any) {
+      sweetErrorHandling(err).then();
+    }
+  };
 
   // tab handler
   const tabHandler = (select: string) => {
@@ -139,11 +236,55 @@ export default function AuthorProfile(): JSX.Element {
                     </a>
                   </li>
                 </ul>
-                <div className="btn-profile">
-                  <Link href="/login" className="sc-button style-1 follow">
-                    Follow
-                  </Link>
-                </div>
+                {memberData?._id !== user?._id && (
+                  <>
+                    {memberData?.meFollowed?.[0]?.myFollowing ? (
+                      <div className="btn-profile">
+                        <Link
+                          href="/authors-2"
+                          className="sc-button style-1 follow"
+                          style={{
+                            color: "white",
+                            backgroundColor: "red",
+                            borderColor: "red",
+                          }}
+                          onClick={() =>
+                            memberData?._id &&
+                            unsubscribeHandler(
+                              memberData._id,
+                              null,
+                              followInquiry
+                            )
+                          }
+                        >
+                          UnFollow
+                        </Link>
+                      </div>
+                    ) : (
+                      <div className="btn-profile">
+                        <Link
+                          href="/authors-2"
+                          className="sc-button style-1 follow"
+                          style={{
+                            color: "white",
+                            backgroundColor: "green",
+                            borderColor: "green",
+                          }}
+                          onClick={() =>
+                            memberData?._id &&
+                            subscribeHandler(
+                              memberData._id,
+                              null,
+                              followInquiry
+                            )
+                          }
+                        >
+                          Follow
+                        </Link>
+                      </div>
+                    )}
+                  </>
+                )}
               </div>
             </div>
             <ul className="menu-tab flex">
@@ -187,7 +328,10 @@ export default function AuthorProfile(): JSX.Element {
                         key={item._id}
                         className="col-xl-3 col-lg-4 col-md-6 col-12"
                       >
-                        <ProductCard6 property={item} />
+                        <ProductCard6
+                          property={item}
+                          likePropertyHandler={likePropertyHandler}
+                        />
                       </div>
                     ))
                 )}

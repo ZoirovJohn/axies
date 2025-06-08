@@ -191,6 +191,11 @@ export const GET_PROPERTIES = gql`
           createdAt
           updatedAt
           accessToken
+          meFollowed {
+            followingId
+            followerId
+            myFollowing
+          }
         }
         meLiked {
           memberId
