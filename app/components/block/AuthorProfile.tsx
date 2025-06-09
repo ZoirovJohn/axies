@@ -199,7 +199,11 @@ export default function AuthorProfile(initialInput: {
                   <input
                     type="text"
                     className="inputcopy"
-                    defaultValue="DdzFFzCqrhshMSxABCdfrge"
+                    value={
+                      memberData?.memberPhone != null
+                        ? String(memberData.memberPhone)
+                        : ""
+                    }
                     readOnly
                   />
                   <button type="button" className="btn-copycode">
