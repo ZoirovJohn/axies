@@ -43,7 +43,7 @@ export default function AuthorProfile(initialInput: {
   const [memberData, setMemberData] = useState<Member | null>(null);
   const memberImagePath: string = member?.memberImage
     ? `${REACT_APP_API_URL}/${member?.memberImage}`
-    : "/img/banner/header1.svg";
+    : "/assets/images/avatar/avt-28.jpg";
   const properties = (agentProperties || []).filter(
     (property) =>
       getCurrentTab === "ALL" || property.propertyCollection === getCurrentTab
@@ -58,7 +58,7 @@ export default function AuthorProfile(initialInput: {
   });
   const [followInquiry, setFollowInquiry] =
     useState<FollowInquiry>(initialInput);
-  const [follow, setFollow] = useState<boolean>(false);
+  const [follow, setFollow] = useState<boolean>(true);
   console.log("selectedPropertyAuthor:", selectedPropertyAuthor);
   console.log("agentProperties:", agentProperties);
 
@@ -94,11 +94,12 @@ export default function AuthorProfile(initialInput: {
     notifyOnNetworkStatusChange: true,
     onCompleted: (data: T) => {
       setMemberData(data?.getMember);
-      setFollow(!!memberData?.meFollowed?.[0]?.myFollowing);
-      console.log("follow0000000000000000000000:", follow);
-      
     },
   });
+
+  useEffect(() => {
+    setFollow(!!memberData?.meFollowed?.[0]?.myFollowing);
+  }, [memberData]);
 
   /** HANDLERS **/
   const likePropertyHandler = async (user: T, id: string) => {
