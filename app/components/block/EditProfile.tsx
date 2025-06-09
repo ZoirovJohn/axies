@@ -602,12 +602,14 @@ import {
 } from "@/app/sweetAlert";
 import useDarkModeCheck from "@/hooks/useDarkModeCheck";
 import {
+  GET_FAVORITES,
   GET_MEMBER_FOLLOWERS,
   GET_MEMBER_FOLLOWINGS,
 } from "@/apollo/user/query";
 import { FollowInquiry } from "@/libs/dto/follow/follow.input";
 import { T } from "@/libs/types/common";
 import { Follower, Following } from "@/libs/dto/follow/follow";
+import { Property } from "@/libs/dto/property/property";
 
 export default function EditProfile({
   initialValues = {
@@ -644,8 +646,13 @@ export default function EditProfile({
       followerId: user?._id,
     },
   });
+  const [searchFavorites, setSearchFavorites] = useState<T>({
+    page: 1,
+    limit: 6,
+  });
   const [memberFollowers, setMemberFollowers] = useState<Follower[]>([]);
   const [memberFollowings, setMemberFollowings] = useState<Following[]>([]);
+  const [myFavorites, setMyFavorites] = useState<Property[]>([]);
 
   const avatars = Array.from(
     { length: 30 },
@@ -688,6 +695,20 @@ export default function EditProfile({
     notifyOnNetworkStatusChange: true,
     onCompleted: (data: T) => {
       setMemberFollowings(data?.getMemberFollowings?.list);
+    },
+  });
+
+  const {
+    loading: getFavoritesLoading,
+    data: getFavoritesData,
+    error: getFavoritesError,
+    refetch: getFavoritesRefetch,
+  } = useQuery(GET_FAVORITES, {
+    fetchPolicy: "network-only",
+    variables: { input: searchFavorites },
+    notifyOnNetworkStatusChange: true,
+    onCompleted: (data: T) => {
+      setMyFavorites(data?.getFavorites?.list);
     },
   });
 
@@ -1262,34 +1283,43 @@ export default function EditProfile({
                             flexWrap: "wrap",
                           }}
                         >
-                          {[1, 2, 3, 4, 5, 1, 2, 3, 4, 5].map((num, index) => (
-                            <div
-                              key={index}
-                              style={{
-                                display: "flex",
-                                flexDirection: "column",
-                                alignItems: "center",
-                                width: "170px",
-                              }}
-                            >
-                              <Image
-                                src={`/assets/images/avatar/avt-${num}.webp`}
-                                alt={`Follower ${index + 1}`}
-                                width={140}
-                                height={140}
-                                style={{ borderRadius: "10%" }}
-                              />
-                              <h6
-                                style={{
-                                  marginTop: "8px",
-                                  fontSize: "14px",
-                                  textAlign: "center",
-                                }}
-                              >
-                                Product Name {index + 1}
-                              </h6>
+                          {myFavorites?.length ? (
+                            myFavorites?.map((property: Property) => {
+                              return (
+                                <div
+                                  key={property._id}
+                                  style={{
+                                    display: "flex",
+                                    flexDirection: "column",
+                                    alignItems: "center",
+                                    width: "170px",
+                                  }}
+                                >
+                                  <Image
+                                    src={`${REACT_APP_API_URL}/${property?.propertyImages[0]}`}
+                                    alt={`Follower ${property._id + 1}`}
+                                    width={140}
+                                    height={140}
+                                    style={{ borderRadius: "10%" }}
+                                  />
+                                  <h6
+                                    style={{
+                                      marginTop: "8px",
+                                      fontSize: "14px",
+                                      textAlign: "center",
+                                    }}
+                                  >
+                                    {property.propertyTitle}
+                                  </h6>
+                                </div>
+                              );
+                            })
+                          ) : (
+                            <div className={"no-data"}>
+                              <img src="/img/icons/icoAlert.svg" alt="" />
+                              <p>No Favorites found!</p>
                             </div>
-                          ))}
+                          )}
                         </div>
                       )}
                     </div>
