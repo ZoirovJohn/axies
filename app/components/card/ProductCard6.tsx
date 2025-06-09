@@ -13,7 +13,7 @@ import Link from "next/link";
 import { useState } from "react";
 import ShoppingBasketIcon from "@mui/icons-material/ShoppingBasket";
 import { useReactiveVar } from "@apollo/client";
-import { userVar } from "@/apollo/store";
+import { selectedPropertyAuthorVar, userVar } from "@/apollo/store";
 
 interface Props {
   property: {
@@ -101,7 +101,18 @@ export default function ProductCard6({
             <div className="info">
               <span>Creator</span>
               <h6>
-                <Link href="/authors-2">{property.memberData?.memberNick}</Link>
+                <Link
+                  href="/authors-2"
+                  onClick={() => {
+                    selectedPropertyAuthorVar(property.memberId);
+                    localStorage.setItem(
+                      "selectedPropertyAuthor",
+                      property.memberId
+                    );
+                  }}
+                >
+                  {property.memberData?.memberNick}
+                </Link>
               </h6>
             </div>
           </div>
