@@ -1,7 +1,12 @@
 "use client";
+import { sweetMixinSuccessAlert } from "@/app/sweetAlert";
 import Image from "next/image";
+import { useState } from "react";
 
 export default function Contact(): JSX.Element {
+  const [email, setEmail] = useState("");
+  const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
   return (
     <>
       <section className="tf-contact tf-section">
@@ -36,9 +41,18 @@ export default function Contact(): JSX.Element {
 
               <div className="form-inner">
                 <form
-                  action="contact/contact-process2.php"
-                  method="post"
-                  id="contactform"
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    if (!isValidEmail) {
+                      alert("Please enter a valid email.");
+                      return;
+                    }
+                    // You can handle sending the data here
+                    sweetMixinSuccessAlert(
+                      "Your message has successfully sent to Admin, they will contact you as soon as possible!"
+                    );
+                    window.location.reload();
+                  }}
                   className="form-submit"
                 >
                   <input
@@ -46,19 +60,25 @@ export default function Contact(): JSX.Element {
                     name="name"
                     type="text"
                     placeholder="Your Full Name"
+                    required
                   />
                   <input
-                    id="email"
-                    name="email"
                     type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                     placeholder="Your Email Address"
+                    required
                   />
-                  <textarea id="message" name="message" placeholder="Message" />
-                  <button
-                    type="button"
-                    className="submit"
-                    onClick={() => window.location.reload()}
-                  >
+                  {!isValidEmail && email.length > 0 && (
+                    <p style={{ color: "red" }}>Invalid email</p>
+                  )}
+                  <textarea
+                    id="message"
+                    name="message"
+                    placeholder="Message"
+                    required
+                  ></textarea>
+                  <button type="submit" className="submit">
                     Send message
                   </button>
                 </form>

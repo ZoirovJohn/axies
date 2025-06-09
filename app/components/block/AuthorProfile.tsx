@@ -202,7 +202,7 @@ export default function AuthorProfile(initialInput: {
                     value={
                       memberData?.memberPhone != null
                         ? String(memberData.memberPhone)
-                        : ""
+                        : "Member Phone"
                     }
                     readOnly
                   />
