@@ -590,13 +590,24 @@
 import { useState, ChangeEvent, useEffect, useCallback } from "react";
 import Image from "next/image";
 import { MemberUpdate } from "@/libs/dto/member/member.update";
-import { useMutation, useReactiveVar } from "@apollo/client";
-import { UPDATE_MEMBER } from "@/apollo/user/mutation";
+import { useMutation, useQuery, useReactiveVar } from "@apollo/client";
+import { SUBSCRIBE, UNSUBSCRIBE, UPDATE_MEMBER } from "@/apollo/user/mutation";
 import { userVar } from "@/apollo/store";
 import { Messages, REACT_APP_API_URL } from "@/app/config";
 import { updateStorage, updateUserInfo } from "@/app/(auth)";
-import { sweetErrorHandling, sweetMixinSuccessAlert } from "@/app/sweetAlert";
+import {
+  sweetErrorHandling,
+  sweetMixinSuccessAlert,
+  sweetTopSmallSuccessAlert,
+} from "@/app/sweetAlert";
 import useDarkModeCheck from "@/hooks/useDarkModeCheck";
+import {
+  GET_MEMBER_FOLLOWERS,
+  GET_MEMBER_FOLLOWINGS,
+} from "@/apollo/user/query";
+import { FollowInquiry } from "@/libs/dto/follow/follow.input";
+import { T } from "@/libs/types/common";
+import { Follower, Following } from "@/libs/dto/follow/follow";
 
 export default function EditProfile({
   initialValues = {
@@ -613,10 +624,28 @@ export default function EditProfile({
   const [updateData, setUpdateData] = useState<MemberUpdate>(initialValues);
   const user = useReactiveVar(userVar);
   const [selectedAvatar, setSelectedAvatar] = useState<string | null>(null);
+  const [subscribe] = useMutation(SUBSCRIBE);
+  const [unsubscribe] = useMutation(UNSUBSCRIBE);
   const imagePath: string = user?.memberImage
     ? `${REACT_APP_API_URL}/${user?.memberImage}`
     : "/assets/images/avatar/avt-28.jpg";
   const isDark = useDarkModeCheck();
+  const [followingInquiry, setFollowingInquiry] = useState<FollowInquiry>({
+    page: 1,
+    limit: 5,
+    search: {
+      followingId: user?._id,
+    },
+  });
+  const [followerInquiry, setFollowerInquiry] = useState<FollowInquiry>({
+    page: 1,
+    limit: 5,
+    search: {
+      followerId: user?._id,
+    },
+  });
+  const [memberFollowers, setMemberFollowers] = useState<Follower[]>([]);
+  const [memberFollowings, setMemberFollowings] = useState<Following[]>([]);
 
   const avatars = Array.from(
     { length: 30 },
@@ -631,6 +660,36 @@ export default function EditProfile({
 
   /** APOLLO REQUESTS **/
   const [updateMember] = useMutation(UPDATE_MEMBER);
+
+  const {
+    loading: getMemberFollowersLoading,
+    data: getMemberFollowersData,
+    error: getMemberFollowersError,
+    refetch: getMemberFollowersRefetch,
+  } = useQuery(GET_MEMBER_FOLLOWERS, {
+    fetchPolicy: "network-only",
+    variables: { input: followingInquiry },
+    skip: !followingInquiry?.search?.followingId,
+    notifyOnNetworkStatusChange: true,
+    onCompleted: (data: T) => {
+      setMemberFollowers(data?.getMemberFollowers?.list);
+    },
+  });
+
+  const {
+    loading: getMemberFollowingsLoading,
+    data: getMemberFollowingsData,
+    error: getMemberFollowingsError,
+    refetch: getMemberFollowingsRefetch,
+  } = useQuery(GET_MEMBER_FOLLOWINGS, {
+    fetchPolicy: "network-only",
+    variables: { input: followerInquiry },
+    skip: !followerInquiry?.search?.followerId,
+    notifyOnNetworkStatusChange: true,
+    onCompleted: (data: T) => {
+      setMemberFollowings(data?.getMemberFollowings?.list);
+    },
+  });
 
   /** LIFECYCLES **/
   useEffect(() => {
@@ -672,6 +731,104 @@ export default function EditProfile({
       updateData.memberImage === ""
     ) {
       return true;
+    }
+  };
+
+  const subscribeHandler = async (id: string, refetch: any, query: any) => {
+    try {
+      console.log("id:", id);
+      if (!id) throw new Error(Messages.error1);
+      if (!user._id) throw new Error(Messages.error2);
+
+      await subscribe({
+        variables: {
+          input: id,
+        },
+      });
+      setMemberFollowers((prev) =>
+        prev.map((follower) =>
+          follower.followerData?._id === id
+            ? {
+                ...follower,
+                meFollowed: [
+                  {
+                    followingId: follower.followingId,
+                    followerId: follower.followerId,
+                    myFollowing: true,
+                  },
+                ],
+              }
+            : follower
+        )
+      );
+      setMemberFollowings((prev) =>
+        prev.map((following) =>
+          following.followingData?._id === id
+            ? {
+                ...following,
+                meFollowed:
+                  following.meFollowed?.map((entry) => ({
+                    ...entry,
+                    myFollowing: true,
+                  })) ?? [],
+              }
+            : following
+        )
+      );
+      await sweetTopSmallSuccessAlert("Subscribed!", 800);
+
+      // await refetch({ input: query });
+    } catch (err: any) {
+      sweetErrorHandling(err).then();
+    }
+  };
+
+  const unsubscribeHandler = async (id: string, refetch: any, query: any) => {
+    try {
+      if (!id) throw new Error(Messages.error1);
+      if (!user._id) throw new Error(Messages.error2);
+
+      await unsubscribe({
+        variables: {
+          input: id,
+        },
+      });
+      setMemberFollowers((prev) =>
+        prev.map((follower) =>
+          follower.followerData?._id === id
+            ? {
+                ...follower,
+                meFollowed: [
+                  {
+                    followingId: follower.followingId,
+                    followerId: follower.followerId,
+                    myFollowing: false,
+                  },
+                ],
+              }
+            : follower
+        )
+      );
+      setMemberFollowings((prev) =>
+        prev.map((following) =>
+          following.followingData?._id === id
+            ? {
+                ...following,
+                meFollowed:
+                  following.meFollowed?.map((entry) => ({
+                    ...entry,
+                    myFollowing: false,
+                  })) ?? [],
+              }
+            : following
+        )
+      );
+
+      await sweetTopSmallSuccessAlert("Unsubscribed!", 800);
+
+      // await refetch({ input: query });
+    } catch (err: any) {
+      sweetErrorHandling(err).then();
     }
   };
 
@@ -939,40 +1096,89 @@ export default function EditProfile({
                             flexWrap: "wrap",
                           }}
                         >
-                          {[1, 2, 3, 4].map((num, index) => (
-                            <div
-                              key={index}
-                              style={{
-                                display: "flex",
-                                flexDirection: "column",
-                                alignItems: "center",
-                                width: "100px",
-                              }}
-                            >
-                              <Image
-                                src={`/assets/images/avatar/avt-${num}.webp`}
-                                alt={`Follower ${index + 1}`}
-                                width={70}
-                                height={70}
-                                style={{ borderRadius: "50%" }}
-                              />
-                              <h6
+                          {memberFollowers.length === 0 ? (
+                            <h3 style={{ color: "rgb(81, 66, 252)" }}>
+                              No member followers
+                            </h3>
+                          ) : (
+                            memberFollowers.map((follower, index) => (
+                              <div
+                                key={index}
                                 style={{
-                                  marginTop: "8px",
-                                  fontSize: "14px",
-                                  textAlign: "center",
+                                  display: "flex",
+                                  flexDirection: "column",
+                                  alignItems: "center",
+                                  width: "100px",
                                 }}
                               >
-                                Follower Name {index + 1}
-                              </h6>
-                              <fieldset style={{ border: "none", padding: 0 }}>
-                                <a className="unfollow">
-                                  <i className="fas fa-users" />
-                                  UnFollow
-                                </a>
-                              </fieldset>
-                            </div>
-                          ))}
+                                <Image
+                                  src={
+                                    follower?.followerData?.memberImage
+                                      ? `${REACT_APP_API_URL}/${follower?.followerData?.memberImage}`
+                                      : "/assets/images/avatar/avt-28.jpg"
+                                  }
+                                  alt={`Follower ${index + 1}`}
+                                  width={70}
+                                  height={70}
+                                  style={{ borderRadius: "50%" }}
+                                />
+                                <h6
+                                  style={{
+                                    marginTop: "8px",
+                                    fontSize: "14px",
+                                    textAlign: "center",
+                                  }}
+                                >
+                                  {follower?.followerData?.memberNick}
+                                </h6>
+
+                                {user?._id !== follower?.followerId &&
+                                  (follower.meFollowed?.[0]?.myFollowing ? (
+                                    <fieldset
+                                      style={{ border: "none", padding: 0 }}
+                                    >
+                                      <a
+                                        className="unfollow"
+                                        onClick={(e) => {
+                                          e.preventDefault();
+                                          if (follower?.followerData?._id) {
+                                            unsubscribeHandler(
+                                              follower.followerData._id,
+                                              null,
+                                              followingInquiry
+                                            );
+                                          }
+                                        }}
+                                      >
+                                        <i className="fas fa-users" />
+                                        UnFollow
+                                      </a>
+                                    </fieldset>
+                                  ) : (
+                                    <fieldset
+                                      style={{ border: "none", padding: 0 }}
+                                    >
+                                      <a
+                                        className="follow"
+                                        onClick={(e) => {
+                                          e.preventDefault();
+                                          if (follower?.followerData?._id) {
+                                            subscribeHandler(
+                                              follower.followerData._id,
+                                              null,
+                                              followingInquiry
+                                            );
+                                          }
+                                        }}
+                                      >
+                                        <i className="fas fa-users" />
+                                        Follow
+                                      </a>
+                                    </fieldset>
+                                  ))}
+                              </div>
+                            ))
+                          )}
                         </div>
                       )}
                       {activeSection === "followings" && (
@@ -983,40 +1189,69 @@ export default function EditProfile({
                             flexWrap: "wrap",
                           }}
                         >
-                          {[1, 2, 3, 4].map((num, index) => (
-                            <div
-                              key={index}
-                              style={{
-                                display: "flex",
-                                flexDirection: "column",
-                                alignItems: "center",
-                                width: "100px",
-                              }}
-                            >
-                              <Image
-                                src={`/assets/images/avatar/avt-${num}.webp`}
-                                alt={`Follower ${index + 1}`}
-                                width={70}
-                                height={70}
-                                style={{ borderRadius: "50%" }}
-                              />
-                              <h6
+                          {memberFollowings.length === 0 ? (
+                            <h3 style={{ color: "rgb(81, 66, 252)" }}>
+                              No member followings
+                            </h3>
+                          ) : (
+                            memberFollowings.map((following, index) => (
+                              <div
+                                key={index}
                                 style={{
-                                  marginTop: "8px",
-                                  fontSize: "14px",
-                                  textAlign: "center",
+                                  display: "flex",
+                                  flexDirection: "column",
+                                  alignItems: "center",
+                                  width: "100px",
                                 }}
                               >
-                                Followings Name {index + 1}
-                              </h6>
-                              <fieldset style={{ border: "none", padding: 0 }}>
-                                <a className="follow">
-                                  <i className="fas fa-users" />
-                                  Follow
-                                </a>
-                              </fieldset>
-                            </div>
-                          ))}
+                                {user?._id === following?.followerId &&
+                                  following.meFollowed?.[0]?.myFollowing && (
+                                    <>
+                                      <Image
+                                        src={
+                                          following?.followingData?.memberImage
+                                            ? `${REACT_APP_API_URL}/${following?.followingData?.memberImage}`
+                                            : "/assets/images/avatar/avt-28.jpg"
+                                        }
+                                        alt={`Follower ${index + 1}`}
+                                        width={70}
+                                        height={70}
+                                        style={{ borderRadius: "50%" }}
+                                      />
+                                      <h6
+                                        style={{
+                                          marginTop: "8px",
+                                          fontSize: "14px",
+                                          textAlign: "center",
+                                        }}
+                                      >
+                                        {following?.followingData?.memberNick}
+                                      </h6>
+                                      <fieldset
+                                        style={{ border: "none", padding: 0 }}
+                                      >
+                                        <a
+                                          className="unfollow"
+                                          onClick={(e) => {
+                                            e.preventDefault();
+                                            if (following?.followingData?._id) {
+                                              unsubscribeHandler(
+                                                following.followingData._id,
+                                                null,
+                                                followingInquiry
+                                              );
+                                            }
+                                          }}
+                                        >
+                                          <i className="fas fa-users" />
+                                          UnFollow
+                                        </a>
+                                      </fieldset>
+                                    </>
+                                  )}
+                              </div>
+                            ))
+                          )}
                         </div>
                       )}
                       {activeSection === "favorites" && (
