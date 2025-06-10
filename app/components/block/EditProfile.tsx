@@ -587,7 +587,7 @@
 // }
 
 "use client";
-import { useState, ChangeEvent, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import { MemberUpdate } from "@/libs/dto/member/member.update";
 import { useMutation, useQuery, useReactiveVar } from "@apollo/client";
@@ -642,14 +642,14 @@ export default function EditProfile({
   const isDark = useDarkModeCheck();
   const [followingInquiry, setFollowingInquiry] = useState<FollowInquiry>({
     page: 1,
-    limit: 5,
+    limit: 50,
     search: {
       followingId: user?._id,
     },
   });
   const [followerInquiry, setFollowerInquiry] = useState<FollowInquiry>({
     page: 1,
-    limit: 5,
+    limit: 50,
     search: {
       followerId: user?._id,
     },
@@ -771,9 +771,7 @@ export default function EditProfile({
       if (!user._id) throw new Error(Message.NOT_AUTHENTICATED);
 
       await likeTargetProperty({ variables: { input: id } });
-
       await getFavoritesRefetch({ input: searchFavorites });
-
       await sweetTopSmallSuccessAlert("success", 800);
     } catch (err: any) {
       console.log("ERROR, likePropertyHandler");
@@ -792,39 +790,9 @@ export default function EditProfile({
           input: id,
         },
       });
-      setMemberFollowers((prev) =>
-        prev.map((follower) =>
-          follower.followerData?._id === id
-            ? {
-                ...follower,
-                meFollowed: [
-                  {
-                    followingId: follower.followingId,
-                    followerId: follower.followerId,
-                    myFollowing: true,
-                  },
-                ],
-              }
-            : follower
-        )
-      );
-      setMemberFollowings((prev) =>
-        prev.map((following) =>
-          following.followingData?._id === id
-            ? {
-                ...following,
-                meFollowed:
-                  following.meFollowed?.map((entry) => ({
-                    ...entry,
-                    myFollowing: true,
-                  })) ?? [],
-              }
-            : following
-        )
-      );
+      await getMemberFollowersRefetch({ input: followingInquiry });
+      await getMemberFollowingsRefetch({ input: followerInquiry });
       await sweetTopSmallSuccessAlert("Subscribed!", 800);
-
-      // await refetch({ input: query });
     } catch (err: any) {
       sweetErrorHandling(err).then();
     }
@@ -840,40 +808,9 @@ export default function EditProfile({
           input: id,
         },
       });
-      setMemberFollowers((prev) =>
-        prev.map((follower) =>
-          follower.followerData?._id === id
-            ? {
-                ...follower,
-                meFollowed: [
-                  {
-                    followingId: follower.followingId,
-                    followerId: follower.followerId,
-                    myFollowing: false,
-                  },
-                ],
-              }
-            : follower
-        )
-      );
-      setMemberFollowings((prev) =>
-        prev.map((following) =>
-          following.followingData?._id === id
-            ? {
-                ...following,
-                meFollowed:
-                  following.meFollowed?.map((entry) => ({
-                    ...entry,
-                    myFollowing: false,
-                  })) ?? [],
-              }
-            : following
-        )
-      );
-
+      await getMemberFollowersRefetch({ input: followingInquiry });
+      await getMemberFollowingsRefetch({ input: followerInquiry });
       await sweetTopSmallSuccessAlert("Unsubscribed!", 800);
-
-      // await refetch({ input: query });
     } catch (err: any) {
       sweetErrorHandling(err).then();
     }
