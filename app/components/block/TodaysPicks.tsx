@@ -94,7 +94,7 @@ export default function TodaysPicks({
                 <h2 className="tf-title pad-l-7">
                   {t("TodaysPicksHome-title")}
                 </h2>
-                <Link href="/explore-3" className="exp style2">
+                <Link href="/explore-4" className="exp style2">
                   {t("TodaysPicksHome-explore")}
                 </Link>
               </div>

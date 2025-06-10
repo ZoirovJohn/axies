@@ -84,7 +84,7 @@ export default function PopularCollection(): JSX.Element {
                 <h2 className="tf-title pb-17 text-left">
                   {t("PopularCollectionHome-1")}
                 </h2>
-                <Link href="/explore-3" className="exp style2">
+                <Link href="/explore-4" className="exp style2">
                   {t("PopularCollectionHome-2")}
                 </Link>
               </div>
