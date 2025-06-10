@@ -591,12 +591,13 @@ import { useState, ChangeEvent, useEffect, useCallback } from "react";
 import Image from "next/image";
 import { MemberUpdate } from "@/libs/dto/member/member.update";
 import { useMutation, useQuery, useReactiveVar } from "@apollo/client";
-import { SUBSCRIBE, UNSUBSCRIBE, UPDATE_MEMBER } from "@/apollo/user/mutation";
+import { LIKE_TARGET_PROPERTY, SUBSCRIBE, UNSUBSCRIBE, UPDATE_MEMBER } from "@/apollo/user/mutation";
 import { userVar } from "@/apollo/store";
 import { Messages, REACT_APP_API_URL } from "@/app/config";
 import { updateStorage, updateUserInfo } from "@/app/(auth)";
 import {
   sweetErrorHandling,
+  sweetMixinErrorAlert,
   sweetMixinSuccessAlert,
   sweetTopSmallSuccessAlert,
 } from "@/app/sweetAlert";
@@ -610,6 +611,7 @@ import { FollowInquiry } from "@/libs/dto/follow/follow.input";
 import { T } from "@/libs/types/common";
 import { Follower, Following } from "@/libs/dto/follow/follow";
 import { Property } from "@/libs/dto/property/property";
+import { Message } from "@/libs/enums/common.enum";
 
 export default function EditProfile({
   initialValues = {
@@ -653,6 +655,7 @@ export default function EditProfile({
   const [memberFollowers, setMemberFollowers] = useState<Follower[]>([]);
   const [memberFollowings, setMemberFollowings] = useState<Following[]>([]);
   const [myFavorites, setMyFavorites] = useState<Property[]>([]);
+  const [likeTargetProperty] = useMutation(LIKE_TARGET_PROPERTY);
 
   const avatars = Array.from(
     { length: 30 },
@@ -709,6 +712,7 @@ export default function EditProfile({
     notifyOnNetworkStatusChange: true,
     onCompleted: (data: T) => {
       setMyFavorites(data?.getFavorites?.list);
+      console.log("data?.getFavorites?.list:", data?.getFavorites?.list);
     },
   });
 
@@ -754,6 +758,22 @@ export default function EditProfile({
       return true;
     }
   };
+
+  const likePropertyHandler = async (user: T, id: string) => {
+      try {
+        if (!id) return;
+        if (!user._id) throw new Error(Message.NOT_AUTHENTICATED);
+  
+        await likeTargetProperty({ variables: { input: id } });
+  
+        await getFavoritesRefetch({ input: searchFavorites });
+  
+        await sweetTopSmallSuccessAlert("success", 800);
+      } catch (err: any) {
+        console.log("ERROR, likePropertyHandler");
+        sweetMixinErrorAlert(err.message).then();
+      }
+    };
 
   const subscribeHandler = async (id: string, refetch: any, query: any) => {
     try {
@@ -1039,7 +1059,6 @@ export default function EditProfile({
                           style={{
                             color: isDark ? "#e3e3ed" : "#1f1f2c",
                           }}
-                          required
                           defaultValue={""}
                         />
                       </fieldset>
@@ -1302,6 +1321,16 @@ export default function EditProfile({
                                     height={140}
                                     style={{ borderRadius: "10%" }}
                                   />
+                                  <button
+                                    onClick={() => {
+                                      likePropertyHandler(user, property?._id);
+                                    }}
+                                    style={{
+                                      backgroundColor: "unset",
+                                      border: "none",
+                                    }}
+                                    className={`wishlist-button heart ${"active"} `}
+                                  ></button>
                                   <h6
                                     style={{
                                       marginTop: "8px",
