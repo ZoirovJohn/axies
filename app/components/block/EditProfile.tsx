@@ -591,8 +591,13 @@ import { useState, ChangeEvent, useEffect, useCallback } from "react";
 import Image from "next/image";
 import { MemberUpdate } from "@/libs/dto/member/member.update";
 import { useMutation, useQuery, useReactiveVar } from "@apollo/client";
-import { LIKE_TARGET_PROPERTY, SUBSCRIBE, UNSUBSCRIBE, UPDATE_MEMBER } from "@/apollo/user/mutation";
-import { userVar } from "@/apollo/store";
+import {
+  LIKE_TARGET_PROPERTY,
+  SUBSCRIBE,
+  UNSUBSCRIBE,
+  UPDATE_MEMBER,
+} from "@/apollo/user/mutation";
+import { selectedPropertyAuthorVar, userVar } from "@/apollo/store";
 import { Messages, REACT_APP_API_URL } from "@/app/config";
 import { updateStorage, updateUserInfo } from "@/app/(auth)";
 import {
@@ -612,6 +617,7 @@ import { T } from "@/libs/types/common";
 import { Follower, Following } from "@/libs/dto/follow/follow";
 import { Property } from "@/libs/dto/property/property";
 import { Message } from "@/libs/enums/common.enum";
+import Link from "next/link";
 
 export default function EditProfile({
   initialValues = {
@@ -760,20 +766,20 @@ export default function EditProfile({
   };
 
   const likePropertyHandler = async (user: T, id: string) => {
-      try {
-        if (!id) return;
-        if (!user._id) throw new Error(Message.NOT_AUTHENTICATED);
-  
-        await likeTargetProperty({ variables: { input: id } });
-  
-        await getFavoritesRefetch({ input: searchFavorites });
-  
-        await sweetTopSmallSuccessAlert("success", 800);
-      } catch (err: any) {
-        console.log("ERROR, likePropertyHandler");
-        sweetMixinErrorAlert(err.message).then();
-      }
-    };
+    try {
+      if (!id) return;
+      if (!user._id) throw new Error(Message.NOT_AUTHENTICATED);
+
+      await likeTargetProperty({ variables: { input: id } });
+
+      await getFavoritesRefetch({ input: searchFavorites });
+
+      await sweetTopSmallSuccessAlert("success", 800);
+    } catch (err: any) {
+      console.log("ERROR, likePropertyHandler");
+      sweetMixinErrorAlert(err.message).then();
+    }
+  };
 
   const subscribeHandler = async (id: string, refetch: any, query: any) => {
     try {
@@ -1169,7 +1175,20 @@ export default function EditProfile({
                                     textAlign: "center",
                                   }}
                                 >
-                                  {follower?.followerData?.memberNick}
+                                  <Link
+                                    href="/authors-2"
+                                    onClick={() => {
+                                      selectedPropertyAuthorVar(
+                                        follower?.followerData?._id
+                                      );
+                                      localStorage.setItem(
+                                        "selectedPropertyAuthor",
+                                        follower?.followerData?._id ?? ""
+                                      );
+                                    }}
+                                  >
+                                    {follower?.followerData?.memberNick}
+                                  </Link>
                                 </h6>
 
                                 {user?._id !== follower?.followerId &&
@@ -1265,7 +1284,21 @@ export default function EditProfile({
                                           textAlign: "center",
                                         }}
                                       >
-                                        {following?.followingData?.memberNick}
+                                        <Link
+                                          href="/authors-2"
+                                          onClick={() => {
+                                            selectedPropertyAuthorVar(
+                                              following?.followingData?._id
+                                            );
+                                            localStorage.setItem(
+                                              "selectedPropertyAuthor",
+                                              following?.followingData?._id ??
+                                                ""
+                                            );
+                                          }}
+                                        >
+                                          {following?.followingData?.memberNick}
+                                        </Link>
                                       </h6>
                                       <fieldset
                                         style={{ border: "none", padding: 0 }}
