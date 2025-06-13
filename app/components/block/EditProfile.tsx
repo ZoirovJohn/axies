@@ -388,15 +388,15 @@ export default function EditProfile({
                     </div>
                     <div className="info-account">
                       <fieldset>
-                        {/* TODO: Add a file input for profile image */}
-                        <h4 className="title-infor-account">Bio</h4>
+                        <h4 className="title-infor-account-bio">Bio</h4>
                         <textarea
                           tabIndex={4}
                           rows={5}
                           style={{
                             color: isDark ? "#e3e3ed" : "#1f1f2c",
                           }}
-                          defaultValue={""}
+                          placeholder="Currently Not Available"
+                          readOnly
                         />
                       </fieldset>
                       <button
