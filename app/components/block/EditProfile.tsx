@@ -618,7 +618,6 @@ import { Follower, Following } from "@/libs/dto/follow/follow";
 import { Property } from "@/libs/dto/property/property";
 import { Message } from "@/libs/enums/common.enum";
 import Link from "next/link";
-import axios from "axios";
 
 export default function EditProfile({
   initialValues = {
@@ -666,15 +665,9 @@ export default function EditProfile({
   const [likeTargetProperty] = useMutation(LIKE_TARGET_PROPERTY);
 
   const avatars = Array.from(
-    { length: 30 },
-    (_, i) => `/assets/images/avatar/avt-${i + 1}.webp`
+    { length: 15 },
+    (_, i) => `/assets/images/avatar/avt-${i + 1}.jpg`
   );
-
-  const updateProfileImage = () => {
-    if (selectedAvatar) {
-      console.log("Profile updated with:", selectedAvatar);
-    }
-  };
 
   /** APOLLO REQUESTS **/
   const [updateMember] = useMutation(UPDATE_MEMBER);
@@ -736,56 +729,18 @@ export default function EditProfile({
     console.log("User data updated:", updateData);
   }, [user]);
 
-  /** HANDLERS **/
-  const uploadImage = async (e: any) => {
-    try {
-      const image = selectedAvatar || imagePath;
-      console.log("+image:", image);
+  useEffect(() => {
+    if (selectedAvatar) {
+      const fileName = selectedAvatar.split("/").pop()?.split(".")[0];
+      const newPath = `uploads/member/${fileName}.jpg`;
+      console.log("newPath:", newPath);
 
-      const formData = new FormData();
-      formData.append(
-        "operations",
-        JSON.stringify({
-          query: `mutation ImageUploader($file: Upload!, $target: String!) {
-						imageUploader(file: $file, target: $target)
-            }`,
-          variables: {
-            file: null,
-            target: "member",
-          },
-        })
-      );
-      formData.append(
-        "map",
-        JSON.stringify({
-          "0": ["variables.file"],
-        })
-      );
-      formData.append("0", image);
-
-      const response = await axios.post(
-        `${process.env.REACT_APP_API_GRAPHQL_URL}`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            "apollo-require-preflight": true,
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      console.log("+e:", response);
-      const responseImage = response.data.data.imageUploader;
-      console.log("+responseImage: ", responseImage);
-      updateData.memberImage = responseImage;
+      updateData.memberImage = newPath;
       setUpdateData({ ...updateData });
-
-      return `${REACT_APP_API_URL}/${responseImage}`;
-    } catch (err) {
-      console.log("Error, uploadImage:", err);
     }
-  };
+  }, [selectedAvatar]);
+
+  /** HANDLERS **/
 
   const updatePropertyHandler = useCallback(async () => {
     try {
@@ -962,30 +917,6 @@ export default function EditProfile({
                       </div>
                     ))}
                   </div>
-
-                  {/* Button */}
-                  <button
-                    onClick={uploadImage}
-                    style={{
-                      width: "100%",
-                      padding: "8px 16px",
-                      backgroundColor: "#3b82f6",
-                      color: "white",
-                      borderRadius: "6px",
-                      fontWeight: "500",
-                      cursor: "pointer",
-                      border: "none",
-                      transition: "background-color 0.2s",
-                    }}
-                    onMouseOver={(e) => {
-                      e.currentTarget.style.backgroundColor = "#2563eb";
-                    }}
-                    onMouseOut={(e) => {
-                      e.currentTarget.style.backgroundColor = "#3b82f6";
-                    }}
-                  >
-                    Update Profile Logo
-                  </button>
                 </div>
               </div>
             </div>
