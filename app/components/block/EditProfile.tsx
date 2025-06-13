@@ -733,9 +733,10 @@ export default function EditProfile({
     if (selectedAvatar) {
       const fileName = selectedAvatar.split("/").pop()?.split(".")[0];
       const newPath = `uploads/member/${fileName}.jpg`;
-      console.log("newPath:", newPath);
 
       updateData.memberImage = newPath;
+      console.log("updateData:", updateData);
+
       setUpdateData({ ...updateData });
     }
   }, [selectedAvatar]);
@@ -765,7 +766,6 @@ export default function EditProfile({
     if (
       updateData.memberNick === "" ||
       updateData.memberPhone === "" ||
-      updateData.memberAddress === "" ||
       updateData.memberImage === ""
     ) {
       return true;
@@ -971,7 +971,6 @@ export default function EditProfile({
                           style={{
                             color: isDark ? "#e3e3ed" : "#1f1f2c",
                           }}
-                          required
                         />
                       </fieldset>
                     </div>
