@@ -599,7 +599,7 @@ import {
 } from "@/apollo/user/mutation";
 import { selectedPropertyAuthorVar, userVar } from "@/apollo/store";
 import { Messages, REACT_APP_API_URL } from "@/app/config";
-import { updateStorage, updateUserInfo } from "@/app/(auth)";
+import { getJwtToken, updateStorage, updateUserInfo } from "@/app/(auth)";
 import {
   sweetErrorHandling,
   sweetMixinErrorAlert,
@@ -618,6 +618,7 @@ import { Follower, Following } from "@/libs/dto/follow/follow";
 import { Property } from "@/libs/dto/property/property";
 import { Message } from "@/libs/enums/common.enum";
 import Link from "next/link";
+import axios from "axios";
 
 export default function EditProfile({
   initialValues = {
@@ -640,6 +641,7 @@ export default function EditProfile({
     ? `${REACT_APP_API_URL}/${user?.memberImage}`
     : "/assets/images/avatar/avt-28.jpg";
   const isDark = useDarkModeCheck();
+  const token = getJwtToken();
   const [followingInquiry, setFollowingInquiry] = useState<FollowInquiry>({
     page: 1,
     limit: 50,
@@ -735,6 +737,56 @@ export default function EditProfile({
   }, [user]);
 
   /** HANDLERS **/
+  const uploadImage = async (e: any) => {
+    try {
+      const image = selectedAvatar || imagePath;
+      console.log("+image:", image);
+
+      const formData = new FormData();
+      formData.append(
+        "operations",
+        JSON.stringify({
+          query: `mutation ImageUploader($file: Upload!, $target: String!) {
+						imageUploader(file: $file, target: $target)
+            }`,
+          variables: {
+            file: null,
+            target: "member",
+          },
+        })
+      );
+      formData.append(
+        "map",
+        JSON.stringify({
+          "0": ["variables.file"],
+        })
+      );
+      formData.append("0", image);
+
+      const response = await axios.post(
+        `${process.env.REACT_APP_API_GRAPHQL_URL}`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            "apollo-require-preflight": true,
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      console.log("+e:", response);
+      const responseImage = response.data.data.imageUploader;
+      console.log("+responseImage: ", responseImage);
+      updateData.memberImage = responseImage;
+      setUpdateData({ ...updateData });
+
+      return `${REACT_APP_API_URL}/${responseImage}`;
+    } catch (err) {
+      console.log("Error, uploadImage:", err);
+    }
+  };
+
   const updatePropertyHandler = useCallback(async () => {
     try {
       if (!user._id) throw new Error(Messages.error2);
@@ -913,7 +965,7 @@ export default function EditProfile({
 
                   {/* Button */}
                   <button
-                    onClick={updateProfileImage}
+                    onClick={uploadImage}
                     style={{
                       width: "100%",
                       padding: "8px 16px",
