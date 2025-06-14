@@ -4,10 +4,12 @@ import Link from "next/link";
 import FooterItems from "./FooterItems";
 import Social from "./Social";
 import SubscribeForm from "./SubscribeForm";
+import { useTranslation } from "next-i18next";
 
 export default function Footer() {
   const isDark = useDarkModeCheck();
   const data = { id: 1, avatar: "avatar.png", name: "John Doe", eth: 5 };
+  const { t } = useTranslation("common");
 
   return (
     <>
@@ -32,10 +34,9 @@ export default function Footer() {
                   </Link>
                 </div>
                 <p className="sub-widget-logo">
-                  Thank you for visiting our website. We’re committed to
-                  providing the best service and support for you.
+                  {t("FooterLogoText")}
                 </p>
-                <p>© 2025 Axies — Made By Thomas</p>
+                <p>{t("FooterMadeBy")}</p>
               </div>
             </div>
             {/* End col */}
@@ -44,7 +45,7 @@ export default function Footer() {
 
             <div className="col-lg-3 col-md-6 col-sm-7 col-12">
               <div className="widget widget-subcribe">
-                <h5 className="title-widget">Subscribe Us</h5>
+                <h5 className="title-widget">{t("FooterSubscribe")}</h5>
                 <div className="form-subcribe">
                   <SubscribeForm />
                 </div>
