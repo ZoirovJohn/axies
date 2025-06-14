@@ -1,8 +1,24 @@
+"use client";
 import { product6 } from "@/data/product";
 import CollectionListCard from "../card/CollectionListCard";
 import Link from "next/link";
+import { useReactiveVar } from "@apollo/client";
+import { userVar } from "@/apollo/store";
+import { useEffect } from "react";
 
 export default function Ranking(): JSX.Element {
+  const authMember = useReactiveVar(userVar);
+
+  useEffect(() => {
+    if (!authMember?.memberNick) {
+      window.location.href = "/";
+    }
+  }, [authMember]);
+
+  if (!authMember?.memberNick) {
+    return <></>;
+  }
+
   return (
     <>
       <section className="tf-section tf-rank">

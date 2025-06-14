@@ -2,10 +2,24 @@
 import { sweetMixinSuccessAlert } from "@/app/sweetAlert";
 import Image from "next/image";
 import { useState } from "react";
+import { useReactiveVar } from "@apollo/client";
+import { userVar } from "@/apollo/store";
+import { useEffect } from "react";
 
 export default function Contact(): JSX.Element {
   const [email, setEmail] = useState("");
   const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  const authMember = useReactiveVar(userVar);
+
+  useEffect(() => {
+    if (!authMember?.memberNick) {
+      window.location.href = "/";
+    }
+  }, [authMember]);
+
+  if (!authMember?.memberNick) {
+    return <></>;
+  }
 
   return (
     <>

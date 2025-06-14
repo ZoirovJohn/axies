@@ -36,7 +36,6 @@ export const useNavigation = (authMember: boolean = true): NavigationType[] => {
   return [
     { id: 1, name: t("Home"), path: "/" },
     { id: 2, name: t("Products"), path: "/explore-4" },
-    { id: 3, name: t("Live Auctions"), path: "/live-auctions" },
     { id: 4, name: t("Blogs"), path: "/blog" },
     { id: 5, name: t("Creators"), path: "/authors-1" },
     {

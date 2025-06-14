@@ -34,16 +34,15 @@ const menuItemsA: MenuItem[][] = [
 const menuItemsB: MenuItem[][] = [
   [
     { href: "/", label: "Home" },
-    { href: "/explore-4", label: "Products" },
+    { href: "/login", label: "Login" },
+    { href: "/signup", label: "Signup" },
   ],
   [
     { href: "/authors-1", label: "Creators" },
-    { href: "/ranking", label: "Ranking" },
+    { href: "/explore-4", label: "Products" },
   ],
   [
-    { href: "/contact-1", label: "Contact Us" },
     { href: "/blog", label: "Our Blog" },
-    { href: "/faq", label: "FAQ" },
   ],
 ];
 
