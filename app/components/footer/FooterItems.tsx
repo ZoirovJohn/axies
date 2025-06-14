@@ -1,4 +1,7 @@
 import Link from "next/link";
+import { useNavigation } from "@/data/navigation";
+import { useReactiveVar } from "@apollo/client";
+import { userVar } from "@/apollo/store";
 
 interface MenuItem {
   href: string;
@@ -9,21 +12,35 @@ interface Props {
   data: { id: number; avatar: string; name: string; eth: number };
 }
 
-const menuItems: MenuItem[][] = [
+const menuItemsA: MenuItem[][] = [
   [
-    { href: "/authors-1", label: "Authors" },
-    { href: "/connect-wallet", label: "Collection" },
-    { href: "/edit-profile", label: "Author Profile" },
-    { href: "/create-item", label: "Create Item" },
-  ],
-  [
-    { href: "/help-center", label: "Help & Support" },
+    { href: "/", label: "Home" },
+    { href: "/explore-4", label: "Products" },
     { href: "/live-auctions", label: "Live Auctions" },
-    { href: "/item-details-1", label: "Item Details" },
-    { href: "/activity-1", label: "Activity" },
   ],
   [
-    { href: "/explore-1", label: "Explore" },
+    { href: "/edit-profile", label: "My Profile" },
+    { href: "/create-item", label: "Create NFT" },
+    { href: "/authors-1", label: "Creators" },
+  ],
+  [
+    { href: "/ranking", label: "Ranking" },
+    { href: "/contact-1", label: "Contact Us" },
+    { href: "/blog", label: "Our Blog" },
+    { href: "/faq", label: "FAQ" },
+  ],
+];
+
+const menuItemsB: MenuItem[][] = [
+  [
+    { href: "/", label: "Home" },
+    { href: "/explore-4", label: "Products" },
+  ],
+  [
+    { href: "/authors-1", label: "Creators" },
+    { href: "/ranking", label: "Ranking" },
+  ],
+  [
     { href: "/contact-1", label: "Contact Us" },
     { href: "/blog", label: "Our Blog" },
     { href: "/faq", label: "FAQ" },
@@ -31,6 +48,9 @@ const menuItems: MenuItem[][] = [
 ];
 
 export default function FooterItems({ data }: Props) {
+  const user = useReactiveVar(userVar);
+  const menuItems = user?.memberNick ? menuItemsA : menuItemsB;
+
   return (
     <>
       {menuItems.map((menu, index) => (
@@ -40,11 +60,7 @@ export default function FooterItems({ data }: Props) {
         >
           <div className={`widget widget-menu style-${index + 1}`}>
             <h5 className="title-widget">
-              {index === 0
-                ? "My Account"
-                : index === 1
-                ? "Resources"
-                : "Company"}
+              {index === 0 ? "Info" : index === 1 ? "My Account" : "Company"}
             </h5>
             <ul>
               {menu.map(({ href, label }) => (

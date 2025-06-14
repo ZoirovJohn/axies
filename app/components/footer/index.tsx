@@ -6,7 +6,6 @@ import Social from "./Social";
 import SubscribeForm from "./SubscribeForm";
 
 export default function Footer() {
-  // is dark hook
   const isDark = useDarkModeCheck();
   const data = { id: 1, avatar: "avatar.png", name: "John Doe", eth: 5 };
 
@@ -33,19 +32,10 @@ export default function Footer() {
                   </Link>
                 </div>
                 <p className="sub-widget-logo">
-                  Lorem ipsum dolor sit amet,consectetur adipisicing elit. Quis
-                  non, fugit totam vel laboriosam vitae.
+                  Thank you for visiting our website. We’re committed to
+                  providing the best service and support for you.
                 </p>
-                <p>
-                  © {new Date().getFullYear()} Axies — Made By{" "}
-                  <a
-                    href="https://themeforest.net/user/ib-themes"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    ib-themes
-                  </a>
-                </p>
+                <p>© 2025 Axies — Made By Thomas</p>
               </div>
             </div>
             {/* End col */}
