@@ -16,7 +16,7 @@ export default function Social() {
     <>
       {socialItems.map((item, index) => (
         <li key={index}>
-          <a href="#" target="_blank" rel="noopener noreferrer">
+          <a href="#" onClick={(e) => e.preventDefault()}>
             <i className={item.icon} />
           </a>
         </li>
