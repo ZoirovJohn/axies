@@ -131,6 +131,16 @@ export default function EditProfile({
 
   /** LIFECYCLES **/
   useEffect(() => {
+    if (!user?.memberNick) {
+      window.location.href = "/";
+    }
+  }, [user]);
+
+  if (!user?.memberNick) {
+    return <></>;
+  }
+
+  useEffect(() => {
     setUpdateData({
       ...updateData,
       memberNick: user.memberNick,

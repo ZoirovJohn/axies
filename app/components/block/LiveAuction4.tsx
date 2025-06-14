@@ -3,8 +3,23 @@ import { product1 } from "@/data/product";
 import ProductCard1 from "../card/ProductCard1";
 import FilterSection from "../element/FilterSection";
 import Link from "next/link";
+import { useReactiveVar } from "@apollo/client";
+import { userVar } from "@/apollo/store";
+import { useEffect } from "react";
 
 export default function LiveAuction4(): JSX.Element {
+  const authMember = useReactiveVar(userVar);
+
+  useEffect(() => {
+    if (!authMember?.memberNick) {
+      window.location.href = "/";
+    }
+  }, [authMember]);
+
+  if (!authMember?.memberNick) {
+    return <></>;
+  }
+
   return (
     <>
       <section className="tf-auction tf-section">

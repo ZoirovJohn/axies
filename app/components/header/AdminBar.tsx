@@ -18,8 +18,8 @@ const ProfileComponent = () => {
   const tab: string[] = ["Explore", "Unlock"];
   const authMember = useReactiveVar(userVar);
   const imagePath: string = authMember?.memberImage
-      ? `${REACT_APP_API_URL}/${authMember?.memberImage}`
-      : "/assets/images/avatar/avt-28.jpg";
+    ? `${REACT_APP_API_URL}/${authMember?.memberImage}`
+    : "/assets/images/avatar/avt-28.jpg";
 
   // const authMember = true;
 
@@ -51,10 +51,6 @@ const ProfileComponent = () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
-
-  const handleLogout = () => {
-    console.log("Logged out");
-  };
 
   return (
     <>

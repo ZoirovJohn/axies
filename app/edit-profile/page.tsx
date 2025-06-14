@@ -1,6 +1,8 @@
 import { Metadata } from "next";
 import Breadcrumb from "../components/breadcrumb";
 import EditProfile from "../components/block/EditProfile";
+import { useReactiveVar } from "@apollo/client";
+import { userVar } from "@/apollo/store";
 
 const item = {
   breadcrumb: [
@@ -18,11 +20,7 @@ const item = {
       name: "Profile",
     },
   ],
-  profile:[
-    {
-      
-    }
-  ]
+  profile: [{}],
 };
 
 export const metadata: Metadata = {
