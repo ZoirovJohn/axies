@@ -108,23 +108,18 @@ export default function ItemDetails1() {
                       <span className="viewed eye">
                         {propertyData?.propertyViews}
                       </span>
-
-                      <button
-                        onClick={() => {
-                          propertyData?._id &&
-                            likePropertyHandler(user, propertyData._id);
-                        }}
-                        className={`wishlist-button heart ${
+                      <span
+                        className={`liked heart wishlist-button mg-l-8 ${
                           propertyData?.meLiked &&
                           propertyData?.meLiked[0]?.myFavorite
                             ? "active"
                             : ""
-                        } `}
+                        }`}
                       >
                         <span className="number-like">
                           {propertyData?.propertyLikes}
                         </span>
-                      </button>
+                      </span>
                     </div>
                     <div className="right">
                       <a className="share" />
