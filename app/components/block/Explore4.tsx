@@ -25,16 +25,7 @@ export default function Explore4({
     limit: 6,
     sort: "createdAt",
     direction: "DESC",
-    search: {
-      squaresRange: {
-        start: 0,
-        end: 500,
-      },
-      pricesRange: {
-        start: 0.001,
-        end: 500,
-      },
-    },
+    search: {},
   },
 }: any): JSX.Element {
   const searchParams = useSearchParams();

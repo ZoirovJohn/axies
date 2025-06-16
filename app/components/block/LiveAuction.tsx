@@ -9,8 +9,8 @@ export default function LiveAuction(): JSX.Element {
           <div className="row">
             <div className="col-md-12">
               <div className="heading-live-auctions">
-                <h2 className="tf-title pb-18">Live Auctions</h2>
-                <Link href="/explore-3" className="exp style2">
+                <h2 className="tf-title pb-18">Related Products</h2>
+                <Link href="/explore-4" className="exp style2">
                   EXPLORE MORE
                 </Link>
               </div>

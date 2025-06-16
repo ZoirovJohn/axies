@@ -3,10 +3,87 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/pagination";
 import { Pagination, Navigation } from "swiper";
-import ProductCard1 from "../card/ProductCard1";
-import { product1 } from "@/data/product";
+import { useState } from "react";
+import { Property } from "@/libs/dto/property/property";
+import { useMutation, useQuery, useReactiveVar } from "@apollo/client";
+import { GET_PROPERTIES, GET_PROPERTY } from "@/apollo/user/query";
+import { PropertiesInquiry } from "@/libs/dto/property/property.input";
+import { Direction, Message } from "@/libs/enums/common.enum";
+import { T } from "@/libs/types/common";
+import ProductCard6 from "../card/ProductCard6";
+import {
+  sweetMixinErrorAlert,
+  sweetTopSmallSuccessAlert,
+} from "@/app/sweetAlert";
+import { LIKE_TARGET_PROPERTY } from "@/apollo/user/mutation";
+import { selectedPropertyVar } from "@/apollo/store";
 
 export default function LiveAuctionElement(): JSX.Element {
+  const selectedProperty = useReactiveVar(selectedPropertyVar);
+  const [properties, setProperties] = useState<Property[]>([]);
+  const [searchFilter, setSearchFilter] = useState<PropertiesInquiry>({
+    page: 1,
+    limit: 6,
+    sort: "createdAt",
+    direction: Direction.DESC,
+    search: {},
+  });
+
+  /** APOLLO REQUESTS **/
+  const [likeTargetProperty] = useMutation(LIKE_TARGET_PROPERTY);
+
+  const {
+    loading: getPropertyLoading,
+    data: getPropertyData,
+    error: getPropertyError,
+    refetch: getPropertyRefetch,
+  } = useQuery(GET_PROPERTY, {
+    fetchPolicy: "network-only",
+    variables: { input: selectedProperty },
+    skip: !selectedProperty,
+    notifyOnNetworkStatusChange: true,
+    onCompleted: (data: T) => {
+      setSearchFilter({
+        page: 1,
+        limit: 6,
+        sort: "createdAt",
+        direction: Direction.DESC,
+        search: { locationList: data?.getProperty?.propertyLocation },
+      });
+    },
+  });
+
+  const {
+    loading: getPropertiesLoading,
+    data: getPropertiesData,
+    error: getPropertiesError,
+    refetch: getPropertiesRefetch,
+  } = useQuery(GET_PROPERTIES, {
+    fetchPolicy: "network-only",
+    variables: { input: searchFilter },
+    notifyOnNetworkStatusChange: true,
+    onCompleted: (data: T) => {
+      setProperties(data?.getProperties?.list);
+    },
+  });
+
+  /** HANDLERS **/
+  const likePropertyHandler = async (user: T, id: string) => {
+    try {
+      if (!id) return;
+      if (!user._id) throw new Error(Message.NOT_AUTHENTICATED);
+
+      await likeTargetProperty({ variables: { input: id } });
+
+      await getPropertiesRefetch({ input: searchFilter });
+
+      await sweetTopSmallSuccessAlert("success", 800);
+    } catch (err: any) {
+      console.log("ERROR, likePropertyHandler");
+      sweetMixinErrorAlert(err.message).then();
+    }
+  };
+
   return (
     <>
       <div className="col-md-12">
@@ -37,9 +114,12 @@ export default function LiveAuctionElement(): JSX.Element {
             },
           }}
         >
-          {product1.slice(0, 7).map((item) => (
-            <SwiperSlide key={item.id}>
-              <ProductCard1 data={item} />
+          {properties.slice(0, 7).map((item) => (
+            <SwiperSlide key={item._id}>
+              <ProductCard6
+                property={item}
+                likePropertyHandler={likePropertyHandler}
+              />
             </SwiperSlide>
           ))}
           <div className="swiper-pagination mg-t-6" />
