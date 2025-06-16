@@ -105,8 +105,8 @@ export default function ItemDetailsTab({ property }: Props): JSX.Element {
                       </div>
                     </div>
                     <div className="price">
-                      <h5>4.89 ETH</h5>
-                      <span>= $12.246</span>
+                      <h5>3.17 ETH</h5>
+                      <span>= $9.776</span>
                     </div>
                   </div>
                 </li>
@@ -143,8 +143,8 @@ export default function ItemDetailsTab({ property }: Props): JSX.Element {
                       </div>
                     </div>
                     <div className="price">
-                      <h5>4.89 ETH</h5>
-                      <span>= $12.246</span>
+                      <h5>6.65 ETH</h5>
+                      <span>= $16.738</span>
                     </div>
                   </div>
                 </li>
