@@ -7,13 +7,11 @@ import { Property } from "@/libs/dto/property/property";
 import { useMutation, useQuery } from "@apollo/client";
 import { GET_MEMBER, GET_PROPERTIES } from "@/apollo/user/query";
 import { PropertiesInquiry } from "@/libs/dto/property/property.input";
-import { Direction, Message } from "@/libs/enums/common.enum";
+import { Message } from "@/libs/enums/common.enum";
 import { T } from "@/libs/types/common";
-import { PropertyCollection, PropertyStatus } from "@/libs/enums/property.enum";
 import { useReactiveVar } from "@apollo/client";
 import { selectedPropertyAuthorVar, userVar } from "@/apollo/store";
 import { Messages, REACT_APP_API_URL } from "@/libs/config";
-import { useRouter } from "next/navigation";
 import {
   LIKE_TARGET_PROPERTY,
   SUBSCRIBE,

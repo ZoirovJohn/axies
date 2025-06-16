@@ -1,5 +1,5 @@
 "use client";
-import { userVar } from "@/apollo/store";
+import { selectedPropertyAuthorVar, userVar } from "@/apollo/store";
 import { REACT_APP_API_URL } from "@/app/config";
 import { Member } from "@/libs/dto/member/member";
 import { MeLiked } from "@/libs/dto/property/property";
@@ -50,26 +50,22 @@ export default function ProductCard3({
   property,
   likePropertyHandler,
 }: Props): JSX.Element {
-  const [isHeartToggle, setHeartToggle] = useState<number>(0);
   const user = useReactiveVar(userVar);
   const imagePath: string = property?.propertyImages[0]
     ? `${REACT_APP_API_URL}/${property?.propertyImages[0]}`
     : "/img/banner/header1.svg";
-  // console.log("memberImage:", property?.memberData?.memberImage);
-
-  // heart toggle
-  const heartToggle = () => {
-    if (isHeartToggle === 0) {
-      return setHeartToggle(1);
-    }
-    setHeartToggle(0);
-  };
 
   return (
     <>
       <div className="sc-card-product">
         <div className="card-media">
-          <Link href="/item-details-1">
+          <Link
+            href="/item-details-1"
+            onClick={() => {
+              selectedPropertyAuthorVar(property._id);
+              localStorage.setItem("selectedPropertyAuthor", property._id);
+            }}
+          >
             <Image height={500} width={500} src={imagePath} alt="Image" />
           </Link>
 
@@ -88,7 +84,15 @@ export default function ProductCard3({
         </div>
         <div className="card-title">
           <h5 className="style2">
-            <Link href="/item-details-1">{property.propertyTitle}</Link>
+            <Link
+              href="/item-details-1"
+              onClick={() => {
+                selectedPropertyAuthorVar(property._id);
+                localStorage.setItem("selectedPropertyAuthor", property._id);
+              }}
+            >
+              {property.propertyTitle}
+            </Link>
           </h5>
           <div className="tags">
             {property.propertyAddress.slice(0, 5) + "..."}
@@ -111,7 +115,18 @@ export default function ProductCard3({
             <div className="info">
               <span>Owned By</span>
               <h6>
-                <Link href="/authors-2">{property.memberData?.memberNick}</Link>
+                <Link
+                  href="/authors-2"
+                  onClick={() => {
+                    selectedPropertyAuthorVar(property.memberId);
+                    localStorage.setItem(
+                      "selectedPropertyAuthor",
+                      property.memberId
+                    );
+                  }}
+                >
+                  {property.memberData?.memberNick}
+                </Link>
               </h6>
             </div>
           </div>

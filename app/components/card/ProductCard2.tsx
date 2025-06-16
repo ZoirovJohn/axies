@@ -11,8 +11,7 @@ import { Member } from "@/libs/dto/member/member";
 import { MeLiked } from "@/libs/dto/property/property";
 import { REACT_APP_API_URL } from "@/app/config";
 import { selectedPropertyAuthorVar, userVar } from "@/apollo/store";
-import { useMutation, useReactiveVar } from "@apollo/client";
-import { LIKE_TARGET_PROPERTY } from "@/apollo/user/mutation";
+import { useReactiveVar } from "@apollo/client";
 
 interface Props {
   property: {
@@ -51,7 +50,6 @@ export default function ProductCard2({
   property,
   likePropertyHandler,
 }: Props): JSX.Element {
-  const [isHeartToggle, setHeartToggle] = useState<number>(0);
   const user = useReactiveVar(userVar);
   const imagePath: string = property?.memberData?.memberImage
     ? `${REACT_APP_API_URL}/${property?.memberData?.memberImage}`

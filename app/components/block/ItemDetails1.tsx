@@ -3,6 +3,19 @@ import Image from "next/image";
 import ItemDetailsTab from "../element/ItemDetailsTab";
 import Link from "next/link";
 import Countdown from "react-countdown";
+import { useMutation, useQuery, useReactiveVar } from "@apollo/client";
+import { selectedPropertyAuthorVar, userVar } from "@/apollo/store";
+import { GET_PROPERTY } from "@/apollo/user/query";
+import { T } from "@/libs/types/common";
+import { useState } from "react";
+import { Property } from "@/libs/dto/property/property";
+import { REACT_APP_API_URL } from "@/libs/config";
+import { Message } from "@/libs/enums/common.enum";
+import { LIKE_TARGET_PROPERTY } from "@/apollo/user/mutation";
+import {
+  sweetMixinErrorAlert,
+  sweetTopSmallSuccessAlert,
+} from "@/app/sweetAlert";
 
 export default function ItemDetails1() {
   const renderer = ({
@@ -28,6 +41,47 @@ export default function ItemDetails1() {
       );
     }
   };
+  const selectedPropertyAuthor = useReactiveVar(selectedPropertyAuthorVar);
+  const [propertyData, setPropertyData] = useState<Property | null>(null);
+  const imagePath: string = propertyData?.propertyImages[0]
+    ? `${REACT_APP_API_URL}/${propertyData?.propertyImages[0]}`
+    : "/assets/images/box-item/images-item-details.webp";
+  const user = useReactiveVar(userVar);
+
+  /** APOLLO REQUESTS **/
+  const [likeTargetProperty] = useMutation(LIKE_TARGET_PROPERTY);
+
+  const {
+    loading: getPropertyLoading,
+    data: getPropertyData,
+    error: getPropertyError,
+    refetch: getPropertyRefetch,
+  } = useQuery(GET_PROPERTY, {
+    fetchPolicy: "network-only",
+    variables: { input: selectedPropertyAuthor },
+    skip: !selectedPropertyAuthor,
+    notifyOnNetworkStatusChange: true,
+    onCompleted: (data: T) => {
+      setPropertyData(data?.getProperty);
+    },
+  });
+
+  /** HANDLERS **/
+  const likePropertyHandler = async (user: T, id: string) => {
+    try {
+      if (!id) return;
+      if (!user._id) throw new Error(Message.NOT_AUTHENTICATED);
+
+      await likeTargetProperty({ variables: { input: id } });
+
+      await getPropertyRefetch({ input: selectedPropertyAuthor });
+
+      await sweetTopSmallSuccessAlert("success", 800);
+    } catch (err: any) {
+      console.log("ERROR, likePropertyHandler");
+      sweetMixinErrorAlert(err.message).then();
+    }
+  };
 
   return (
     <>
@@ -37,25 +91,33 @@ export default function ItemDetails1() {
             <div className="col-xl-6 col-md-12">
               <div className="content-left">
                 <div className="media">
-                  <Image
-                    height={1000}
-                    width={1000}
-                    src="/assets/images/box-item/images-item-details.webp"
-                    alt=""
-                  />
+                  <Image height={1000} width={1000} src={imagePath} alt="" />
                 </div>
               </div>
             </div>
             <div className="col-xl-6 col-md-12">
               <div className="content-right">
                 <div className="sc-item-details">
-                  <h2 className="style2">“The Fantasy Flower illustration ”</h2>
+                  <h2 className="style2">{`“${propertyData?.propertyTitle}”`}</h2>
                   <div className="meta-item">
                     <div className="left">
                       <span className="viewed eye">225</span>
-                      <span className="liked heart wishlist-button mg-l-8">
-                        <span className="number-like">100</span>
-                      </span>
+                      <button
+                        onClick={() => {
+                          propertyData?._id &&
+                            likePropertyHandler(user, propertyData._id);
+                        }}
+                        className={`wishlist-button heart ${
+                          propertyData?.meLiked &&
+                          propertyData?.meLiked[0]?.myFavorite
+                            ? "active"
+                            : ""
+                        } `}
+                      >
+                        <span className="number-like">
+                          {propertyData?.propertyLikes}
+                        </span>
+                      </button>
                     </div>
                     <div className="right">
                       <a className="share" />

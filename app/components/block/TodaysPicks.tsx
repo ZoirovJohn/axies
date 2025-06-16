@@ -1,9 +1,6 @@
 "use client";
-import { product3 } from "@/data/product";
 import ProductCard3 from "../card/ProductCard3";
 import Link from "next/link";
-import Image from "next/image";
-import FilterSection from "../element/FilterSection";
 import { useTranslation } from "next-i18next";
 import { useState } from "react";
 import { Property } from "@/libs/dto/property/property";
@@ -11,7 +8,6 @@ import { useMutation, useQuery } from "@apollo/client";
 import { GET_PROPERTIES } from "@/apollo/user/query";
 import { LIKE_TARGET_PROPERTY } from "@/apollo/user/mutation";
 import { T } from "@/libs/types/common";
-import { PropertiesInquiry } from "@/libs/dto/property/property.input";
 import { useSearchParams } from "next/navigation";
 import { Message } from "@/libs/enums/common.enum";
 import { sweetMixinErrorAlert, sweetTopSmallSuccessAlert } from "@/app/sweetAlert";

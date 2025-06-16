@@ -5,35 +5,35 @@ import LiveAuctionModal from "@/app/components/modal/LiveAuctionModal";
 import { Metadata } from "next";
 
 const item = {
-    title: "Item Details 1",
-    breadcrumb: [
-        {
-            name: "Home",
-            path: "/",
-        },
-        {
-            name: "Explore",
-            path: "/item-details-1",
-        },
-        {
-            name: "Item Details 1",
-        },
-    ],
+  title: "Item Detail",
+  breadcrumb: [
+    {
+      name: "Home",
+      path: "/",
+    },
+    {
+      name: "Explore",
+      path: "/item-details-1",
+    },
+    {
+      name: "Item Detail",
+    },
+  ],
 };
 
 export const metadata: Metadata = {
-    title: "Axies | NFT Marketplace",
+  title: "Axies | NFT Marketplace",
 };
 
 export default function page(): JSX.Element {
-    return (
-        <>
-            <Breadcrumb data={item} />
-            <ItemDetails1 />
-            <LiveAuction />
+  return (
+    <>
+      <Breadcrumb data={item} />
+      <ItemDetails1 />
+      <LiveAuction />
 
-            {/* live auction product modal */}
-            <LiveAuctionModal />
-        </>
-    );
+      {/* live auction product modal */}
+      <LiveAuctionModal />
+    </>
+  );
 }
