@@ -105,7 +105,9 @@ export default function ItemDetails1() {
                   <h2 className="style2">{`“${propertyData?.propertyTitle}”`}</h2>
                   <div className="meta-item">
                     <div className="left">
-                      <span className="viewed eye">225</span>
+                      <span className="viewed eye">
+                        {propertyData?.propertyViews}
+                      </span>
 
                       <button
                         onClick={() => {
@@ -161,39 +163,32 @@ export default function ItemDetails1() {
                         </div>
                       </div>
                     </div>
-                    <div className="meta-info">
-                      <div className="author">
-                        <div className="avatar">
-                          <Image
-                            height={200}
-                            width={200}
-                            src="/assets/images/avatar/avt-2.webp"
-                            alt=""
-                          />
-                        </div>
-                        <div className="info">
-                          <span>Create By</span>
-                          <h6>
-                            <Link href="/authors-2">Freddie Carpenter</Link>
-                          </h6>
-                        </div>
-                      </div>
-                    </div>
                   </div>
                   <p>
-                    Habitant sollicitudin faucibus cursus lectus pulvinar dolor
-                    non ultrices eget. Facilisi lobortisal morbi fringilla urna
-                    amet sed ipsum vitae ipsum malesuada. Habitant sollicitudin
-                    faucibus cursus lectus pulvinar dolor non ultrices eget.
-                    Facilisi lobortisal morbi fringilla urna amet sed ipsum
+                    Located at {propertyData?.propertyAddress} in{" "}
+                    {propertyData?.propertyLocation}, this NFT titled ‘
+                    {propertyData?.propertyTitle}’ captures the unique essence
+                    of the property. It holds a rarity score of{" "}
+                    {propertyData?.propertyRarityScore}
+                    and features diverse trait groups that highlight its special
+                    characteristics. With only {
+                      propertyData?.propertyEditions
+                    }{" "}
+                    editions available, this collectible is a rare addition to
+                    any collection.
                   </p>
                   <div className="meta-item-details style2">
                     <div className="item meta-price">
                       <span className="heading">Current Bid</span>
                       <div className="price">
                         <div className="price-box">
-                          <h5> 4.89 ETH</h5>
-                          <span>= $12.246</span>
+                          <h5> {propertyData?.propertyPrice} ETH</h5>
+                          <span>
+                            = $
+                            {(
+                              2731 * (propertyData?.propertyPrice ?? 0)
+                            ).toLocaleString()}
+                          </span>
                         </div>
                       </div>
                     </div>
@@ -216,7 +211,7 @@ export default function ItemDetails1() {
                     <span>Place a bid</span>
                   </a>
                 </div>
-                <ItemDetailsTab />
+                {propertyData && <ItemDetailsTab property={propertyData} />}
               </div>
             </div>
           </div>

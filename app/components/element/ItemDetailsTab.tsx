@@ -1,11 +1,50 @@
 "use client";
+import { Member } from "@/libs/dto/member/member";
+import { MeLiked } from "@/libs/dto/property/property";
+import {
+  PropertyCollection,
+  PropertyLocation,
+  PropertyStatus,
+} from "@/libs/enums/property.enum";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 
 const tabs: string[] = ["Bid History", "Info", "Provenance"];
 
-export default function ItemDetailsTab(): JSX.Element {
+interface Props {
+  property: {
+    _id: string;
+    propertyCollection: PropertyCollection;
+    propertyStatus: PropertyStatus;
+    propertyLocation: PropertyLocation;
+    propertyAddress: string;
+    propertyTitle: string;
+    propertyPrice: number;
+    propertyRarityScore: number;
+    propertyEditions: number;
+    propertyTraitGroups: number;
+    propertyViews: number;
+    propertyLikes: number;
+    propertyComments: number;
+    propertyRank: number;
+    propertyImages: string[];
+    propertyDesc?: string;
+    propertyBarter: boolean;
+    propertyRent: boolean;
+    memberId: string;
+    soldAt?: Date;
+    deletedAt?: Date;
+    constructedAt?: Date;
+    createdAt: Date;
+    updatedAt: Date;
+    /** from aggregation **/
+    meLiked?: MeLiked[];
+    memberData?: Member;
+  };
+}
+
+export default function ItemDetailsTab({ property }: Props): JSX.Element {
   const [getCurrentTab, setCurrentTab] = useState<number>(0);
 
   // tab handler
@@ -52,7 +91,12 @@ export default function ItemDetailsTab(): JSX.Element {
                         <div className="author-infor">
                           <div className="name">
                             <h6>
-                              <Link href="/authors-2">Mason Woodward</Link>
+                              <Link
+                                href="/authors-2"
+                                onClick={(e) => e.preventDefault()}
+                              >
+                                Mason Woodward
+                              </Link>
                             </h6>
                             <span>place a bid</span>
                           </div>
@@ -85,7 +129,12 @@ export default function ItemDetailsTab(): JSX.Element {
                         <div className="author-infor">
                           <div className="name">
                             <h6>
-                              <Link href="/authors-2">Mason Woodward</Link>
+                              <Link
+                                href="/authors-2"
+                                onClick={(e) => e.preventDefault()}
+                              >
+                                Mason Woodward
+                              </Link>
                             </h6>
                             <span>bid accepted</span>
                           </div>
@@ -118,7 +167,12 @@ export default function ItemDetailsTab(): JSX.Element {
                         <div className="author-infor">
                           <div className="name">
                             <h6>
-                              <Link href="/authors-2">Mason Woodward</Link>
+                              <Link
+                                href="/authors-2"
+                                onClick={(e) => e.preventDefault()}
+                              >
+                                Mason Woodward
+                              </Link>
                             </h6>
                             <span>place a bid</span>
                           </div>
@@ -151,7 +205,12 @@ export default function ItemDetailsTab(): JSX.Element {
                         <div className="author-infor">
                           <div className="name">
                             <h6>
-                              <Link href="/authors-2">Mason Woodward</Link>
+                              <Link
+                                href="/authors-2"
+                                onClick={(e) => e.preventDefault()}
+                              >
+                                Mason Woodward
+                              </Link>
                             </h6>
                             <span>place a bid</span>
                           </div>
@@ -184,7 +243,12 @@ export default function ItemDetailsTab(): JSX.Element {
                         <div className="author-infor">
                           <div className="name">
                             <h6>
-                              <Link href="/authors-2">Mason Woodward</Link>
+                              <Link
+                                href="/authors-2"
+                                onClick={(e) => e.preventDefault()}
+                              >
+                                Mason Woodward
+                              </Link>
                             </h6>
                             <span>place a bid</span>
                           </div>
@@ -217,7 +281,12 @@ export default function ItemDetailsTab(): JSX.Element {
                         <div className="author-infor">
                           <div className="name">
                             <h6>
-                              <Link href="/authors-2">Mason Woodward</Link>
+                              <Link
+                                href="/authors-2"
+                                onClick={(e) => e.preventDefault()}
+                              >
+                                Mason Woodward
+                              </Link>
                             </h6>
                             <span>place a bid</span>
                           </div>
@@ -242,26 +311,39 @@ export default function ItemDetailsTab(): JSX.Element {
                   <div className="content">
                     <div className="client">
                       <div className="sc-author-box style-2">
-                        <div className="author-avatar">
-                          <a>
-                            <Image
-                              height={100}
-                              width={100}
-                              src="/assets/images/avatar/avt-3.webp"
-                              alt=""
-                              className="avatar"
-                            />
-                          </a>
-                          <div className="badge" />
-                        </div>
                         <div className="author-infor">
                           <div className="name">
-                            <h6>
-                              <Link href="/authors-2">Mason Woodward</Link>
-                            </h6>
-                            <span>place a bid</span>
+                            <h6>Name:</h6>
+                            <span>{property?.propertyTitle}</span>
                           </div>
-                          <span className="time">8 hours ago</span>
+                          <div className="name">
+                            <h6>Adress:</h6>
+                            <span>{property?.propertyAddress}</span>
+                          </div>
+                          <div className="name">
+                            <h6>Location:</h6>
+                            <span>{property?.propertyLocation}</span>
+                          </div>
+                          <div className="name">
+                            <h6>Collection:</h6>
+                            <span>{property?.propertyCollection}</span>
+                          </div>
+                          <div className="name">
+                            <h6>Price:</h6>
+                            <span>${property?.propertyPrice}</span>
+                          </div>
+                          <div className="name">
+                            <h6>Rarity Score:</h6>
+                            <span>{property?.propertyRarityScore}</span>
+                          </div>
+                          <div className="name">
+                            <h6>Editions:</h6>
+                            <span>{property?.propertyEditions}</span>
+                          </div>
+                          <div className="name">
+                            <h6>Trait Groups:</h6>
+                            <span>{property?.propertyTraitGroups}</span>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -275,16 +357,15 @@ export default function ItemDetailsTab(): JSX.Element {
             <div className="content-inner tab-content">
               <div className="provenance">
                 <p>
-                  Lorem Ipsum is simply dummy text of the printing and
-                  typesetting industry. Lorem Ipsum has been the industry's
-                  standard dummy text ever since the 1500s, when an unknown
-                  printer took a galley of type and scrambled it to make a type
-                  specimen book. It has survived not only five centuries, but
-                  also the leap into electronic typesetting, remaining
-                  essentially unchanged. It was popularised in the 1960s with
-                  the release of Letraset sheets containing Lorem Ipsum
-                  passages, and more recently with desktop publishing software
-                  like Aldus PageMaker including versions of Lorem Ipsum.
+                  This NFT, titled ‘{property?.propertyTitle}’, originates from
+                  the smart contract at address
+                  {property?.propertyAddress} on the{" "}
+                  {property?.propertyCollection} blockchain. It was minted by
+                  the original creator and recorded permanently on-chain,
+                  ensuring its authenticity and ownership history. Each transfer
+                  and transaction related to this NFT can be transparently
+                  verified through the blockchain ledger, guaranteeing its
+                  unique provenance.
                 </p>
               </div>
             </div>
