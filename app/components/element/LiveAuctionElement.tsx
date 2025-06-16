@@ -17,8 +17,8 @@ export default function LiveAuctionElement(): JSX.Element {
             clickable: true,
           }}
           navigation={{
-            prevEl: ".live-auction-next",
-            nextEl: ".live-auction-right",
+            prevEl: ".live-auction-right",
+            nextEl: ".live-auction-next",
           }}
           modules={[Pagination, Navigation]}
           className="mySwiper swiper-container show-shadow carousel pad-t-17 auctions"
