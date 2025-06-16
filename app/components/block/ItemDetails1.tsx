@@ -4,7 +4,11 @@ import ItemDetailsTab from "../element/ItemDetailsTab";
 import Link from "next/link";
 import Countdown from "react-countdown";
 import { useMutation, useQuery, useReactiveVar } from "@apollo/client";
-import { selectedPropertyAuthorVar, userVar } from "@/apollo/store";
+import {
+  selectedPropertyAuthorVar,
+  selectedPropertyVar,
+  userVar,
+} from "@/apollo/store";
 import { GET_PROPERTY } from "@/apollo/user/query";
 import { T } from "@/libs/types/common";
 import { useState } from "react";
@@ -41,7 +45,7 @@ export default function ItemDetails1() {
       );
     }
   };
-  const selectedPropertyAuthor = useReactiveVar(selectedPropertyAuthorVar);
+  const selectedProperty = useReactiveVar(selectedPropertyVar);
   const [propertyData, setPropertyData] = useState<Property | null>(null);
   const imagePath: string = propertyData?.propertyImages[0]
     ? `${REACT_APP_API_URL}/${propertyData?.propertyImages[0]}`
@@ -58,8 +62,8 @@ export default function ItemDetails1() {
     refetch: getPropertyRefetch,
   } = useQuery(GET_PROPERTY, {
     fetchPolicy: "network-only",
-    variables: { input: selectedPropertyAuthor },
-    skip: !selectedPropertyAuthor,
+    variables: { input: selectedProperty },
+    skip: !selectedProperty,
     notifyOnNetworkStatusChange: true,
     onCompleted: (data: T) => {
       setPropertyData(data?.getProperty);
@@ -74,7 +78,7 @@ export default function ItemDetails1() {
 
       await likeTargetProperty({ variables: { input: id } });
 
-      await getPropertyRefetch({ input: selectedPropertyAuthor });
+      await getPropertyRefetch({ input: selectedProperty });
 
       await sweetTopSmallSuccessAlert("success", 800);
     } catch (err: any) {
@@ -102,6 +106,7 @@ export default function ItemDetails1() {
                   <div className="meta-item">
                     <div className="left">
                       <span className="viewed eye">225</span>
+
                       <button
                         onClick={() => {
                           propertyData?._id &&
@@ -138,7 +143,20 @@ export default function ItemDetails1() {
                         <div className="info">
                           <span>Owned By</span>
                           <h6>
-                            <Link href="/authors-2">Ralph Garraway</Link>
+                            <Link
+                              href="/authors-2"
+                              onClick={() => {
+                                selectedPropertyAuthorVar(
+                                  propertyData?.memberId
+                                );
+                                localStorage.setItem(
+                                  "selectedPropertyAuthor",
+                                  propertyData?.memberId ?? ""
+                                );
+                              }}
+                            >
+                              {propertyData?.memberData?.memberNick}
+                            </Link>
                           </h6>
                         </div>
                       </div>

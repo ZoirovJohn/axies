@@ -32,8 +32,18 @@ function getInitialSelectedPropertyAuthor(): string | undefined {
   return undefined;
 }
 
+function getInitialSelectedProperty(): string | undefined {
+  if (typeof window !== "undefined") {
+    return localStorage.getItem("selectedProperty") ?? undefined;
+  }
+  return undefined;
+}
+
 // @ts-ignore
 export const selectedPropertyAuthorVar = makeVar<string | undefined>(
   getInitialSelectedPropertyAuthor()
+);
+export const selectedPropertyVar = makeVar<string | undefined>(
+  getInitialSelectedProperty()
 );
 export const socketVar = makeVar<WebSocket | undefined>(undefined);

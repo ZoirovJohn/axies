@@ -1,5 +1,5 @@
 "use client";
-import { selectedPropertyAuthorVar, userVar } from "@/apollo/store";
+import { selectedPropertyAuthorVar, selectedPropertyVar, userVar } from "@/apollo/store";
 import { REACT_APP_API_URL } from "@/app/config";
 import { Member } from "@/libs/dto/member/member";
 import { MeLiked } from "@/libs/dto/property/property";
@@ -11,7 +11,6 @@ import {
 import { useReactiveVar } from "@apollo/client";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
 
 interface Props {
   property: {
@@ -62,8 +61,8 @@ export default function ProductCard3({
           <Link
             href="/item-details-1"
             onClick={() => {
-              selectedPropertyAuthorVar(property._id);
-              localStorage.setItem("selectedPropertyAuthor", property._id);
+              selectedPropertyVar(property._id);
+              localStorage.setItem("selectedProperty", property._id);
             }}
           >
             <Image height={500} width={500} src={imagePath} alt="Image" />
@@ -87,8 +86,8 @@ export default function ProductCard3({
             <Link
               href="/item-details-1"
               onClick={() => {
-                selectedPropertyAuthorVar(property._id);
-                localStorage.setItem("selectedPropertyAuthor", property._id);
+                selectedPropertyVar(property._id);
+                localStorage.setItem("selectedProperty", property._id);
               }}
             >
               {property.propertyTitle}
