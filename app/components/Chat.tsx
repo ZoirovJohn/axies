@@ -143,7 +143,11 @@ const Chat = () => {
     <Stack className="chatting">
       {openButton ? (
         <button className="chat-button" onClick={handleOpenChat}>
-          {open ? <CloseFullscreenIcon /> : <MarkChatUnreadIcon />}
+          {open ? (
+            <CloseFullscreenIcon style={{ color: "rgb(81, 66, 252)" }} />
+          ) : (
+            <MarkChatUnreadIcon style={{ color: "rgb(81, 66, 252)" }} />
+          )}
         </button>
       ) : null}
       <Stack className={`chat-frame ${open ? "open" : ""}`}>
