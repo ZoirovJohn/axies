@@ -100,9 +100,9 @@ const Chat = () => {
     return () => clearTimeout(timeoutId);
   }, []);
 
-  useEffect(() => {
-    setOpenButton(false);
-  }, [pathName]);
+  // useEffect(() => {
+  //   setOpenButton(false);
+  // }, [pathName]);
 
   /** HANDLERS **/
   const handleOpenChat = () => {
@@ -170,36 +170,41 @@ const Chat = () => {
               >
                 <div className={"welcome"}>Welcome to Live chat!</div>
               </Box>
-              {messagesList.map((ele: MessagePayload) => {
+              {messagesList.map((ele: MessagePayload, index) => {
                 const { text, memberData } = ele;
                 const memberImage = memberData?.memberImage
                   ? `${REACT_APP_API_URL}/${memberData.memberImage}`
                   : `/img/profile/defaulUser.svg`;
 
-                return memberData?._id === user?._id ? (
-                  <Box
-                    component={"div"}
-                    flexDirection={"row"}
-                    style={{ display: "flex" }}
-                    alignItems={"flex-end"}
-                    justifyContent={"flex-end"}
-                    sx={{ m: "10px 0px" }}
-                  >
-                    <div className={"msg-right"}>{text}</div>
-                  </Box>
-                ) : (
-                  <Box
-                    flexDirection={"row"}
-                    style={{ display: "flex" }}
-                    sx={{ m: "10px 0px" }}
-                    component={"div"}
-                  >
-                    <Avatar alt={"thomas"} src={memberImage} />
-                    <div className={"msg-left"}>{text}</div>
-                  </Box>
-                );
+                if (memberData?._id === user?._id) {
+                  return (
+                    <Box
+                      key={ele.text + index}
+                      component={"div"}
+                      flexDirection={"row"}
+                      style={{ display: "flex" }}
+                      alignItems={"flex-end"}
+                      justifyContent={"flex-end"}
+                      sx={{ m: "10px 0px" }}
+                    >
+                      <div className={"msg-right"}>{text}</div>
+                    </Box>
+                  );
+                } else {
+                  return (
+                    <Box
+                      key={ele.text + index}
+                      flexDirection={"row"}
+                      style={{ display: "flex" }}
+                      sx={{ m: "10px 0px" }}
+                      component={"div"}
+                    >
+                      <Avatar alt={"thomas"} src={memberImage} />
+                      <div className={"msg-left"}>{text}</div>
+                    </Box>
+                  );
+                }
               })}
-
               <></>
             </Stack>
           </ScrollableFeed>
