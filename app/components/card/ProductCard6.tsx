@@ -13,7 +13,11 @@ import Link from "next/link";
 import { useState } from "react";
 import ShoppingBasketIcon from "@mui/icons-material/ShoppingBasket";
 import { useReactiveVar } from "@apollo/client";
-import { selectedPropertyAuthorVar, userVar } from "@/apollo/store";
+import {
+  selectedPropertyAuthorVar,
+  selectedPropertyVar,
+  userVar,
+} from "@/apollo/store";
 
 interface Props {
   property: {
@@ -62,7 +66,13 @@ export default function ProductCard6({
     <>
       <div className="sc-card-product explode style2 mg-bt">
         <div className="card-media">
-          <Link href="/item-details-1">
+          <Link
+            href="/item-details-1"
+            onClick={() => {
+              selectedPropertyVar(property._id);
+              localStorage.setItem("selectedProperty", property._id);
+            }}
+          >
             <Image height={500} width={500} src={imagePath} alt="Image" />
           </Link>
 
@@ -81,7 +91,15 @@ export default function ProductCard6({
         </div>
         <div className="card-title">
           <h5>
-            <Link href="/item-details-1">{property.propertyTitle}</Link>
+            <Link
+              href="/item-details-1"
+              onClick={() => {
+                selectedPropertyVar(property._id);
+                localStorage.setItem("selectedProperty", property._id);
+              }}
+            >
+              {property.propertyTitle}
+            </Link>
           </h5>
         </div>
         <div className="meta-info">

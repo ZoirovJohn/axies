@@ -14,7 +14,7 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
-    "types": [], // ✅ Add this line
+    "types": [],
     "plugins": [
       {
         "name": "next"
