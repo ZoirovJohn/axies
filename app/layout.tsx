@@ -6,8 +6,11 @@ import Footer from "./components/footer";
 import BackToTop from "./components/button/BackToTop";
 import "./../public/assets/css/style.css";
 import MobileNavigation from "./components/header/MobileNavigation";
-import { usePathname } from "next/navigation";
+import { usePathname } from "next/navigation"; // ✅ CORRECT HOOK
 import { useEffect, useState } from "react";
+import Chat from "./components/Chat";
+import { userVar } from "@/apollo/store";
+import { useReactiveVar } from "@apollo/client";
 
 // Fonts
 const rubik = Rubik({
@@ -27,18 +30,14 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const path = usePathname();
+  const path = usePathname(); // ✅ FIXED
   const [lang, setLang] = useState("kr");
+  const user = useReactiveVar(userVar);
 
   useEffect(() => {
-    console.log("Current locale:", localStorage.getItem("locale"));
-
     const storedLang = localStorage.getItem("locale") || "kr";
-    console.log(`Stored language: ${storedLang}`);
-    
     setLang(storedLang);
 
-    // Dynamically load Bootstrap
     import("bootstrap").then(() => {
       console.log("Bootstrap loaded on the client-side");
     });
@@ -53,7 +52,8 @@ export default function RootLayout({
               <Header />
               <MobileNavigation />
               {children}
-              {path !== "/home-8" && <Footer />}
+              {user?.memberNick && <Chat />} {/* ✅ SAFE */}
+              {path !== "/home-8" && <Footer />} {/* ✅ SAFE */}
             </div>
           </div>
           <BackToTop />
