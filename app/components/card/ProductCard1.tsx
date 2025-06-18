@@ -80,7 +80,12 @@ export default function ProductCard1({ data }: Props): JSX.Element {
             </div>
             <div className="card-title">
               <h5 className="style2">
-                <Link href="/item-details-1">{data.title}</Link>
+                <Link
+                  href="/item-details-1"
+                  onClick={(e) => e.preventDefault()}
+                >
+                  {data.title}
+                </Link>
               </h5>
               <div className="tags">{data.tag}</div>
             </div>
@@ -97,7 +102,9 @@ export default function ProductCard1({ data }: Props): JSX.Element {
                 <div className="info">
                   <span>{data.author.status}</span>
                   <h6>
-                    <Link href="/authors-2">{data.author.name}</Link>
+                    <Link href="/authors-2" onClick={(e) => e.preventDefault()}>
+                      {data.author.name}
+                    </Link>
                   </h6>
                 </div>
               </div>
