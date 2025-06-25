@@ -21,6 +21,7 @@ import { sweetErrorHandling } from "@/app/sweetAlert";
 import { MemberUpdate } from "@/libs/dto/member/member.update";
 import { MemberPanelList } from "@/app/components/admin/users/MemberList";
 import withAdminLayout from "@/app/components/layout/adminLayout";
+import searchIcon from "../../../public/assets/images/icon/search_icon.png";
 
 const AdminUsers: NextPage = ({ initialInquiry, ...props }: any) => {
   const [anchorEl, setAnchorEl] = useState<[] | HTMLElement[]>([]);
@@ -231,7 +232,7 @@ const AdminUsers: NextPage = ({ initialInquiry, ...props }: any) => {
                 <OutlinedInput
                   value={searchText}
                   onChange={(e) => textHandler(e.target.value)}
-                  sx={{ width: "100%" }}
+                  sx={{ width: "100%"}}
                   className="search"
                   placeholder="Search user name"
                   onKeyDown={(event) => {
@@ -262,7 +263,7 @@ const AdminUsers: NextPage = ({ initialInquiry, ...props }: any) => {
                         onClick={searchTextHandler}
                       >
                         <img
-                          src="/img/icons/search_icon.png"
+                          src={searchIcon.src}
                           alt="searchIcon"
                         />
                       </InputAdornment>

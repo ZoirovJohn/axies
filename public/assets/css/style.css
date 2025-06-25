@@ -4472,15 +4472,15 @@ a {
   border-bottom: 2px solid #e92c28;
 }
 
-#pc-wrap #bunker .search-area {
+#pc-wrap .search-area {
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
 }
-#pc-wrap #bunker .search-area img {
+#pc-wrap .search-area img {
   cursor: pointer;
 }
-#pc-wrap #bunker .search-area .MuiOutlinedInput-root {
+#pc-wrap .search-area .MuiOutlinedInput-root {
   height: 48px;
   background: #fff;
   font-size: 14px;

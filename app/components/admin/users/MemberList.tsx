@@ -153,7 +153,12 @@ export const MemberPanelList = (props: MemberPanelListType) => {
     <Stack>
       <TableContainer>
         <Table
-          sx={{ minWidth: 750 }}
+          sx={{
+            minWidth: 750,
+            "& th, & td": {
+              border: "1px solid white",
+            },
+          }}
           aria-labelledby="tableTitle"
           size={"medium"}
         >
