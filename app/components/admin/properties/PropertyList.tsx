@@ -56,7 +56,7 @@ const headCells: readonly HeadCell[] = [
     id: "price",
     numeric: false,
     disablePadding: false,
-    label: "PRICE",
+    label: "PRICE(ETH)",
   },
   {
     id: "agent",
