@@ -59,6 +59,10 @@ export default function CreateItem(): JSX.Element {
     setImage(file);
   };
 
+  useEffect(() => {
+    
+  }, []);
+
   return (
     <>
       <div className="tf-create-item tf-section">

@@ -15,7 +15,7 @@ const item = {
             path: "/create-item",
         },
         {
-            name: "Create Item",
+            name: "Currently impossible to create a NFT",
         },
     ],
 };
