@@ -45,9 +45,6 @@ const AdminMenuList = (props: any) => {
       case "properties":
         setClickMenu(["Properties"]);
         break;
-      case "community":
-        setClickMenu(["Community"]);
-        break;
       case "cs":
         setClickMenu(["Cs"]);
         break;
@@ -101,11 +98,6 @@ const AdminMenuList = (props: any) => {
       on_click: () => subMenuChangeHandler("Properties"),
     },
     {
-      title: "Community",
-      icon: <ChatsCircle size={20} color="#bdbdbd" weight="fill" />,
-      on_click: () => subMenuChangeHandler("Community"),
-    },
-    {
       title: "Cs",
       icon: <Headset size={20} color="#bdbdbd" weight="fill" />,
       on_click: () => subMenuChangeHandler("Cs"),
@@ -115,7 +107,6 @@ const AdminMenuList = (props: any) => {
   const sub_menu_set: any = {
     Users: [{ title: "List", url: "/admin/users" }],
     Properties: [{ title: "List", url: "/admin/properties" }],
-    Community: [{ title: "List", url: "/admin/community" }],
     Cs: [
       { title: "FAQ", url: "/admin/cs/faq" },
       { title: "Notice", url: "/admin/cs/notice" },

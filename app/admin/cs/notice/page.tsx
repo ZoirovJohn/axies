@@ -1,6 +1,6 @@
+"use client";
 import React, { useState } from "react";
 import type { NextPage } from "next";
-// import withAdminLayout from '../../../libs/components/layout/LayoutAdmin';
 import { Box, Button, InputAdornment, Stack } from "@mui/material";
 import { List, ListItem } from "@mui/material";
 import Typography from "@mui/material/Typography";
@@ -12,9 +12,11 @@ import OutlinedInput from "@mui/material/OutlinedInput";
 import TablePagination from "@mui/material/TablePagination";
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
 import CancelRoundedIcon from "@mui/icons-material/CancelRounded";
-import { FaqArticlesPanelList } from "@/app/components/admin/cs/FaqList";
+import { NoticeList } from "@/app/components/admin/cs/NoticeList";
+import withAdminLayout from "@/app/components/layout/adminLayout";
+import searchIcon from "../../../../public/assets/images/icon/search_icon.png";
 
-const FaqArticles: NextPage = (props: any) => {
+const AdminNotice: NextPage = (props: any) => {
   const [anchorEl, setAnchorEl] = useState<[] | HTMLElement[]>([]);
 
   /** APOLLO REQUESTS **/
@@ -25,7 +27,7 @@ const FaqArticles: NextPage = (props: any) => {
     // @ts-ignore
     <Box component={"div"} className={"content"}>
       <Box component={"div"} className={"title flex_space"}>
-        <Typography variant={"h2"}>FAQ Management</Typography>
+        <Typography variant={"h2"}>Notice Management</Typography>
         <Button
           className="btn_add"
           variant={"contained"}
@@ -94,7 +96,7 @@ const FaqArticles: NextPage = (props: any) => {
                       {true && <CancelRoundedIcon onClick={() => {}} />}
                       <InputAdornment position="end" onClick={() => {}}>
                         <img
-                          src="/img/icons/search_icon.png"
+                          src={searchIcon.src}
                           alt={"searchIcon"}
                         />
                       </InputAdornment>
@@ -104,7 +106,7 @@ const FaqArticles: NextPage = (props: any) => {
               </Stack>
               <Divider />
             </Box>
-            <FaqArticlesPanelList
+            <NoticeList
               // dense={dense}
               // membersData={membersData}
               // searchMembers={searchMembers}
@@ -130,4 +132,4 @@ const FaqArticles: NextPage = (props: any) => {
   );
 };
 
-// export default withAdminLayout(FaqArticles);
+export default withAdminLayout(AdminNotice);

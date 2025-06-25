@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import {
   TableCell,
@@ -213,31 +213,52 @@ export const NoticeList = (props: NoticeListType) => {
     <Stack>
       <TableContainer>
         <Table
-          sx={{ minWidth: 750 }}
+          sx={{
+            minWidth: 750,
+            "& th, & td": {
+              border: "1px solid white",
+            },
+          }}
           aria-labelledby="tableTitle"
           size={dense ? "small" : "medium"}
         >
           {/*@ts-ignore*/}
           <EnhancedTableToolbar />
           <TableBody>
-            {[1, 2, 3, 4, 5].map((ele: any, index: number) => {
-              const member_image = "/img/profile/defaultUser.svg";
+            {(membersData || []).map((member: any, index: number) => {
+              const member_image = member?.mb_image || "/img/profile/defaultUser.svg";
 
               return (
                 <TableRow
                   hover
-                  key={"member._id"}
+                  key={member?._id || index}
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 >
-                  <TableCell padding="checkbox">
+                  <TableCell padding="checkbox" sx={{ fontSize: "11px" }}>
                     <Checkbox color="primary" />
                   </TableCell>
-                  <TableCell align="left">mb id</TableCell>
-                  <TableCell align="left">member.mb_full_name</TableCell>
-                  <TableCell align="left">member.mb_phone</TableCell>
-                  <TableCell align="left" className={"name"}>
+                  <TableCell align="left" sx={{ fontSize: "11px" }}>
+                    {member?.mb_id || ""}
+                  </TableCell>
+                  <TableCell align="left" sx={{ fontSize: "11px" }}>
+                    {member?.mb_full_name || ""}
+                  </TableCell>
+                  <TableCell align="left" sx={{ fontSize: "11px" }}>
+                    {member?.mb_phone || ""}
+                  </TableCell>
+                  <TableCell
+                    align="left"
+                    className={"name"}
+                    sx={{ fontSize: "11px" }}
+                  >
                     <Stack direction={"row"}>
-                      <Link href={`/admin/users/detail?mb_id=$'{member._id'}`}>
+                      <Link
+                        href={
+                          member?._id
+                            ? `/admin/users/detail?mb_id=${member._id}`
+                            : `/admin/users/detail`
+                        }
+                      >
                         <div>
                           <Avatar
                             alt="Remy Sharp"
@@ -246,13 +267,17 @@ export const NoticeList = (props: NoticeListType) => {
                           />
                         </div>
                       </Link>
-                      <Link href={`/admin/users/detail?mb_id=${"member._id"}`}>
-                        <div>member.mb_nick</div>
+                      <Link href={`/admin/users/detail?mb_id=${member?._id || ""}`}>
+                        <div>{member?.mb_nick || ""}</div>
                       </Link>
                     </Stack>
                   </TableCell>
-                  <TableCell align="left">member.mb_phone</TableCell>
-                  <TableCell align="left">member.mb_phone</TableCell>
+                  <TableCell align="left" sx={{ fontSize: "11px" }}>
+                    {member?.mb_phone || ""}
+                  </TableCell>
+                  <TableCell align="left" sx={{ fontSize: "11px" }}>
+                    {member?.mb_phone || ""}
+                  </TableCell>
                   <TableCell align="right">
                     <Tooltip title={"delete"}>
                       <IconButton>
@@ -262,7 +287,7 @@ export const NoticeList = (props: NoticeListType) => {
                     <Tooltip title="edit">
                       <IconButton
                         onClick={() =>
-                          router.push(`/admin/cs/notice_create?id=notice._id`)
+                          router.push(`/admin/cs/notice_create?id=${member?._id || ""}`)
                         }
                       >
                         <NotePencil size={24} weight="fill" />

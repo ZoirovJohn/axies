@@ -1,5 +1,6 @@
+"use client";
 import React from "react";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import {
   TableCell,
@@ -141,7 +142,12 @@ export const FaqArticlesPanelList = (props: FaqArticlesPanelListType) => {
     <Stack>
       <TableContainer>
         <Table
-          sx={{ minWidth: 750 }}
+          sx={{
+            minWidth: 750,
+            "& th, & td": {
+              border: "1px solid white",
+            },
+          }}
           aria-labelledby="tableTitle"
           size={dense ? "small" : "medium"}
         >
@@ -149,6 +155,14 @@ export const FaqArticlesPanelList = (props: FaqArticlesPanelListType) => {
           <EnhancedTableHead />
           <TableBody>
             {[1, 2, 3, 4, 5].map((ele: any, index: number) => {
+              // Mock member object for demonstration; replace with real data as needed
+              const member = {
+                _id: `mock_id_${index}`,
+                mb_full_name: `Full Name ${index}`,
+                mb_nick: `Nick${index}`,
+                mb_phone: `123-456-789${index}`,
+                mb_type: index % 2 === 0 ? "MENTOR" : "USER",
+              };
               const member_image = "/img/profile/defaultUser.svg";
 
               let status_class_name = "";
@@ -156,14 +170,28 @@ export const FaqArticlesPanelList = (props: FaqArticlesPanelListType) => {
               return (
                 <TableRow
                   hover
-                  key={"member._id"}
+                  key={member._id}
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 >
-                  <TableCell align="left">mb id</TableCell>
-                  <TableCell align="left">member.mb_full_name</TableCell>
-                  <TableCell align="left" className={"name"}>
+                  <TableCell align="left" sx={{ fontSize: "11px" }}>
+                    {member._id}
+                  </TableCell>
+                  <TableCell align="left" sx={{ fontSize: "10px" }}>
+                    {member.mb_full_name}
+                  </TableCell>
+                  <TableCell
+                    align="left"
+                    className={"name"}
+                    sx={{ fontSize: "11px" }}
+                  >
                     <Stack direction={"row"}>
-                      <Link href={`/admin/users/detail?mb_id=$'{member._id'}`}>
+                      <Link
+                        href={
+                          member?._id
+                            ? `/admin/users/detail?mb_id=${member._id}`
+                            : `/admin/users/detail`
+                        }
+                      >
                         <div>
                           <Avatar
                             alt="Remy Sharp"
@@ -172,18 +200,20 @@ export const FaqArticlesPanelList = (props: FaqArticlesPanelListType) => {
                           />
                         </div>
                       </Link>
-                      <Link href={`/admin/users/detail?mb_id=${"member._id"}`}>
-                        <div>member.mb_nick</div>
+                      <Link href={`/admin/users/detail?mb_id=${member._id}`}>
+                        <div>{member.mb_nick}</div>
                       </Link>
                     </Stack>
                   </TableCell>
-                  <TableCell align="left">member.mb_phone</TableCell>
-                  <TableCell align="center">
+                  <TableCell align="left" sx={{ fontSize: "14px" }}>
+                    {member.mb_phone}
+                  </TableCell>
+                  <TableCell align="center" sx={{ fontSize: "14px" }}>
                     <Button
                       onClick={(e: any) => handleMenuIconClick(e, index)}
                       className={"badge success"}
                     >
-                      member.mb_type
+                      {member.mb_type}
                     </Button>
 
                     <Menu
@@ -201,7 +231,7 @@ export const FaqArticlesPanelList = (props: FaqArticlesPanelListType) => {
                         //@ts-ignore
                         onClick={(e) =>
                           generateMentorTypeHandle(
-                            "member._id",
+                            member._id,
                             "mentor",
                             "originate"
                           )
@@ -214,11 +244,7 @@ export const FaqArticlesPanelList = (props: FaqArticlesPanelListType) => {
                       <MenuItem
                         //@ts-ignore
                         onClick={(e) =>
-                          generateMentorTypeHandle(
-                            "member._id",
-                            "user",
-                            "remove"
-                          )
+                          generateMentorTypeHandle(member._id, "user", "remove")
                         }
                       >
                         <Typography variant={"subtitle1"} component={"span"}>
