@@ -6,7 +6,7 @@ import Footer from "./components/footer";
 import BackToTop from "./components/button/BackToTop";
 import "./../public/assets/css/style.css";
 import MobileNavigation from "./components/header/MobileNavigation";
-import { usePathname } from "next/navigation"; // ✅ CORRECT HOOK
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import Chat from "./components/Chat";
 import { userVar } from "@/apollo/store";
@@ -30,9 +30,10 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const path = usePathname(); // ✅ FIXED
   const [lang, setLang] = useState("kr");
   const user = useReactiveVar(userVar);
+  const path = usePathname();
+  const isAdminRoute = path?.startsWith("/admin");
 
   useEffect(() => {
     const storedLang = localStorage.getItem("locale") || "kr";
@@ -44,19 +45,19 @@ export default function RootLayout({
   }, []);
 
   return (
-    <html lang={lang}>
-      <body className={`body ${rubik.className} ${urbanist.className}`}>
+    <html lang="kr">
+      <body>
         <Providers>
+          {!isAdminRoute && <Header />}
+          {!isAdminRoute && <MobileNavigation />}
           <div id="wrapper">
             <div id="page" className="clearfix">
-              <Header />
-              <MobileNavigation />
               {children}
-              {user?.memberNick && <Chat />} {/* ✅ SAFE */}
-              {path !== "/home-8" && <Footer />} {/* ✅ SAFE */}
             </div>
           </div>
-          <BackToTop />
+          {!isAdminRoute && user?.memberNick && <Chat />}
+          {!isAdminRoute && <Footer />}
+          {!isAdminRoute && <BackToTop />}
         </Providers>
       </body>
     </html>

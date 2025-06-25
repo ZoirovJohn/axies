@@ -119,10 +119,8 @@ export default function Header(): JSX.Element {
       <header
         id="header_main"
         className={
-          // if the page route is /home-8 then the header navigation will be position-fixed
           path !== "/home-8"
-            ? // if the page route is not /home-8
-              `header_1 js-header style  ${
+            ? `header_1 js-header style  ${
                 path === "/text-type" ||
                 path === "/text-scroll" ||
                 path === "/home-5" ||
@@ -132,8 +130,7 @@ export default function Header(): JSX.Element {
                   ? "header_2 style2"
                   : ""
               } ${isSticky1 ? "is-fixed" : ""} ${isSticky2 ? "is-small" : ""}`
-            : // if the page route is /home-8
-              `header_1 header_2 style2 style3 js-header position-fixed`
+            : `header_1 header_2 style2 style3 js-header position-fixed`
         }
       >
         <div className="ibthemes-container">

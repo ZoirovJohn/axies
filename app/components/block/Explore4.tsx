@@ -1,12 +1,10 @@
 "use client";
-import { product1 } from "@/data/product";
 import Explore4Slidebar from "../sidebar/Explore4Slidebar";
 import ProductCard6 from "../card/ProductCard6";
-import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import { PropertiesInquiry } from "@/libs/dto/property/property.input";
 import { useSearchParams } from "next/navigation";
-import { Direction, Message } from "@/libs/enums/common.enum";
+import { Message } from "@/libs/enums/common.enum";
 import { useMutation, useQuery } from "@apollo/client";
 import { GET_PROPERTIES } from "@/apollo/user/query";
 import { T } from "@/libs/types/common";
