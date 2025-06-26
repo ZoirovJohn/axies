@@ -101,5 +101,7 @@
   "Authors2HasNotCreated": "hali hech qanday ob’ekt yaratmagan",
   "Authors2Follow": "Obuna bo‘lish",
   "Authors2UnFollow": "Obunani bekor qilish",
-  "Authors2NoProperties": "Ob’ektlar topilmadi"
+  "Authors2NoProperties": "Ob’ektlar topilmadi",
+  "LightModeAvailable": "Yorug‘ rejim mavjud",
+  "DarkModeAvailable": "Qorong‘i rejim mavjud"
 }

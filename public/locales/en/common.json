@@ -101,5 +101,7 @@
   "Authors2HasNotCreated": "has not created any properties yet",
   "Authors2Follow": "Follow",
   "Authors2UnFollow": "Unfollow",
-  "Authors2NoProperties": "No Properties Found"
+  "Authors2NoProperties": "No Properties Found",
+  "LightModeAvailable": "Light Mode Available",
+  "DarkModeAvailable": "Dark Mode Available"
 }

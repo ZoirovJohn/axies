@@ -101,5 +101,7 @@
   "Authors2HasNotCreated": "пока не создал(а) ни одного объекта",
   "Authors2Follow": "Подписаться",
   "Authors2UnFollow": "Отписаться",
-  "Authors2NoProperties": "Объекты не найдены"
+  "Authors2NoProperties": "Объекты не найдены",
+  "LightModeAvailable": "Светлый режим доступен",
+  "DarkModeAvailable": "Тёмный режим доступен"
 }

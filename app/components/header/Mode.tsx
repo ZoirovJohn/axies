@@ -2,9 +2,11 @@
 import useDarkModeCheck from "@/hooks/useDarkModeCheck";
 import { useTheme } from "next-themes";
 import Image from "next/image";
+import { useTranslation } from "react-i18next";
 
 export default function Mode(): JSX.Element {
   const { setTheme } = useTheme();
+  const { t } = useTranslation("common");
 
   // is dark hook
   const isDark = useDarkModeCheck();
@@ -21,9 +23,7 @@ export default function Mode(): JSX.Element {
   return (
     <>
       <div className="mode_switcher">
-        <h6>
-          Dark mode <strong>Available</strong>
-        </h6>
+        <h6>{isDark ? t("LightModeAvailable") : t("DarkModeAvailable")}</h6>
         <a
           onClick={toggleTheme}
           className={`d-flex align-items-center ${
