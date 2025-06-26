@@ -3,8 +3,10 @@ import { logIn } from "@/app/(auth)";
 import { sweetMixinErrorAlert } from "@/app/sweetAlert";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 export default function Login(): JSX.Element {
+  const { t } = useTranslation("common");
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -44,10 +46,10 @@ export default function Login(): JSX.Element {
         <div className="ibthemes-container">
           <div className="row">
             <div className="col-12">
-              <h2 className="tf-title-heading ct style-1">Login To NFTs</h2>
+              <h2 className="tf-title-heading ct style-1">{t("LoginToNft")}</h2>
               <div className="flat-form box-login-social">
                 <div className="box-title-login">
-                  <h5>Login with social</h5>
+                  <h5>{t("LoginWithSocial")}</h5>
                 </div>
                 <ul>
                   <li>
@@ -66,7 +68,7 @@ export default function Login(): JSX.Element {
               </div>
               <div className="flat-form box-login-email">
                 <div className="box-title-login">
-                  <h5>Or login with email</h5>
+                  <h5>{t("LoginWithEmail")}</h5>
                 </div>
                 <div className="form-inner">
                   <form
@@ -84,7 +86,7 @@ export default function Login(): JSX.Element {
                       aria-required="true"
                       required
                       type="text"
-                      placeholder="Your Full Name"
+                      placeholder={t("LoginWithEmail") ?? "Your Name"}
                       onChange={(e) => handleInput("nick", e.target.value)}
                     />
                     <input
@@ -93,21 +95,21 @@ export default function Login(): JSX.Element {
                       tabIndex={3}
                       aria-required="true"
                       type="text"
-                      placeholder="Set Your Password"
+                      placeholder={t("LoginPassword") ?? "Set Your Password"}
                       required
                       onChange={(e) => handleInput("password", e.target.value)}
                     />
 
                     <div className="row-form style-1">
                       <label>
-                        Remember me
+                        {t("LoginRemember")}
                         <input type="checkbox" />
                         <span className="btn-checkbox" />
                       </label>
-                      <a className="forgot-pass">Forgot Password ?</a>
+                      <a className="forgot-pass">{t("LoginForgot")}</a>
                     </div>
                     <button className="submit" type="submit">
-                      Login
+                      {t("Login")}
                     </button>
                   </form>
                 </div>
@@ -118,7 +120,7 @@ export default function Login(): JSX.Element {
                     fontWeight: "normal",
                   }}
                 >
-                  Haven't you registered yet?
+                  {t("LoginNotRegistered")}
                   <a
                     href="/signup"
                     style={{
@@ -128,7 +130,7 @@ export default function Login(): JSX.Element {
                       marginLeft: "5px",
                     }}
                   >
-                    Signup
+                    {t("Sign Up")}
                   </a>
                 </h5>
               </div>

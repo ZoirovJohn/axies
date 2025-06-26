@@ -6,9 +6,11 @@ import Link from "next/link";
 import { useReactiveVar } from "@apollo/client";
 import { userVar } from "@/apollo/store";
 import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 
 export default function LiveAuction4(): JSX.Element {
   const authMember = useReactiveVar(userVar);
+  const { t } = useTranslation("common");
 
   useEffect(() => {
     if (!authMember?.memberNick) {
@@ -27,7 +29,9 @@ export default function LiveAuction4(): JSX.Element {
           <div className="row">
             <div className="col-12">
               <div className="top">
-                <h2 className="tf-title-heading style-1 ct">Live Auctions</h2>
+                <h2 className="tf-title-heading style-1 ct">
+                  {t("Live Auctions")}
+                </h2>
               </div>
             </div>
             {product1.slice(0, 8).map((item) => (
@@ -42,7 +46,7 @@ export default function LiveAuction4(): JSX.Element {
                   id="loadmore"
                   className="sc-button loadmore fl-button pri-3"
                 >
-                  <span>Load More</span>
+                  <span>{t("Explore4ShowMore")}</span>
                 </Link>
               </div>
             </div>

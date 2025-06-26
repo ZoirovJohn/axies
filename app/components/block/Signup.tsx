@@ -3,8 +3,10 @@ import { signUp } from "@/app/(auth)";
 import { sweetMixinErrorAlert } from "@/app/sweetAlert";
 import { useRouter, useSearchParams } from "next/navigation";
 import React, { useCallback, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 export default function Signup(): JSX.Element {
+  const { t } = useTranslation("common");
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -44,10 +46,12 @@ export default function Signup(): JSX.Element {
         <div className="ibthemes-container">
           <div className="row">
             <div className="col-12">
-              <h2 className="tf-title-heading ct style-1">Sigup To NFTs</h2>
+              <h2 className="tf-title-heading ct style-1">
+                {t("SignupToNft")}
+              </h2>
               <div className="flat-form box-login-social">
                 <div className="box-title-login">
-                  <h5>Login with social</h5>
+                  <h5>{t("SignupWithSocial")}</h5>
                 </div>
                 <ul>
                   <li>
@@ -66,7 +70,7 @@ export default function Signup(): JSX.Element {
               </div>
               <div className="flat-form box-login-email">
                 <div className="box-title-login">
-                  <h5>Or login with email</h5>
+                  <h5>{t("SignupWithEmail")}</h5>
                 </div>
                 <div className="form-inner">
                   <form
@@ -84,28 +88,16 @@ export default function Signup(): JSX.Element {
                       aria-required="true"
                       required
                       type="text"
-                      placeholder="Your Full Name"
+                      placeholder={t("SignupName") ?? "Your Name"}
                       onChange={(e) => handleInput("nick", e.target.value)}
-                      // onKeyDown={(event) => {
-                      //   if (event.key == "Enter") doSignUp();
-                      // }}
                     />
-                    {/* <input
-                      id="email"
-                      name="email"
-                      tabIndex={2}
-                      aria-required="true"
-                      type="email"
-                      placeholder="Your Email Address"
-                      required
-                    /> */}
                     <input
                       id="phone"
                       name="phone"
                       tabIndex={2}
                       aria-required="true"
                       type="tel"
-                      placeholder="Your Phone Number"
+                      placeholder={t("SignupPhone") ?? "Your Phone Number"}
                       inputMode="numeric"
                       required
                       onInput={(e) => {
@@ -113,9 +105,6 @@ export default function Signup(): JSX.Element {
                         input.value = input.value.replace(/\D/g, "");
                       }}
                       onChange={(e) => handleInput("phone", e.target.value)}
-                      // onKeyDown={(event) => {
-                      //   if (event.key == "Enter") doSignUp();
-                      // }}
                     />
                     <input
                       id="pass"
@@ -123,12 +112,9 @@ export default function Signup(): JSX.Element {
                       tabIndex={3}
                       aria-required="true"
                       type="text"
-                      placeholder="Set Your Password"
+                      placeholder={t("SignupPassword") ?? "Set Your Password"}
                       required
                       onChange={(e) => handleInput("password", e.target.value)}
-                      // onKeyDown={(event) => {
-                      //   if (event.key == "Enter") doSignUp();
-                      // }}
                     />
                     <div className="row-form style-1">
                       <label>
@@ -139,7 +125,7 @@ export default function Signup(): JSX.Element {
                       <a className="forgot-pass">Forgot Password ?</a>
                     </div>
                     <button className="submit" type="submit">
-                      Sing Up
+                      {t("Sign Up")}
                     </button>
                   </form>
                 </div>
@@ -150,7 +136,7 @@ export default function Signup(): JSX.Element {
                     fontWeight: "normal",
                   }}
                 >
-                  Already have an account?
+                  {t("SignupAlreadyRegistered")}
                   <a
                     href="/login"
                     style={{
@@ -160,7 +146,7 @@ export default function Signup(): JSX.Element {
                       marginLeft: "5px",
                     }}
                   >
-                    Login
+                    {t("Login")}
                   </a>
                 </h5>
               </div>

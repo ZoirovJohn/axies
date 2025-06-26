@@ -30,6 +30,7 @@ import { Follower, Following } from "@/libs/dto/follow/follow";
 import { Property } from "@/libs/dto/property/property";
 import { Message } from "@/libs/enums/common.enum";
 import Link from "next/link";
+import { useTranslation } from "react-i18next";
 
 export default function EditProfile({
   initialValues = {
@@ -40,6 +41,7 @@ export default function EditProfile({
     memberAddress: "",
   },
 }: any): JSX.Element {
+  const { t } = useTranslation("common");
   const [activeSection, setActiveSection] = useState<
     "followers" | "followings" | "favorites" | null
   >(null);
@@ -347,9 +349,13 @@ export default function EditProfile({
                 <form action="#" className="form-profile">
                   <div className="form-infor-profile">
                     <div className="info-account">
-                      <h4 className="title-create-item">Account info</h4>
+                      <h4 className="title-create-item">
+                        {t("EditProfileAccInfo")}
+                      </h4>
                       <fieldset>
-                        <h4 className="title-infor-account">Username</h4>
+                        <h4 className="title-infor-account">
+                          {t("EditProfileUserName")}
+                        </h4>
                         <input
                           type="text"
                           placeholder="Your Username"
@@ -364,7 +370,9 @@ export default function EditProfile({
                         />
                       </fieldset>
                       <fieldset>
-                        <h4 className="title-infor-account">Phone</h4>
+                        <h4 className="title-infor-account">
+                          {t("EditProfilePhone")}
+                        </h4>
                         <input
                           type="tel"
                           placeholder="Your Phone"
@@ -379,7 +387,9 @@ export default function EditProfile({
                         />
                       </fieldset>
                       <fieldset>
-                        <h4 className="title-infor-account">Address</h4>
+                        <h4 className="title-infor-account">
+                          {t("EditProfileAddress")}
+                        </h4>
                         <input
                           type="text"
                           placeholder="Your Address"
@@ -398,14 +408,19 @@ export default function EditProfile({
                     </div>
                     <div className="info-account">
                       <fieldset>
-                        <h4 className="title-infor-account-bio">Bio</h4>
+                        <h4 className="title-infor-account-bio">
+                          {t("EditProfileBio")}
+                        </h4>
                         <textarea
                           tabIndex={4}
                           rows={5}
                           style={{
                             color: isDark ? "#e3e3ed" : "#1f1f2c",
                           }}
-                          placeholder="Currently Not Available"
+                          placeholder={
+                            t("EditProfileCurNotAvailable") ??
+                            "Currently Not Available"
+                          }
                           readOnly
                         />
                       </fieldset>
@@ -415,7 +430,7 @@ export default function EditProfile({
                         onClick={updatePropertyHandler}
                         disabled={doDisabledCheck()}
                       >
-                        Update Profile
+                        {t("EditProfileUpdProf")}
                       </button>
                     </div>
                   </div>
@@ -446,7 +461,7 @@ export default function EditProfile({
                         }
                       >
                         <i className="fas fa-users" />
-                        Followers
+                        {t("EditProfileFollowers")}
                       </a>
                     </fieldset>
                     <fieldset
@@ -465,7 +480,7 @@ export default function EditProfile({
                         }
                       >
                         <i className="fas fa-user-plus" />
-                        Followings
+                        {t("EditProfileFollowings")}
                       </a>
                     </fieldset>
                     <fieldset
@@ -484,7 +499,7 @@ export default function EditProfile({
                         }
                       >
                         <i className="fas fa-heart" />
-                        My Favorites
+                        {t("EditProfileMyFavs")}
                       </a>
                     </fieldset>
                   </div>

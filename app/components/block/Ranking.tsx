@@ -5,9 +5,11 @@ import Link from "next/link";
 import { useReactiveVar } from "@apollo/client";
 import { userVar } from "@/apollo/store";
 import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 
 export default function Ranking(): JSX.Element {
   const authMember = useReactiveVar(userVar);
+  const { t } = useTranslation("common");
 
   useEffect(() => {
     if (!authMember?.memberNick) {
@@ -59,7 +61,7 @@ export default function Ranking(): JSX.Element {
                   id="loadmore"
                   className="sc-button loadmore fl-button pri-3"
                 >
-                  <span>Show More</span>
+                  <span>{t("Explore4ShowMore")}</span>
                 </Link>
               </div>
             </div>

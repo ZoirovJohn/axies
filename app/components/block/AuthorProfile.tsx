@@ -24,6 +24,7 @@ import {
 } from "@/app/sweetAlert";
 import { Member } from "@/libs/dto/member/member";
 import { FollowInquiry } from "@/libs/dto/follow/follow.input";
+import { useTranslation } from "react-i18next";
 
 export default function AuthorProfile(initialInput: {
   page: 1;
@@ -38,6 +39,7 @@ export default function AuthorProfile(initialInput: {
   const [propertiesCount, setPropertiesCount] = useState<number>(0);
   const member = agentProperties[0]?.memberData;
   const user = useReactiveVar(userVar);
+  const { t } = useTranslation("common");
   const [memberData, setMemberData] = useState<Member | null>(null);
   const memberImagePath: string = member?.memberImage
     ? `${REACT_APP_API_URL}/${member?.memberImage}`
@@ -177,19 +179,20 @@ export default function AuthorProfile(initialInput: {
                 />
               </div>
               <div className="infor-profile">
-                <span>Author Profile</span>
+                <span>{t("Authors2AuthProfile")}</span>
                 <h2 className="title">
                   {agentProperties[0]?.memberData?.memberNick ?? "Author Name"}
                 </h2>
                 {propertiesCount ? (
                   <p className="content">
-                    {agentProperties[0]?.memberData?.memberNick} has created{" "}
-                    {propertiesCount} properties till now.
+                    {agentProperties[0]?.memberData?.memberNick}{" "}
+                    {t("Authors2HasCreated")} {propertiesCount}{" "}
+                    {t("Authors2PropTillNow")}
                   </p>
                 ) : (
                   <p className="content">
-                    {agentProperties[0]?.memberData?.memberNick} has not created
-                    any properties till now.
+                    {agentProperties[0]?.memberData?.memberNick}{" "}
+                    {t("Authors2HasNotCreated")}
                   </p>
                 )}
 
@@ -255,7 +258,7 @@ export default function AuthorProfile(initialInput: {
                             }
                           }}
                         >
-                          UnFollow
+                          {t("Authors2UnFollow")}
                         </Link>
                       </div>
                     ) : (
@@ -278,7 +281,7 @@ export default function AuthorProfile(initialInput: {
                               );
                           }}
                         >
-                          Follow
+                          {t("Authors2Follow")}
                         </Link>
                       </div>
                     )}
@@ -311,7 +314,7 @@ export default function AuthorProfile(initialInput: {
                         paddingBottom: "40px",
                       }}
                     >
-                      No Properties Found
+                      {t("Authors2NoProperties")}
                     </h3>{" "}
                   </div>
                 ) : (

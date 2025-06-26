@@ -5,8 +5,10 @@ import { useState } from "react";
 import { useReactiveVar } from "@apollo/client";
 import { userVar } from "@/apollo/store";
 import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 
 export default function Contact(): JSX.Element {
+  const { t } = useTranslation("common");
   const [email, setEmail] = useState("");
   const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   const authMember = useReactiveVar(userVar);
@@ -38,12 +40,10 @@ export default function Contact(): JSX.Element {
             </div>
             <div className="col-lg-6 col-md-6 col-12">
               <h2 className="tf-title-heading style-2 mg-bt-12">
-                Drop Us a Message
+                {t("ContactUsDropMessage")}
               </h2>
               <h5 className="sub-title style-1">
-                Have a question or need support? Fill out the form below and
-                we’ll get back to you as soon as possible. For urgent inquiries,
-                feel free to contact us at{" "}
+                {t("ContactUsDropMessageText")}{" "}
                 <a
                   href="mailto:zoirovtokhirjon@gmail.com"
                   style={{ color: "#007bff", fontWeight: "bold" }}
@@ -73,27 +73,27 @@ export default function Contact(): JSX.Element {
                     id="name"
                     name="name"
                     type="text"
-                    placeholder="Your Full Name"
+                    placeholder={t("ContactUsName") ?? "Your Full Name"}
                     required
                   />
                   <input
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    placeholder="Your Email Address"
+                    placeholder={t("ContactUsEmail") ?? "Your Email Address"}
                     required
                   />
                   {!isValidEmail && email.length > 0 && (
-                    <p style={{ color: "red" }}>Invalid email</p>
+                    <p style={{ color: "red" }}>{t("ContactUsInvalidEmail")}</p>
                   )}
                   <textarea
                     id="message"
                     name="message"
-                    placeholder="Message"
+                    placeholder={t("ContactUsMessage") ?? "Message"}
                     required
                   ></textarea>
                   <button type="submit" className="submit">
-                    Send message
+                    {t("ContactUsSendMessage")}
                   </button>
                 </form>
               </div>

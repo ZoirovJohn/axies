@@ -16,6 +16,7 @@ import {
   sweetMixinErrorAlert,
   sweetTopSmallSuccessAlert,
 } from "@/app/sweetAlert";
+import { useTranslation } from "react-i18next";
 
 export default function Explore4({
   initialInput = {
@@ -26,6 +27,7 @@ export default function Explore4({
     search: {},
   },
 }: any): JSX.Element {
+  const { t } = useTranslation("common");
   const searchParams = useSearchParams();
   const inputParam = searchParams.get("input");
   const [properties, setProperties] = useState<Property[]>([]);
@@ -141,7 +143,9 @@ export default function Explore4({
                   onClick={showHandler}
                   sx={{ borderRadius: "32px" }}
                 >
-                  <span>{showMore ? "Show Less" : "Show More"}</span>
+                  <span>
+                    {showMore ? t("Explore4ShowLess") : t("Explore4ShowMore")}
+                  </span>
                 </Button>
               )}
             </div>

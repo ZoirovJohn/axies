@@ -25,6 +25,7 @@ export const metadata: Metadata = {
 };
 
 export default function page(): JSX.Element {
+  
   return (
     <>
       <Breadcrumb data={item} />

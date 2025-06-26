@@ -11,8 +11,10 @@ import { GET_AGENTS } from "@/apollo/user/query";
 import { T } from "@/libs/types/common";
 import { AgentsInquiry } from "@/libs/dto/member/member.input";
 import { Member } from "@/libs/dto/member/member";
+import { useTranslation } from "react-i18next";
 
 export default function TopSeller4(): JSX.Element {
+  const { t } = useTranslation("common");
   const [agents, setAgents] = useState<Member[]>([]);
   const [searchFilter, setSearchFilter] = useState<AgentsInquiry>({
     page: 1,
@@ -62,12 +64,8 @@ export default function TopSeller4(): JSX.Element {
         <div className="ibthemes-container">
           <div className="row">
             <div className="col-md-12">
-              <h2 className="tf-title style4">Top Sellers</h2>
-              <p className="tf-sub-title">
-                Meet our top-performing creators, hand-picked for their
-                consistency, quality, and community impact. Explore their latest
-                works and support your favorites.
-              </p>
+              <h2 className="tf-title style4">{t("AuthorsTopSellers")}</h2>
+              <p className="tf-sub-title">{t("AuthorsTopSellersInfo")}</p>
             </div>
             <div className="col-md-12">
               <div className="">

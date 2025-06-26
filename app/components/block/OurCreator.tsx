@@ -9,8 +9,10 @@ import { GET_PROPERTIES } from "@/apollo/user/query";
 import { PropertiesInquiry } from "@/libs/dto/property/property.input";
 import { Direction } from "@/libs/enums/common.enum";
 import { T } from "@/libs/types/common";
+import { useTranslation } from "react-i18next";
 
 export default function OurCreator(): JSX.Element {
+  const { t } = useTranslation("common");
   const [properties, setProperties] = useState<Property[]>([]);
   const [searchFilter, setSearchFilter] = useState<PropertiesInquiry>({
     page: 1,
@@ -52,7 +54,9 @@ export default function OurCreator(): JSX.Element {
         <div className="ibthemes-container">
           <div className="row">
             <div className="col-md-12">
-              <h2 className="tf-title style4 mg-bt-38">Our Creators</h2>
+              <h2 className="tf-title style4 mg-bt-38">
+                {t("AuthorsOurCreators")}
+              </h2>
             </div>
             {properties.map((item) => (
               <div key={item._id} className="col-lg-4 col-md-6 col-12">
