@@ -1053,7 +1053,8 @@
 }
 
 .sc-card-product .card-media img {
-  width: 100%;
+  width: 300px;
+  height: 300px;
 }
 
 .sc-card-product .card-title {

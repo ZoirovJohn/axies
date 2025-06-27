@@ -5,38 +5,63 @@ import { gql } from "@apollo/client";
  *************************/
 
 export const GET_AGENTS = gql`
-  query GetAgents($input: AgentsInquiry!) {
-    getAgents(input: $input) {
-      list {
+  query GetProperty($input: String!) {
+    getProperty(propertyId: $input) {
+      _id
+      propertyCollection
+      propertyStatus
+      propertyLocation
+      propertyAddress
+      propertyTitle
+      propertyPrice
+      propertyRarityScore
+      propertyEditions
+      propertyTraitGroups
+      propertyViews
+      propertyLikes
+      propertyComments
+      propertyRank
+      propertyImages
+      propertyDesc
+      propertyBarter
+      propertyRent
+      memberId
+      soldAt
+      deletedAt
+      constructedAt
+      createdAt
+      updatedAt
+      meLiked {
+        memberId
+        likeRefId
+        myFavorite
+      }
+      memberData {
         _id
         memberType
         memberStatus
         memberAuthType
-        memberPhone
         memberNick
+        memberPhone
         memberFullName
         memberImage
         memberAddress
         memberDesc
-        memberWarnings
-        memberBlocks
         memberProperties
-        memberRank
+        memberArticles
+        memberFollowers
+        memberFollowings
         memberPoints
         memberLikes
         memberViews
+        memberComments
+        memberRank
+        memberWarnings
+        memberBlocks
         deletedAt
         createdAt
         updatedAt
         accessToken
-        meLiked {
-          memberId
-          likeRefId
-          myFavorite
-        }
-      }
-      metaCounter {
-        total
       }
     }
   }

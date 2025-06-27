@@ -50,7 +50,7 @@ export default function AuthorProfile(initialInput: {
   );
   const [searchFilter, setSearchFilter] = useState<PropertiesInquiry>({
     page: 1,
-    limit: 5,
+    limit: 50,
     sort: "createdAt",
     search: {
       memberId: selectedPropertyAuthor,

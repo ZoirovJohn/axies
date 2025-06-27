@@ -50,6 +50,9 @@ export default function ItemDetails1() {
   const imagePath: string = propertyData?.propertyImages[0]
     ? `${REACT_APP_API_URL}/${propertyData?.propertyImages[0]}`
     : "/assets/images/box-item/images-item-details.webp";
+  const userImagePath: string = propertyData?.memberData?.memberImage
+    ? `${REACT_APP_API_URL}/${propertyData?.memberData?.memberImage}`
+    : "/assets/images/avatar/avt-28.jpg";
   const user = useReactiveVar(userVar);
 
   /** APOLLO REQUESTS **/
@@ -69,23 +72,6 @@ export default function ItemDetails1() {
       setPropertyData(data?.getProperty);
     },
   });
-
-  /** HANDLERS **/
-  const likePropertyHandler = async (user: T, id: string) => {
-    try {
-      if (!id) return;
-      if (!user._id) throw new Error(Message.NOT_AUTHENTICATED);
-
-      await likeTargetProperty({ variables: { input: id } });
-
-      await getPropertyRefetch({ input: selectedProperty });
-
-      await sweetTopSmallSuccessAlert("success", 800);
-    } catch (err: any) {
-      console.log("ERROR, likePropertyHandler");
-      sweetMixinErrorAlert(err.message).then();
-    }
-  };
 
   return (
     <>
@@ -133,7 +119,7 @@ export default function ItemDetails1() {
                           <Image
                             height={200}
                             width={200}
-                            src="/assets/images/avatar/avt-8.webp"
+                            src={userImagePath}
                             alt=""
                           />
                         </div>
