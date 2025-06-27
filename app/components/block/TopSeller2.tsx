@@ -52,6 +52,7 @@ export default function TopSeller2(): JSX.Element {
     notifyOnNetworkStatusChange: true,
     onCompleted: (data: T) => {
       setAgents(data?.getAgents?.list || []);
+      console.log("repeatedAgents777777777777:", data?.getAgents?.list);
     },
   });
 
