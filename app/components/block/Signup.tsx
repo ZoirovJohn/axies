@@ -70,7 +70,7 @@ export default function Signup(): JSX.Element {
               </div>
               <div className="flat-form box-login-email">
                 <div className="box-title-login">
-                  <h5>{t("SignupWithEmail")}</h5>
+                  <h5>{t("SignupWithNamePhone")}</h5>
                 </div>
                 <div className="form-inner">
                   <form

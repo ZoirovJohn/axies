@@ -68,7 +68,7 @@ export default function Login(): JSX.Element {
               </div>
               <div className="flat-form box-login-email">
                 <div className="box-title-login">
-                  <h5>{t("LoginWithEmail")}</h5>
+                  <h5>{t("LoginWithName")}</h5>
                 </div>
                 <div className="form-inner">
                   <form
@@ -86,7 +86,7 @@ export default function Login(): JSX.Element {
                       aria-required="true"
                       required
                       type="text"
-                      placeholder={t("LoginWithEmail") ?? "Your Name"}
+                      placeholder={t("LoginName") ?? "Your Name"}
                       onChange={(e) => handleInput("nick", e.target.value)}
                     />
                     <input
