@@ -1,13 +1,14 @@
 import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image"; // Import the Image component from Next.js
-import logoImg from "../../../public/assets/images/avatar/avt-1.webp";
 import { logOut } from "@/app/(auth)";
 import router from "next/router";
 import { useReactiveVar } from "@apollo/client";
 import { userVar } from "@/apollo/store";
 import { REACT_APP_API_URL } from "@/app/config";
+import { useTranslation } from "react-i18next";
 
 const ProfileComponent = () => {
+  const { t } = useTranslation("common");
   const [isNotificationActive, setNotificationActive] =
     useState<boolean>(false);
   const [isAuthorActive, setIsAuthorActive] = useState(false);
@@ -15,7 +16,7 @@ const ProfileComponent = () => {
   const [isLogoutConfirm, setLogoutConfirm] = useState<boolean>(false);
   const menuRef = useRef(null);
   const profileRef = useRef<HTMLDivElement>(null);
-  const tab: string[] = ["Explore", "Unlock"];
+  const tab: string[] = [t("NotifTab1"), t("NotifTab2")];
   const authMember = useReactiveVar(userVar);
   const imagePath: string = authMember?.memberImage
     ? `${REACT_APP_API_URL}/${authMember?.memberImage}`
@@ -79,7 +80,7 @@ const ProfileComponent = () => {
               }`}
             >
               <div className="show mg-bt-18">
-                <h4>Notifications</h4>
+                <h4>{t("Notifications")}</h4>
               </div>
               <div className="flat-tabs">
                 <ul className="menu-tab">
@@ -99,15 +100,7 @@ const ProfileComponent = () => {
                     <div className="content-inner">
                       <div className="wrap-box">
                         <div className="heading">
-                          "Step into the world of digital art like never before.
-                          Our NFTs aren’t just collectibles; they represent a
-                          fusion of creativity, technology, and culture. With
-                          each unique piece, you’re not only owning a digital
-                          asset but also becoming part of a larger community.
-                          Discover the endless possibilities our NFTs offer, and
-                          immerse yourself in the future of digital ownership.
-                          It’s more than art; it’s your gateway to something new
-                          and exciting."
+                          {t("NotifInfo1")}
                         </div>
                       </div>
                     </div>
@@ -116,15 +109,7 @@ const ProfileComponent = () => {
                     <div className="content-inner">
                       <div className="wrap-box">
                         <div className="heading">
-                          "Ready to discover the rarest digital treasures? Our
-                          collection of NFTs is more than just a marketplace;
-                          it’s a gateway to a new world of opportunity. Whether
-                          you’re an art enthusiast, an investor, or someone
-                          looking to dive into the latest trends in technology,
-                          there’s something here for everyone. Each NFT tells a
-                          story, offering you a chance to own a piece of
-                          history. With each new release, we’re pushing the
-                          boundaries of what’s possible in the NFT space."
+                          {t("NotifInfo2")}
                         </div>
                       </div>
                     </div>

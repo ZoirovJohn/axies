@@ -12,19 +12,6 @@ import Chat from "./components/Chat";
 import { userVar } from "@/apollo/store";
 import { useReactiveVar } from "@apollo/client";
 
-// Fonts
-// const rubik = Rubik({
-//   subsets: ["latin"],
-//   weight: ["300", "400", "500", "600", "700", "800"],
-//   variable: "--rubik-font",
-// });
-
-// const urbanist = Urbanist({
-//   subsets: ["latin"],
-//   weight: ["100", "200", "300", "400", "500", "600", "700", "800"],
-//   variable: "--urbanist-font",
-// });
-
 export default function RootLayout({
   children,
 }: {
