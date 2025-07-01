@@ -138,7 +138,7 @@ export default function BlogSingle({ id = 1 }: { id?: number }): JSX.Element {
                 <div id="comments">
                   <h3 className="heading mg-bt-23">댓글 남기기</h3>
                   <form
-                    action="contact/contact-process.php"
+                    action="blog"
                     method="post"
                     id="commentform"
                     className="comment-form"
