@@ -25,7 +25,7 @@ import { sweetConfirmAlert, sweetErrorHandling } from "@/app/sweetAlert";
 import { PropertyUpdate } from "@/libs/dto/property/property.update";
 import { AllPropertiesInquiry } from "@/libs/dto/property/property.input";
 import { Property } from "@/libs/dto/property/property";
-import withAdminLayout from "@/app/components/layout/AdminLayout";
+import WithAdminLayout from "@/app/components/layout/AdminLayout";
 
 const AdminProperties: NextPage = ({ initialInquiry, ...props }: any) => {
   const [anchorEl, setAnchorEl] = useState<[] | HTMLElement[]>([]);
@@ -286,4 +286,4 @@ AdminProperties.defaultProps = {
   },
 };
 
-export default withAdminLayout(AdminProperties);
+export default WithAdminLayout(AdminProperties);

@@ -13,7 +13,7 @@ import TablePagination from "@mui/material/TablePagination";
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
 import CancelRoundedIcon from "@mui/icons-material/CancelRounded";
 import { NoticeList } from "@/app/components/admin/cs/NoticeList";
-import withAdminLayout from "@/app/components/layout/AdminLayout";
+import WithAdminLayout from "@/app/components/layout/AdminLayout";
 import searchIcon from "../../../../public/assets/images/icon/search_icon.png";
 import Image from "next/image";
 
@@ -135,4 +135,4 @@ const AdminNotice: NextPage = (props: any) => {
   );
 };
 
-export default withAdminLayout(AdminNotice);
+export default WithAdminLayout(AdminNotice);

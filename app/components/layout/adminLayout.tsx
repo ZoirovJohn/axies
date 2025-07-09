@@ -25,7 +25,7 @@ import Image from "next/image";
 
 const drawerWidth = 280;
 
-const withAdminLayout = <P extends object>(
+const WithAdminLayout = <P extends object>(
   Component: ComponentType<
     P & {
       setSnackbar: React.Dispatch<
@@ -197,4 +197,4 @@ const withAdminLayout = <P extends object>(
   return WrappedComponent;
 };
 
-export default withAdminLayout;
+export default WithAdminLayout;

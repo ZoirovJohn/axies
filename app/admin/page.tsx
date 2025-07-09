@@ -2,7 +2,7 @@
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { NextPage } from "next";
-import withAdminLayout from "../components/layout/AdminLayout";
+import WithAdminLayout from "../components/layout/AdminLayout";
 
 const AdminPage: NextPage = () => {
   const router = useRouter();
@@ -14,4 +14,4 @@ const AdminPage: NextPage = () => {
   return null;
 };
 
-export default withAdminLayout(AdminPage);
+export default WithAdminLayout(AdminPage);
