@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     title: "Axies | NFT Marketplace",
 };
 
-export default function page() {
+export default function Page() {
     return (
         <>
             <Hero5 />

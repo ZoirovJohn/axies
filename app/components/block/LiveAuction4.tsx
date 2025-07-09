@@ -7,16 +7,18 @@ import { useReactiveVar } from "@apollo/client";
 import { userVar } from "@/apollo/store";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import { useRouter } from "next/navigation";
 
 export default function LiveAuction4(): JSX.Element {
   const authMember = useReactiveVar(userVar);
+  const router = useRouter();
   const { t } = useTranslation("common");
 
   useEffect(() => {
     if (!authMember?.memberNick) {
-      window.location.href = "/";
+      router.push("/");
     }
-  }, [authMember]);
+  }, [authMember, router]);
 
   if (!authMember?.memberNick) {
     return <></>;

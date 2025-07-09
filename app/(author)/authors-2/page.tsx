@@ -19,7 +19,7 @@ const item = {
   ],
 };
 
-export default function page(): JSX.Element {
+export default function Page(): JSX.Element {
   return (
     <>
       <Breadcrumb data={item} />

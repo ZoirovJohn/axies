@@ -13,8 +13,9 @@ import TablePagination from "@mui/material/TablePagination";
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
 import CancelRoundedIcon from "@mui/icons-material/CancelRounded";
 import { NoticeList } from "@/app/components/admin/cs/NoticeList";
-import withAdminLayout from "@/app/components/layout/adminLayout";
+import withAdminLayout from "@/app/components/layout/AdminLayout";
 import searchIcon from "../../../../public/assets/images/icon/search_icon.png";
+import Image from "next/image";
 
 const AdminNotice: NextPage = (props: any) => {
   const [anchorEl, setAnchorEl] = useState<[] | HTMLElement[]>([]);
@@ -95,9 +96,11 @@ const AdminNotice: NextPage = (props: any) => {
                     <>
                       {true && <CancelRoundedIcon onClick={() => {}} />}
                       <InputAdornment position="end" onClick={() => {}}>
-                        <img
+                        <Image
                           src={searchIcon.src}
                           alt={"searchIcon"}
+                          width={24}
+                          height={24}
                         />
                       </InputAdornment>
                     </>

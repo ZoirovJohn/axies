@@ -87,9 +87,7 @@ export const signUp = async (
     }
   } catch (err) {
     console.warn("login err", err);
-    // logOut();
     await sweetMixinErrorAlert("Signup failed. Please check your inputs.");
-    // throw new Error("Login Err");
   }
 };
 

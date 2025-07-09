@@ -27,7 +27,7 @@ export default function Login(): JSX.Element {
     } catch (err: any) {
       await sweetMixinErrorAlert(err.message);
     }
-  }, [input]);
+  }, [input, router, searchParams]); // ✅ fixed
 
   // HANDLERS
 

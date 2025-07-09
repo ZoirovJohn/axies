@@ -44,6 +44,7 @@ export default function AuthorProfile(initialInput: {
   const memberImagePath: string = member?.memberImage
     ? `${REACT_APP_API_URL}/${member?.memberImage}`
     : "/assets/images/avatar/avt-28.jpg";
+  const authMember = useReactiveVar(userVar);
   const properties = (agentProperties || []).filter(
     (property) =>
       getCurrentTab === "ALL" || property.propertyCollection === getCurrentTab
@@ -100,6 +101,16 @@ export default function AuthorProfile(initialInput: {
   useEffect(() => {
     setFollow(!!memberData?.meFollowed?.[0]?.myFollowing);
   }, [memberData]);
+
+  useEffect(() => {
+    if (!authMember?.memberNick) {
+      window.location.href = "/";
+    }
+  }, [authMember]);
+
+  if (!authMember?.memberNick) {
+    return <></>;
+  }
 
   /** HANDLERS **/
   const likePropertyHandler = async (user: T, id: string) => {

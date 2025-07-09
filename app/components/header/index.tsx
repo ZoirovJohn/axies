@@ -6,13 +6,9 @@ import useDarkModeCheck from "@/hooks/useDarkModeCheck";
 import { useRouter, usePathname } from "next/navigation";
 import useStickyMenu from "@/hooks/useStickyMenu";
 import AdminBar from "./AdminBar";
-import Search1 from "./Search1";
-import Search2 from "./Search2";
-import WalletConnectButton from "../button/WalletConnectButton";
 import Image from "next/image";
 import { useTranslation } from "next-i18next";
-import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined";
-import { Stack, Box } from "@mui/material";
+import { Box } from "@mui/material";
 import MenuItem from "@mui/material/MenuItem";
 import Button from "@mui/material/Button";
 import { alpha, styled } from "@mui/material/styles";
@@ -22,12 +18,10 @@ import { CaretDown } from "phosphor-react";
 
 export default function Header(): JSX.Element {
   const path = usePathname();
-  const { t, i18n } = useTranslation("common");
+  const { i18n } = useTranslation("common");
   const [anchorEl2, setAnchorEl2] = useState<null | HTMLElement>(null);
   const [lang, setLang] = useState<string | null>("kr"); // Default to Korean
   const drop = Boolean(anchorEl2);
-  const router = useRouter();
-  const pathname = usePathname();
 
   // is dark hook
   const isDark = useDarkModeCheck();
@@ -180,14 +174,18 @@ export default function Header(): JSX.Element {
                       >
                         <Box component={"div"} className={"flag"}>
                           {lang !== null ? (
-                            <img
+                            <Image
                               src={`/assets/images/flag/lang${lang}.png`}
-                              alt={"languageFlag"}
+                              alt="languageFlag"
+                              width={24}
+                              height={16}
                             />
                           ) : (
-                            <img
+                            <Image
                               src={`/assets/images/flag/langkr.png`}
-                              alt={"koreanFlag"}
+                              alt="koreanFlag"
+                              width={24}
+                              height={16}
                             />
                           )}
                         </Box>
@@ -200,42 +198,45 @@ export default function Header(): JSX.Element {
                         sx={{ position: "absolute" }}
                       >
                         <MenuItem disableRipple onClick={langChoice} id="en">
-                          <img
+                          <Image
                             className="img-flag"
-                            src={"/assets/images/flag/langen.png"}
-                            onClick={langChoice}
-                            id="en"
-                            alt={"usaFlag"}
+                            src="/assets/images/flag/langen.png"
+                            alt="usaFlag"
+                            width={24}
+                            height={16}
                           />
                           English
                         </MenuItem>
+
                         <MenuItem disableRipple onClick={langChoice} id="kr">
-                          <img
+                          <Image
                             className="img-flag"
-                            src={"/assets/images/flag/langkr.png"}
-                            onClick={langChoice}
-                            id="kr"
-                            alt={"koreanFlag"}
+                            src="/assets/images/flag/langkr.png"
+                            alt="koreanFlag"
+                            width={24}
+                            height={16}
                           />
                           한국어
                         </MenuItem>
+
                         <MenuItem disableRipple onClick={langChoice} id="ru">
-                          <img
+                          <Image
                             className="img-flag"
-                            src={"/assets/images/flag/langru.png"}
-                            onClick={langChoice}
-                            id="ru"
-                            alt={"russiaFlag"}
+                            src="/assets/images/flag/langru.png"
+                            alt="russiaFlag"
+                            width={24}
+                            height={16}
                           />
                           Русский
                         </MenuItem>
+
                         <MenuItem disableRipple onClick={langChoice} id="uz">
-                          <img
+                          <Image
                             className="img-flag"
-                            src={"/assets/images/flag/languz.png"}
-                            onClick={langChoice}
-                            id="uz"
-                            alt={"uzbekFlag"}
+                            src="/assets/images/flag/languz.png"
+                            alt="uzbekFlag"
+                            width={24}
+                            height={16}
                           />
                           Uzbek
                         </MenuItem>

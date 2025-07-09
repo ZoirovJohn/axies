@@ -54,7 +54,6 @@ export default function EditProfile({
     ? `${REACT_APP_API_URL}/${user?.memberImage}`
     : "/assets/images/avatar/avt-28.jpg";
   const isDark = useDarkModeCheck();
-  const token = getJwtToken();
   const [followingInquiry, setFollowingInquiry] = useState<FollowInquiry>({
     page: 1,
     limit: 50,
@@ -138,19 +137,14 @@ export default function EditProfile({
     }
   }, [user]);
 
-  if (!user?.memberNick) {
-    return <></>;
-  }
-
   useEffect(() => {
-    setUpdateData({
-      ...updateData,
+    setUpdateData((prev) => ({
+      ...prev,
       memberNick: user.memberNick,
       memberPhone: user.memberPhone,
       memberAddress: user.memberAddress,
       memberImage: user.memberImage,
-    });
-    console.log("User data updated:", updateData);
+    }));
   }, [user]);
 
   useEffect(() => {
@@ -158,10 +152,10 @@ export default function EditProfile({
       const fileName = selectedAvatar.split("/").pop()?.split(".")[0];
       const newPath = `uploads/member/${fileName}.jpg`;
 
-      updateData.memberImage = newPath;
-      console.log("updateData:", updateData);
-
-      setUpdateData({ ...updateData });
+      setUpdateData((prev) => ({
+        ...prev,
+        memberImage: newPath,
+      }));
     }
   }, [selectedAvatar]);
 
@@ -170,31 +164,42 @@ export default function EditProfile({
   const updatePropertyHandler = useCallback(async () => {
     try {
       if (!user._id) throw new Error(Messages.error2);
-      updateData._id = user._id;
+
+      // Create a new object, do not mutate state directly
+      const inputData = {
+        ...updateData,
+        _id: user._id,
+      };
+
       const result = await updateMember({
         variables: {
-          input: updateData,
+          input: inputData,
         },
       });
+
       //@ts-ignore
       const jwtToken = result.data.updateMember?.accessToken;
+
       await updateStorage({ jwtToken });
-      updateUserInfo(result.data.updateMember?.accessToken);
+      updateUserInfo(jwtToken);
+
       await sweetMixinSuccessAlert("Information updated successfuly");
     } catch (err: any) {
       sweetErrorHandling(err).then();
     }
-  }, [updateData]);
+  }, [updateData, updateMember, user._id]);
 
   const doDisabledCheck = () => {
-    if (
-      updateData.memberNick === "" ||
-      updateData.memberPhone === "" ||
-      updateData.memberImage === ""
-    ) {
-      return true;
-    }
+    return (
+      !updateData.memberNick ||
+      !updateData.memberPhone ||
+      !updateData.memberImage
+    );
   };
+
+  if (!user?.memberNick) {
+    return <></>;
+  }
 
   const likePropertyHandler = async (user: T, id: string) => {
     try {
@@ -426,7 +431,7 @@ export default function EditProfile({
                       </fieldset>
                       <button
                         className="tf-button-submit mg-t-15"
-                        type="submit"
+                        type="button"
                         onClick={updatePropertyHandler}
                         disabled={doDisabledCheck()}
                       >
@@ -758,8 +763,9 @@ export default function EditProfile({
                             })
                           ) : (
                             <div className={"no-data"}>
-                              <img src="/img/icons/icoAlert.svg" alt="" />
-                              <p>No Favorites found!</p>
+                              <h3 style={{ color: "rgb(81, 66, 252)" }}>
+                                No Favorites found!
+                              </h3>
                             </div>
                           )}
                         </div>

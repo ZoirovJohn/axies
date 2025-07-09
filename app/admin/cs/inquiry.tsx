@@ -12,6 +12,7 @@ import OutlinedInput from "@mui/material/OutlinedInput";
 import TablePagination from "@mui/material/TablePagination";
 import CancelRoundedIcon from "@mui/icons-material/CancelRounded";
 import { InquiryList } from "@/app/components/admin/cs/InquiryList";
+import Image from "next/image";
 
 const InquiryArticles: NextPage = (props: any) => {
   const [anchorEl, setAnchorEl] = useState<[] | HTMLElement[]>([]);
@@ -82,9 +83,11 @@ const InquiryArticles: NextPage = (props: any) => {
                     <>
                       {true && <CancelRoundedIcon onClick={() => {}} />}
                       <InputAdornment position="end" onClick={() => {}}>
-                        <img
+                        <Image
                           src="/img/icons/search_icon.png"
-                          alt={"searchIcon"}
+                          alt="searchIcon"
+                          width={24} // adjust width and height to your actual icon size
+                          height={24}
                         />
                       </InputAdornment>
                     </>

@@ -1,7 +1,7 @@
 "use client";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import withAdminLayout from "../components/layout/adminLayout";
+import withAdminLayout from "../components/layout/AdminLayout";
 import { NextPage } from "next";
 
 const AdminPage: NextPage = () => {

@@ -12,14 +12,15 @@ export default function Contact(): JSX.Element {
   const [email, setEmail] = useState("");
   const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   const authMember = useReactiveVar(userVar);
+  const shouldRedirect = !authMember?.memberNick;
 
   useEffect(() => {
-    if (!authMember?.memberNick) {
+    if (shouldRedirect) {
       window.location.href = "/";
     }
-  }, [authMember]);
+  }, [shouldRedirect]);
 
-  if (!authMember?.memberNick) {
+  if (shouldRedirect) {
     return <></>;
   }
 

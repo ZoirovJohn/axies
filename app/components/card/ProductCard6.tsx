@@ -56,7 +56,6 @@ export default function ProductCard6({
   property,
   likePropertyHandler,
 }: Props): JSX.Element {
-  const [isHeartToggle, setHeartToggle] = useState<number>(0);
   const user = useReactiveVar(userVar);
   const imagePath: string = property?.propertyImages[0]
     ? `${REACT_APP_API_URL}/${property?.propertyImages[0]}`

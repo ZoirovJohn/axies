@@ -13,8 +13,9 @@ import TablePagination from "@mui/material/TablePagination";
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
 import CancelRoundedIcon from "@mui/icons-material/CancelRounded";
 import { FaqArticlesPanelList } from "@/app/components/admin/cs/FaqList";
-import withAdminLayout from "@/app/components/layout/adminLayout";
+import withAdminLayout from "@/app/components/layout/AdminLayout";
 import searchIcon from "../../../../public/assets/images/icon/search_icon.png";
+import Image from "next/image";
 
 const FaqArticles: NextPage = (props: any) => {
   const [anchorEl, setAnchorEl] = useState<[] | HTMLElement[]>([]);
@@ -28,12 +29,7 @@ const FaqArticles: NextPage = (props: any) => {
     <Box component={"div"} className={"content"}>
       <Box component={"div"} className={"title flex_space"}>
         <Typography variant={"h2"}>FAQ Management</Typography>
-        <Button
-          className="btn_add"
-          variant={"contained"}
-          size={"medium"}
-          // onClick={() => router.push(`/_admin/cs/faq_create`)}
-        >
+        <Button className="btn_add" variant={"contained"} size={"medium"}>
           <AddRoundedIcon sx={{ mr: "8px" }} />
           ADD
         </Button>
@@ -44,28 +40,24 @@ const FaqArticles: NextPage = (props: any) => {
             <Box component={"div"}>
               <List className={"tab-menu"}>
                 <ListItem
-                  // onClick={(e) => handleTabChange(e, 'all')}
                   value="all"
                   className={"all" === "all" ? "li on" : "li"}
                 >
                   All (0)
                 </ListItem>
                 <ListItem
-                  // onClick={(e) => handleTabChange(e, 'active')}
                   value="active"
                   className={"all" === "all" ? "li on" : "li"}
                 >
                   Active (0)
                 </ListItem>
                 <ListItem
-                  // onClick={(e) => handleTabChange(e, 'blocked')}
                   value="blocked"
                   className={"all" === "all" ? "li on" : "li"}
                 >
                   Blocked (0)
                 </ListItem>
                 <ListItem
-                  // onClick={(e) => handleTabChange(e, 'deleted')}
                   value="deleted"
                   className={"all" === "all" ? "li on" : "li"}
                 >
@@ -84,20 +76,18 @@ const FaqArticles: NextPage = (props: any) => {
 
                 <OutlinedInput
                   value={"searchInput"}
-                  // onChange={(e) => handleInput(e.target.value)}
                   sx={{ width: "100%" }}
                   className={"search"}
                   placeholder="Search user name"
-                  onKeyDown={(event) => {
-                    // if (event.key == 'Enter') searchTargetHandler().then();
-                  }}
                   endAdornment={
                     <>
                       {true && <CancelRoundedIcon onClick={() => {}} />}
                       <InputAdornment position="end" onClick={() => {}}>
-                        <img
-                          src={searchIcon.src}
-                          alt={"searchIcon"}
+                        <Image
+                          src={searchIcon}
+                          alt="searchIcon"
+                          width={24}
+                          height={24}
                         />
                       </InputAdornment>
                     </>
@@ -106,15 +96,7 @@ const FaqArticles: NextPage = (props: any) => {
               </Stack>
               <Divider />
             </Box>
-            <FaqArticlesPanelList
-              // dense={dense}
-              // membersData={membersData}
-              // searchMembers={searchMembers}
-              anchorEl={anchorEl}
-              // handleMenuIconClick={handleMenuIconClick}
-              // handleMenuIconClose={handleMenuIconClose}
-              // generateMentorTypeHandle={generateMentorTypeHandle}
-            />
+            <FaqArticlesPanelList anchorEl={anchorEl} />
 
             <TablePagination
               rowsPerPageOptions={[20, 40, 60]}

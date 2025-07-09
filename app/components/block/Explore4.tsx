@@ -4,7 +4,7 @@ import ProductCard6 from "../card/ProductCard6";
 import { useCallback, useEffect, useState } from "react";
 import { PropertiesInquiry } from "@/libs/dto/property/property.input";
 import { useSearchParams } from "next/navigation";
-import { Message } from "@/libs/enums/common.enum";
+import { Direction, Message } from "@/libs/enums/common.enum";
 import { useMutation, useQuery } from "@apollo/client";
 import { GET_PROPERTIES } from "@/apollo/user/query";
 import { T } from "@/libs/types/common";
@@ -18,15 +18,19 @@ import {
 } from "@/app/sweetAlert";
 import { useTranslation } from "react-i18next";
 
+const defaultInitialInput: PropertiesInquiry = {
+  page: 1,
+  limit: 6,
+  sort: "createdAt",
+  direction: Direction.DESC,
+  search: {},
+};
+
 export default function Explore4({
-  initialInput = {
-    page: 1,
-    limit: 6,
-    sort: "createdAt",
-    direction: "DESC",
-    search: {},
-  },
-}: any): JSX.Element {
+  initialInput = defaultInitialInput,
+}: {
+  initialInput?: PropertiesInquiry;
+}): JSX.Element {
   const { t } = useTranslation("common");
   const searchParams = useSearchParams();
   const inputParam = searchParams.get("input");
@@ -81,10 +85,17 @@ export default function Explore4({
 
   useEffect(() => {
     if (inputParam) {
-      const inputObj = JSON.parse(inputParam);
-      setSearchFilter(inputObj);
+      try {
+        const inputObj = JSON.parse(inputParam);
+        setSearchFilter(inputObj);
+      } catch (e) {
+        console.error("Failed to parse inputParam", e);
+        setSearchFilter(initialInput);
+      }
+    } else {
+      setSearchFilter(initialInput);
     }
-  }, [inputParam]);
+  }, [inputParam, initialInput]);
 
   // HANDLERS
 
@@ -100,7 +111,6 @@ export default function Explore4({
         scroll: false,
       });
 
-      setSearchFilter(newInput);
       setShowMore(!showMore); // toggle the state
     } catch (err: any) {
       console.log("ERROR in showHandler:", err);

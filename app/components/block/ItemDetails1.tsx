@@ -2,7 +2,9 @@
 import Image from "next/image";
 import ItemDetailsTab from "../element/ItemDetailsTab";
 import Link from "next/link";
-import Countdown from "react-countdown";
+import CountdownLib from "react-countdown";
+const Countdown = CountdownLib as unknown as React.FC<any>;
+
 import { useMutation, useQuery, useReactiveVar } from "@apollo/client";
 import {
   selectedPropertyAuthorVar,
@@ -14,12 +16,7 @@ import { T } from "@/libs/types/common";
 import { useState } from "react";
 import { Property } from "@/libs/dto/property/property";
 import { REACT_APP_API_URL } from "@/libs/config";
-import { Message } from "@/libs/enums/common.enum";
 import { LIKE_TARGET_PROPERTY } from "@/apollo/user/mutation";
-import {
-  sweetMixinErrorAlert,
-  sweetTopSmallSuccessAlert,
-} from "@/app/sweetAlert";
 
 export default function ItemDetails1() {
   const renderer = ({

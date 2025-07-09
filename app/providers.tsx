@@ -11,7 +11,6 @@ import { ApolloProvider } from "@apollo/client";
 import { useApollo } from "../apollo/client";
 import { getJwtToken, updateUserInfo } from "./(auth)";
 
-// ✅ Init i18n on first load
 if (!i18n.isInitialized) {
   i18n
     .use(Backend)
@@ -20,6 +19,7 @@ if (!i18n.isInitialized) {
     .init({
       fallbackLng: "kr",
       defaultNS: "common",
+      supportedLngs: ["kr", "en", "ru", "uz"],
       interpolation: { escapeValue: false },
       detection: {
         order: ["localStorage", "cookie", "navigator"],
@@ -35,7 +35,6 @@ export function Providers({ children }: { children: React.ReactNode }) {
   const client = useApollo(null);
 
   useEffect(() => {
-    // ✅ Fix: Always read and apply the stored locale from localStorage
     const savedLocale =
       typeof window !== "undefined" ? localStorage.getItem("locale") : null;
     const langToUse = savedLocale || "kr";
@@ -65,6 +64,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
         <ThemeProvider
           attribute="class"
           enableSystem={false}
+          defaultTheme="is_dark"
           themes={["is_light", "is_dark"]}
         >
           <MetaMaskProvider>{children}</MetaMaskProvider>

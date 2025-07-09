@@ -1,5 +1,4 @@
 "use client";
-import { Rubik, Urbanist } from "next/font/google";
 import Header from "./components/header";
 import { Providers } from "./providers";
 import Footer from "./components/footer";

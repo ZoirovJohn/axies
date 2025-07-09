@@ -1,30 +1,33 @@
-// middleware.ts
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import i18nConfig from "./next-i18next.config";
 
 export function middleware(request: NextRequest) {
-  // Get the locale from the request, or default to 'kr'
-  let locale =
-    request.cookies.get("NEXT_LOCALE")?.value || i18nConfig.i18n.defaultLocale;
+  // Get locale from cookie or fallback to default locale or 'kr'
+  const locale =
+    request.cookies.get("NEXT_LOCALE")?.value ||
+    i18nConfig.i18n?.defaultLocale ||
+    "kr";
 
-  // Set html lang attribute
   const response = NextResponse.next();
+
+  // Set content language header for SEO and accessibility
   response.headers.set("Content-Language", locale);
 
-  // Update cookie if needed
+  // Set cookie if missing, with secure options (adjust domain/path as needed)
   if (!request.cookies.has("NEXT_LOCALE")) {
-    response.cookies.set("NEXT_LOCALE", locale);
+    response.cookies.set("NEXT_LOCALE", locale, {
+      path: "/",
+      httpOnly: false,
+      sameSite: "lax",
+      secure: process.env.NODE_ENV === "production",
+      maxAge: 60 * 60 * 24 * 365, // 1 year
+    });
   }
 
   return response;
 }
 
 export const config = {
-  // Match all request paths except for the ones starting with:
-  // - api (API routes)
-  // - _next/static (static files)
-  // - _next/image (image optimization files)
-  // - favicon.ico (favicon file)
   matcher: ["/((?!api|_next/static|_next/image|favicon.ico).*)"],
 };

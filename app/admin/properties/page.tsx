@@ -25,7 +25,7 @@ import { sweetConfirmAlert, sweetErrorHandling } from "@/app/sweetAlert";
 import { PropertyUpdate } from "@/libs/dto/property/property.update";
 import { AllPropertiesInquiry } from "@/libs/dto/property/property.input";
 import { Property } from "@/libs/dto/property/property";
-import withAdminLayout from "@/app/components/layout/adminLayout";
+import withAdminLayout from "@/app/components/layout/AdminLayout";
 
 const AdminProperties: NextPage = ({ initialInquiry, ...props }: any) => {
   const [anchorEl, setAnchorEl] = useState<[] | HTMLElement[]>([]);
@@ -72,7 +72,7 @@ const AdminProperties: NextPage = ({ initialInquiry, ...props }: any) => {
   /** LIFECYCLES **/
   useEffect(() => {
     getAllPropertiesByAdminRefetch({ input: propertiesInquiry }).then();
-  }, [propertiesInquiry]);
+  }, [propertiesInquiry, getAllPropertiesByAdminRefetch]);
 
   /** HANDLERS **/
   const changePageHandler = async (event: unknown, newPage: number) => {

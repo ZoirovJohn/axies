@@ -6,18 +6,21 @@ import { useReactiveVar } from "@apollo/client";
 import { userVar } from "@/apollo/store";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import { useRouter } from "next/navigation";
 
 export default function Ranking(): JSX.Element {
   const authMember = useReactiveVar(userVar);
+  const router = useRouter();
   const { t } = useTranslation("common");
+  const shouldRedirect = !authMember?.memberNick;
 
   useEffect(() => {
     if (!authMember?.memberNick) {
-      window.location.href = "/";
+      router.push("/");
     }
-  }, [authMember]);
+  }, [authMember, router]); // ✅ includes all dependencies
 
-  if (!authMember?.memberNick) {
+  if (shouldRedirect) {
     return <></>;
   }
 

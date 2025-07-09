@@ -22,6 +22,7 @@ import {
   PropertyLocation,
 } from "@/libs/enums/property.enum";
 import { propertySquare } from "@/libs/config";
+import Image from "next/image";
 
 const MenuProps = {
   PaperProps: {
@@ -51,84 +52,52 @@ const Filter = (props: FilterType) => {
 
   /** LIFECYCLES **/
   useEffect(() => {
+    const updatedSearch = { ...searchFilter.search };
+
+    let shouldPush = false;
+
     if (searchFilter?.search?.locationList?.length === 0) {
-      delete searchFilter.search.locationList;
+      delete updatedSearch.locationList;
       setShowMore(false);
-      router.push(
-        `/property?input=${encodeURIComponent(
-          JSON.stringify({
-            ...searchFilter,
-            search: {
-              ...searchFilter.search,
-            },
-          })
-        )}`
-      );
+      shouldPush = true;
     }
 
-    if (searchFilter?.search?.collectionList?.length == 0) {
-      delete searchFilter.search.collectionList;
+    if (searchFilter?.search?.collectionList?.length === 0) {
+      delete updatedSearch.collectionList;
+      shouldPush = true;
+    }
+
+    if (searchFilter?.search?.roomsList?.length === 0) {
+      delete updatedSearch.roomsList;
+      shouldPush = true;
+    }
+
+    if (searchFilter?.search?.options?.length === 0) {
+      delete updatedSearch.options;
+      shouldPush = true;
+    }
+
+    if (searchFilter?.search?.bedsList?.length === 0) {
+      delete updatedSearch.bedsList;
+      shouldPush = true;
+    }
+
+    if (shouldPush) {
+      const cleanedInput = {
+        ...searchFilter,
+        search: updatedSearch,
+      };
+
       router.push(
-        `/property?input=${encodeURIComponent(
-          JSON.stringify({
-            ...searchFilter,
-            search: {
-              ...searchFilter.search,
-            },
-          })
-        )}`,
+        `/property?input=${encodeURIComponent(JSON.stringify(cleanedInput))}`,
         { scroll: false }
       );
     }
 
-    if (searchFilter?.search?.roomsList?.length == 0) {
-      delete searchFilter.search.roomsList;
-      router.push(
-        `/property?input=${encodeURIComponent(
-          JSON.stringify({
-            ...searchFilter,
-            search: {
-              ...searchFilter.search,
-            },
-          })
-        )}`,
-        { scroll: false }
-      );
+    if (searchFilter?.search?.locationList) {
+      setShowMore(true);
     }
-
-    if (searchFilter?.search?.options?.length == 0) {
-      delete searchFilter.search.options;
-      router.push(
-        `/property?input=${encodeURIComponent(
-          JSON.stringify({
-            ...searchFilter,
-            search: {
-              ...searchFilter.search,
-            },
-          })
-        )}`,
-        { scroll: false }
-      );
-    }
-
-    if (searchFilter?.search?.bedsList?.length == 0) {
-      delete searchFilter.search.bedsList;
-      router.push(
-        `/property?input=${encodeURIComponent(
-          JSON.stringify({
-            ...searchFilter,
-            search: {
-              ...searchFilter.search,
-            },
-          })
-        )}`,
-
-        { scroll: false }
-      );
-    }
-
-    if (searchFilter?.search?.locationList) setShowMore(true);
-  }, [searchFilter]);
+  }, [searchFilter, router, setSearchFilter]);
 
   /** HANDLERS **/
   const propertyLocationSelectHandler = useCallback(
@@ -178,7 +147,7 @@ const Filter = (props: FilterType) => {
         console.log("ERROR, propertyLocationSelectHandler:", err);
       }
     },
-    [searchFilter]
+    [router, searchFilter]
   );
 
   const propertyTypeSelectHandler = useCallback(
@@ -228,7 +197,7 @@ const Filter = (props: FilterType) => {
         console.log("ERROR, propertyTypeSelectHandler:", err);
       }
     },
-    [searchFilter]
+    [router, searchFilter]
   );
 
   const propertyRoomSelectHandler = useCallback(
@@ -288,7 +257,7 @@ const Filter = (props: FilterType) => {
         console.log("ERROR, propertyRoomSelectHandler:", err);
       }
     },
-    [searchFilter]
+    [router, searchFilter, setSearchFilter]
   );
 
   const propertyOptionSelectHandler = useCallback(
@@ -331,7 +300,7 @@ const Filter = (props: FilterType) => {
         console.log("ERROR, propertyOptionSelectHandler:", err);
       }
     },
-    [searchFilter]
+    [router, searchFilter]
   );
 
   const propertyBedSelectHandler = useCallback(
@@ -391,7 +360,7 @@ const Filter = (props: FilterType) => {
         console.log("ERROR, propertyBedSelectHandler:", err);
       }
     },
-    [searchFilter]
+    [router, searchFilter, setSearchFilter]
   );
 
   const propertySquareHandler = useCallback(
@@ -432,7 +401,7 @@ const Filter = (props: FilterType) => {
         );
       }
     },
-    [searchFilter]
+    [router, searchFilter]
   );
 
   const propertyPriceHandler = useCallback(
@@ -471,10 +440,10 @@ const Filter = (props: FilterType) => {
         );
       }
     },
-    [searchFilter]
+    [router, searchFilter]
   );
 
-  const refreshHandler = async () => {
+  const refreshHandler = useCallback(async () => {
     try {
       setSearchText("");
       await router.push(
@@ -484,7 +453,7 @@ const Filter = (props: FilterType) => {
     } catch (err: any) {
       console.log("ERROR, refreshHandler:", err);
     }
-  };
+  }, [router, initialInput]);
 
   return (
     <Stack className={"filter-main"}>
@@ -519,7 +488,13 @@ const Filter = (props: FilterType) => {
               </>
             }
           />
-          <img src={"/img/icons/search_icon.png"} alt={""} />
+          <Image
+            src="/img/icons/search_icon.png"
+            alt="Search icon"
+            width={24} // set actual width of the image in pixels
+            height={24} // set actual height of the image in pixels
+            priority={true} // optional: loads the image faster for critical icons
+          />
           <Tooltip title="Reset">
             <IconButton onClick={refreshHandler}>
               <RefreshIcon />

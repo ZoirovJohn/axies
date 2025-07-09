@@ -1,46 +1,17 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Avatar, Box, Stack } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
-import Badge from "@mui/material/Badge";
 import CloseFullscreenIcon from "@mui/icons-material/CloseFullscreen";
 import MarkChatUnreadIcon from "@mui/icons-material/MarkChatUnread";
-import { usePathname } from "next/navigation";
-import ScrollableFeed from "react-scrollable-feed";
+import ScrollableFeedLib from "react-scrollable-feed";
+const ScrollableFeed = ScrollableFeedLib as unknown as React.FC<any>;
+
 import { useReactiveVar } from "@apollo/client";
 import { socketVar, userVar } from "../../apollo/store";
 import { Messages, REACT_APP_API_URL } from "../config";
 import { sweetErrorAlert } from "../sweetAlert";
 import { Member } from "@/libs/dto/member/member";
 import { RippleBadge } from "@/public/assets/MaterialTheme/styled";
-
-const NewMessage = (type: any) => {
-  if (type === "right") {
-    return (
-      <Box
-        component={"div"}
-        flexDirection={"row"}
-        style={{ display: "flex" }}
-        alignItems={"flex-end"}
-        justifyContent={"flex-end"}
-        sx={{ m: "10px 0px" }}
-      >
-        <div className={"msg_right"}></div>
-      </Box>
-    );
-  } else {
-    return (
-      <Box
-        flexDirection={"row"}
-        style={{ display: "flex" }}
-        sx={{ m: "10px 0px" }}
-        component={"div"}
-      >
-        <Avatar alt={"jonik"} src={"/img/profile/defaultUser.svg"} />
-        <div className={"msg_left"}></div>
-      </Box>
-    );
-  }
-};
 
 interface MessagePayload {
   event: string;
@@ -59,11 +30,9 @@ const Chat = () => {
   const chatContentRef = useRef<HTMLDivElement>(null);
   const [messagesList, setMessagesList] = useState<MessagePayload[]>([]);
   const [onlineUsers, setOnlineUsers] = useState<number>(0);
-  const textInput = useRef(null);
   const [messageInput, setMessageInput] = useState<string>("");
   const [open, setOpen] = useState(false);
   const [openButton, setOpenButton] = useState(false);
-  const pathName = usePathname();
   const user = useReactiveVar(userVar);
   const socket = useReactiveVar(socketVar);
 
@@ -100,22 +69,15 @@ const Chat = () => {
     return () => clearTimeout(timeoutId);
   }, []);
 
-  // useEffect(() => {
-  //   setOpenButton(false);
-  // }, [pathName]);
-
   /** HANDLERS **/
   const handleOpenChat = () => {
     setOpen((prevState) => !prevState);
   };
 
-  const getInputMessageHandler = useCallback(
-    (e: any) => {
-      const text = e.target.value;
-      setMessageInput(text);
-    },
-    [messageInput]
-  );
+  const getInputMessageHandler = useCallback((e: any) => {
+    const text = e.target.value;
+    setMessageInput(text);
+  }, []);
 
   const getKeyHandler = (e: any) => {
     try {

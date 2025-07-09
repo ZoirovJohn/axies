@@ -20,8 +20,9 @@ import { MembersInquiry } from "@/libs/dto/member/member.input";
 import { sweetErrorHandling } from "@/app/sweetAlert";
 import { MemberUpdate } from "@/libs/dto/member/member.update";
 import { MemberPanelList } from "@/app/components/admin/users/MemberList";
-import withAdminLayout from "@/app/components/layout/adminLayout";
+import withAdminLayout from "@/app/components/layout/AdminLayout";
 import searchIcon from "../../../public/assets/images/icon/search_icon.png";
+import Image from "next/image";
 
 const AdminUsers: NextPage = ({ initialInquiry, ...props }: any) => {
   const [anchorEl, setAnchorEl] = useState<[] | HTMLElement[]>([]);
@@ -71,7 +72,7 @@ const AdminUsers: NextPage = ({ initialInquiry, ...props }: any) => {
     getAllMembersRefetch({
       input: membersInquiry,
     });
-  }, [membersInquiry]);
+  }, [membersInquiry, getAllMembersRefetch]);
 
   /** HANDLERS **/
   const changePageHandler = async (event: unknown, newPage: number) => {
@@ -232,7 +233,7 @@ const AdminUsers: NextPage = ({ initialInquiry, ...props }: any) => {
                 <OutlinedInput
                   value={searchText}
                   onChange={(e) => textHandler(e.target.value)}
-                  sx={{ width: "100%"}}
+                  sx={{ width: "100%" }}
                   className="search"
                   placeholder="Search user name"
                   onKeyDown={(event) => {
@@ -262,9 +263,11 @@ const AdminUsers: NextPage = ({ initialInquiry, ...props }: any) => {
                         position="end"
                         onClick={searchTextHandler}
                       >
-                        <img
-                          src={searchIcon.src}
+                        <Image
+                          src={searchIcon}
                           alt="searchIcon"
+                          width={24}
+                          height={24}
                         />
                       </InputAdornment>
                     </>

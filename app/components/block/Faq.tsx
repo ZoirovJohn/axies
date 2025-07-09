@@ -5,19 +5,22 @@ import { Collapse } from "react-collapse";
 import { useReactiveVar } from "@apollo/client";
 import { userVar } from "@/apollo/store";
 import { useTranslation } from "react-i18next";
+import { useRouter } from "next/navigation";
 
 export default function Faq(): JSX.Element {
   const { t } = useTranslation("common");
+  const router = useRouter();
   const [getCollapse, setCollapse] = useState<number | null>(null);
   const authMember = useReactiveVar(userVar);
+  const shouldRedirect = !authMember?.memberNick;
 
   useEffect(() => {
-    if (!authMember?.memberNick) {
-      window.location.href = "/";
+    if (shouldRedirect) {
+      router.replace("/");
     }
-  }, [authMember]);
+  }, [shouldRedirect, router]);
 
-  if (!authMember?.memberNick) {
+  if (shouldRedirect) {
     return <></>;
   }
 

@@ -73,7 +73,7 @@ const AdminMenuList = (props: any) => {
         setClickSubMenu("List");
         break;
     }
-  }, []);
+  }, [device, pathnames, router, user?.memberAuthType]);
 
   /** HANDLERS **/
   const subMenuChangeHandler = (target: string) => {

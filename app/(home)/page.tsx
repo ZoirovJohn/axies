@@ -1,7 +1,6 @@
 import { Metadata } from "next";
 import CreateSellNft from "../components/block/CreateSellNft";
 import PopularCollection from "../components/block/PopularCollection";
-import TopSeller from "../components/block/TopSeller";
 import Hero1 from "../components/hero/Hero1";
 import LiveAuctionModal from "../components/modal/LiveAuctionModal";
 import TodaysPicks from "../components/block/TodaysPicks";
@@ -11,13 +10,12 @@ export const metadata: Metadata = {
   title: "Axies | NFT Marketplace",
 };
 
-export default function page(): JSX.Element {
+export default function Page(): JSX.Element {
   return (
     <>
       <Hero1 />
       <PopularCollection />
       <TodaysPicks style="pad-b-54 no-pt-mb" />
-      {/* <TopSeller />*/}
       <TopSeller2 />
 
       <CreateSellNft />

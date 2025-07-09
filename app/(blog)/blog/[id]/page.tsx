@@ -23,7 +23,7 @@ export const metadata: Metadata = {
   title: "Axies | NFT Marketplace",
 };
 
-export default function page({ params }: any): JSX.Element {
+export default function Page({ params }: any): JSX.Element {
   const { id } = params;
 
   return (

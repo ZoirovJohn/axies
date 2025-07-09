@@ -1,7 +1,8 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import Countdown from "react-countdown";
+import CountdownLib from "react-countdown";
+const Countdown = CountdownLib as unknown as React.FC<any>;
 
 export default function ProductCard9({ data }: any): JSX.Element {
   const renderer = ({

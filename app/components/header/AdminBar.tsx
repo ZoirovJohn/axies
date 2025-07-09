@@ -13,7 +13,6 @@ const ProfileComponent = () => {
     useState<boolean>(false);
   const [isAuthorActive, setIsAuthorActive] = useState(false);
   const [getCurrentTab, setCurrentTab] = useState<number>(0);
-  const [isLogoutConfirm, setLogoutConfirm] = useState<boolean>(false);
   const menuRef = useRef(null);
   const profileRef = useRef<HTMLDivElement>(null);
   const tab: string[] = [t("NotifTab1"), t("NotifTab2")];
@@ -21,8 +20,6 @@ const ProfileComponent = () => {
   const imagePath: string = authMember?.memberImage
     ? `${REACT_APP_API_URL}/${authMember?.memberImage}`
     : "/assets/images/avatar/avt-28.jpg";
-
-  // const authMember = true;
 
   const avatarHandler = () => {
     setIsAuthorActive((prevState) => !prevState);

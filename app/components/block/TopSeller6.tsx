@@ -80,7 +80,7 @@ export default function TopSeller6(): JSX.Element {
                       >
                         {author.map((item) => (
                           <SwiperSlide key={item.id}>
-                            <AuthorCard1 data={item} />
+                            {/* <AuthorCard1 data={item} /> */}
                           </SwiperSlide>
                         ))}
                       </Swiper>

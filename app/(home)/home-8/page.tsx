@@ -7,7 +7,7 @@ export const metadata: Metadata = {
     title: "Axies | NFT Marketplace",
 };
 
-export default function page(): JSX.Element {
+export default function Page(): JSX.Element {
     return (
         <>
             <section className="tf-item tf-section">

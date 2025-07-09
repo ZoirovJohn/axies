@@ -21,7 +21,7 @@ import { REACT_APP_API_URL } from "../../config";
 import { getJwtToken, logOut, updateUserInfo } from "@/app/(auth)";
 import { MemberType } from "@/libs/enums/member.enum";
 import AdminMenuList from "../admin/AdminMenuList";
-import projectLogo from "../../../public/assets/images/logo/logo2.png"; // Ensure this path is correct
+import Image from "next/image";
 
 const drawerWidth = 280;
 
@@ -39,7 +39,7 @@ const withAdminLayout = <P extends object>(
     }
   >
 ) => {
-  return (props: P) => {
+  const WrappedComponent = (props: P) => {
     const router = useRouter();
     const user = useReactiveVar(userVar);
     const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
@@ -49,6 +49,7 @@ const withAdminLayout = <P extends object>(
       severity: "success",
     });
     const [title, setTitle] = useState("Admin");
+    const isNotAdmin = !user || user.memberType !== MemberType.ADMIN;
 
     useEffect(() => {
       const jwt = getJwtToken();
@@ -61,7 +62,7 @@ const withAdminLayout = <P extends object>(
       }
     }, [user, router]);
 
-    if (!user || user.memberType !== MemberType.ADMIN) return null;
+    if (isNotAdmin) return null;
 
     const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
       setAnchorElUser(event.currentTarget);
@@ -139,7 +140,12 @@ const withAdminLayout = <P extends object>(
           >
             <Toolbar sx={{ flexDirection: "column", alignItems: "flex-start" }}>
               <Stack className="logo-box" sx={{ mb: 2 }}>
-                <img src={projectLogo.src} alt="logo" />
+                <Image
+                  src="/assets/images/logo/logo2.png"
+                  alt="logo"
+                  width={133}
+                  height={56}
+                />
               </Stack>
 
               <Stack
@@ -170,16 +176,25 @@ const withAdminLayout = <P extends object>(
           </Drawer>
 
           <Box component={"div"} id="bunker" sx={{ flexGrow: 1, p: 3, mt: 8 }}>
-            <Component
-              {...props}
-              setSnackbar={setSnackbar}
-              setTitle={setTitle}
-            />
+            <>
+              {React.createElement(Component, {
+                ...props,
+                setSnackbar,
+                setTitle,
+              })}
+            </>
           </Box>
         </Box>
       </main>
     );
   };
+
+  // Add this displayName to fix react/display-name ESLint error that blocks build
+  WrappedComponent.displayName = `withAdminLayout(${
+    Component.displayName || Component.name || "Component"
+  })`;
+
+  return WrappedComponent;
 };
 
 export default withAdminLayout;
