@@ -9,6 +9,12 @@ const nextConfig = {
         port: "5001",
         pathname: "/uploads/**",
       },
+      {
+        protocol: "http",
+        hostname: "168.231.123.112",
+        port: "5001",
+        pathname: "/uploads/**",
+      },
     ],
   },
   env: {
