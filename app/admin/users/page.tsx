@@ -20,7 +20,7 @@ import { MembersInquiry } from "@/libs/dto/member/member.input";
 import { sweetErrorHandling } from "@/app/sweetAlert";
 import { MemberUpdate } from "@/libs/dto/member/member.update";
 import { MemberPanelList } from "@/app/components/admin/users/MemberList";
-import WithAdminLayout from "@/app/components/layout/AdminLayout";
+import WithAdminLayout from "@/app/components/layout/adminLayout";
 import searchIcon from "../../../public/assets/images/icon/search_icon.png";
 import Image from "next/image";
 

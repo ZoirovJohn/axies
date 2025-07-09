@@ -13,7 +13,7 @@ import TablePagination from "@mui/material/TablePagination";
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
 import CancelRoundedIcon from "@mui/icons-material/CancelRounded";
 import { FaqArticlesPanelList } from "@/app/components/admin/cs/FaqList";
-import WithAdminLayout from "@/app/components/layout/AdminLayout";
+import WithAdminLayout from "@/app/components/layout/adminLayout";
 import searchIcon from "../../../../public/assets/images/icon/search_icon.png";
 import Image from "next/image";
 
