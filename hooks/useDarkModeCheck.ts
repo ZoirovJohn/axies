@@ -2,7 +2,7 @@ import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 
 export default function useDarkModeCheck(): boolean {
-  const [isDark, setDark] = useState<boolean>(true);
+  const [isDark, setDark] = useState<boolean>(false);
   const { theme } = useTheme();
 
   useEffect(() => {

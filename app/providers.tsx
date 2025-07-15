@@ -64,7 +64,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
         <ThemeProvider
           attribute="class"
           enableSystem={false}
-          defaultTheme="is_dark"
+          defaultTheme="is_light"
           themes={["is_light", "is_dark"]}
         >
           <MetaMaskProvider>{children}</MetaMaskProvider>
