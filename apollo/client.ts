@@ -89,7 +89,7 @@ function createIsomorphicLink() {
 
     /* WEBSOCKET SUBSCRIPTION LINK */
     const wsLink = new WebSocketLink({
-      uri: process.env.REACT_APP_API_WS ?? "https://axies.uz/graphql",
+      uri: process.env.REACT_APP_API_WS ?? "http://axies.uz/graphql",
       options: {
         reconnect: false,
         timeout: 30000,
