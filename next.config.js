@@ -12,7 +12,14 @@ const nextConfig = {
         pathname: "/uploads/**",
       },
 
-      // PRODUCTION (HTTPS)
+      // PRODUCTION - HTTP
+      {
+        protocol: "http",
+        hostname: "axies.uz",
+        pathname: "/uploads/**",
+      },
+
+      // PRODUCTION - HTTPS (future-proof)
       {
         protocol: "https",
         hostname: "axies.uz",
