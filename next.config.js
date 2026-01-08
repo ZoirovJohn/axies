@@ -8,14 +8,15 @@ const nextConfig = {
       {
         protocol: "http",
         hostname: "localhost",
-        port: "5001",
+        port: "4007",
         pathname: "/uploads/**",
       },
 
       // PRODUCTION - HTTP
       {
         protocol: "http",
-        hostname: "axies.uz",
+        hostname: "168.231.123.112",
+        port: "4007",
         pathname: "/uploads/**",
       },
 
