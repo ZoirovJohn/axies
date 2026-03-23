@@ -31,7 +31,7 @@ const tokenRefreshLink = new TokenRefreshLink({
     // execute refresh token
     return null;
   },
-	});
+});
 
 function createIsomorphicLink() {
   const graphqlUrl =

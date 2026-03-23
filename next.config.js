@@ -1,6 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+
   images: {
     remotePatterns: [
       {
@@ -30,15 +31,21 @@ const nextConfig = {
       {
         protocol: "http",
         hostname: "168.231.123.112",
-        port: "5001",
+        port: "4007",
+        pathname: "/uploads/**",
+      },
+      {
+        protocol: "https",
+        hostname: "axies.uz",
         pathname: "/uploads/**",
       },
     ],
   },
+
   env: {
-    REACT_APP_API_URL: process.env.REACT_APP_API_URL,
-    REACT_APP_API_GRAPHQL_URL: process.env.REACT_APP_API_GRAPHQL_URL,
-    REACT_APP_API_WS: process.env.REACT_APP_API_WS,
+    NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
+    NEXT_PUBLIC_API_GRAPHQL_URL: process.env.NEXT_PUBLIC_API_GRAPHQL_URL,
+    NEXT_PUBLIC_API_CHAT_WS: process.env.NEXT_PUBLIC_API_CHAT_WS,
   },
 };
 
