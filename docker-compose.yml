@@ -4,9 +4,9 @@ services:
     restart: always
     image: node:20.10.0
     ports:
-      - 5003:4006
-    environment:
-      - PORT=4006
+      - "4006:4006"
+    env_file:
+      - .env.production
     volumes:
       - ./:/usr/src/axies-next
     working_dir: /usr/src/axies-next
@@ -15,13 +15,13 @@ services:
       - client-network
 
     # FOR PRODUCTION
-    command: bash -c "yarn && yarn run build && yarn run start"
+    command: bash -c "yarn install --frozen-lockfile && yarn run build && yarn run start"
 
 networks:
   client-network:
     driver: bridge
 
 
-# axies-next: localhost:5003 <==> container: 4006
-# axies-api: localhost:5001 <==> container: 4007
-# axies-batch: localhost:5002 <==> container: 4008
+# axies-next: localhost:4006 <==> container: 4006
+# axies-api: localhost:4007 <==> container: 4007
+# axies-batch: localhost:4008 <==> container: 4008
