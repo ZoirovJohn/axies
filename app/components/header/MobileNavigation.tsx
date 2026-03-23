@@ -29,6 +29,7 @@ export default function MobileNavigation() {
                 height={100}
                 width={100}
                 alt="logo"
+                style={{ width: "auto", height: "auto" }}
               />
             </Link>
           </div>

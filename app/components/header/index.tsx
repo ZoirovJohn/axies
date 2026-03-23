@@ -179,6 +179,7 @@ export default function Header(): JSX.Element {
                               alt="languageFlag"
                               width={24}
                               height={16}
+                              style={{ width: "auto", height: "auto" }}
                             />
                           ) : (
                             <Image
@@ -186,6 +187,7 @@ export default function Header(): JSX.Element {
                               alt="koreanFlag"
                               width={24}
                               height={16}
+                              style={{ width: "auto", height: "auto" }}
                             />
                           )}
                         </Box>
@@ -204,6 +206,7 @@ export default function Header(): JSX.Element {
                             alt="usaFlag"
                             width={24}
                             height={16}
+                            style={{ width: "auto", height: "auto" }}
                           />
                           English
                         </MenuItem>
@@ -215,6 +218,7 @@ export default function Header(): JSX.Element {
                             alt="koreanFlag"
                             width={24}
                             height={16}
+                            style={{ width: "auto", height: "auto" }}
                           />
                           한국어
                         </MenuItem>
@@ -226,6 +230,7 @@ export default function Header(): JSX.Element {
                             alt="russiaFlag"
                             width={24}
                             height={16}
+                            style={{ width: "auto", height: "auto" }}
                           />
                           Русский
                         </MenuItem>
@@ -237,6 +242,7 @@ export default function Header(): JSX.Element {
                             alt="uzbekFlag"
                             width={24}
                             height={16}
+                            style={{ width: "auto", height: "auto" }}
                           />
                           Uzbek
                         </MenuItem>

@@ -12,6 +12,7 @@ import { Messages, REACT_APP_API_URL } from "../config";
 import { sweetErrorAlert } from "../sweetAlert";
 import { Member } from "@/libs/dto/member/member";
 import { RippleBadge } from "@/public/assets/MaterialTheme/styled";
+import { getJwtToken } from "@/app/(auth)";
 
 interface MessagePayload {
   event: string;
@@ -35,6 +36,32 @@ const Chat = () => {
   const [openButton, setOpenButton] = useState(false);
   const user = useReactiveVar(userVar);
   const socket = useReactiveVar(socketVar);
+
+  useEffect(() => {
+    if (!open) return;
+
+    if (socket) return;
+
+    const wsBaseUrl =
+      process.env.NEXT_PUBLIC_API_CHAT_WS ??
+      process.env.NEXT_PUBLIC_API_WS ??
+      "ws://127.0.0.1:4007";
+
+    const token = getJwtToken();
+    const socketUrl = new URL(wsBaseUrl);
+    if (token) socketUrl.searchParams.set("token", token);
+
+    const newSocket = new WebSocket(socketUrl.toString());
+    socketVar(newSocket);
+
+    return () => {
+      try {
+        newSocket.close();
+      } finally {
+        socketVar(undefined);
+      }
+    };
+  }, [open, socket]);
 
   /** LIFECYCLES **/
   useEffect(() => {

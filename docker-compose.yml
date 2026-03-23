@@ -4,7 +4,7 @@ services:
     restart: always
     image: node:20.10.0
     ports:
-      - 5000:4006
+      - 5003:4006
     environment:
       - PORT=4006
     volumes:
@@ -22,6 +22,6 @@ networks:
     driver: bridge
 
 
-# axies-next: localhost:5000 <==> container: 4006
+# axies-next: localhost:5003 <==> container: 4006
 # axies-api: localhost:5001 <==> container: 4007
 # axies-batch: localhost:5002 <==> container: 4008

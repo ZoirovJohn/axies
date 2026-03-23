@@ -67,6 +67,7 @@ export default function HeroSlider1(): JSX.Element {
                           className="img-bg"
                           src="/assets/images/backgroup-secsion/img-bg-sliderhome2.webp"
                           alt="Image"
+                          style={{ height: "auto" }}
                         />
                         <Image
                           height={588}

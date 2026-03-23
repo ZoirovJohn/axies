@@ -3,23 +3,19 @@ import {
   ApolloClient,
   ApolloLink,
   InMemoryCache,
-  split,
   from,
   NormalizedCacheObject,
 } from "@apollo/client";
 import createUploadLink from "apollo-upload-client/public/createUploadLink.js";
-import { WebSocketLink } from "@apollo/client/link/ws";
-import { getMainDefinition } from "@apollo/client/utilities";
 import { onError } from "@apollo/client/link/error";
 import { TokenRefreshLink } from "apollo-link-token-refresh";
-import { socketVar } from "./store";
 import { getJwtToken } from "@/app/(auth)";
 import { sweetErrorAlert } from "@/app/sweetAlert";
 
 let apolloClient: ApolloClient<NormalizedCacheObject>;
 
 function getHeaders() {
-  const headers = {} as HeadersInit;
+  const headers: Record<string, string> = {};
   const token = getJwtToken();
   // @ts-ignore
   if (token) headers["Authorization"] = `Bearer ${token}`;
@@ -35,41 +31,12 @@ const tokenRefreshLink = new TokenRefreshLink({
     // execute refresh token
     return null;
   },
-});
-
-// Custom WebSocket client
-class LoggingWebSocket {
-  private socket: WebSocket;
-
-  constructor(url: string) {
-    this.socket = new WebSocket(`${url}?token=${getJwtToken()}`);
-    socketVar(this.socket);
-
-    this.socket.onopen = () => {
-      console.log("WebSocket connection");
-    };
-
-    this.socket.onmessage = (msg) => {
-      console.log("WebSocket message:", msg.data);
-    };
-
-    this.socket.onerror = (error) => {
-      console.log("WebSocket, error:", error);
-    };
-  }
-
-  send(
-    data: string | ArrayBuffer | SharedArrayBuffer | Blob | ArrayBufferView
-  ) {
-    this.socket.send(data);
-  }
-
-  close() {
-    this.socket.close();
-  }
-}
+	});
 
 function createIsomorphicLink() {
+  const graphqlUrl =
+    process.env.NEXT_PUBLIC_API_GRAPHQL_URL ?? "http://127.0.0.1:4007/graphql";
+
   if (typeof window !== "undefined") {
     const authLink = new ApolloLink((operation, forward) => {
       operation.setContext(({ headers = {} }) => ({
@@ -82,24 +49,8 @@ function createIsomorphicLink() {
       return forward(operation);
     });
 
-    // @ts-ignore
-    const link = new createUploadLink({
-      uri: process.env.REACT_APP_API_GRAPHQL_URL,
-    });
-
-    /* WEBSOCKET SUBSCRIPTION LINK */
-    const wsLink = new WebSocketLink({
-      uri: process.env.REACT_APP_API_WS ?? "ws://127.0.0.1:5001/graphql",
-      options: {
-        reconnect: false,
-        timeout: 30000,
-        connectionParams: () => {
-          return { headers: getHeaders() };
-        },
-      },
-
-      // webSocketImpl:
-      webSocketImpl: LoggingWebSocket,
+    const link = createUploadLink({
+      uri: graphqlUrl,
     });
 
     const errorLink = onError(({ graphQLErrors, networkError, response }) => {
@@ -117,20 +68,16 @@ function createIsomorphicLink() {
       }
     });
 
-    const splitLink = split(
-      ({ query }) => {
-        const definition = getMainDefinition(query);
-        return (
-          definition.kind === "OperationDefinition" &&
-          definition.operation === "subscription"
-        );
-      },
-      wsLink,
-      authLink.concat(link)
-    );
-
-    return from([errorLink, tokenRefreshLink, splitLink]);
+    return from([errorLink, tokenRefreshLink, authLink.concat(link)]);
   }
+
+  return from([
+    tokenRefreshLink,
+    createUploadLink({
+      uri: graphqlUrl,
+      headers: getHeaders(),
+    }),
+  ]);
 }
 
 function createApolloClient() {
