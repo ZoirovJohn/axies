@@ -2,7 +2,9 @@ services:
   axies-next:
     container_name: axies-next
     restart: always
-    build: .
+    build:
+      context: .
+      network: host
     image: axies-next:local
     ports:
       - "4006:4006"
