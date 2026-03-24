@@ -35,6 +35,12 @@ const nextConfig = {
         pathname: "/uploads/**",
       },
       {
+        protocol: "http",
+        hostname: "187.124.68.70",
+        port: "4007",
+        pathname: "/uploads/**",
+      },
+      {
         protocol: "https",
         hostname: "axies.uz",
         pathname: "/uploads/**",
