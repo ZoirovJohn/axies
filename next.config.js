@@ -45,6 +45,11 @@ const nextConfig = {
         hostname: "axies.uz",
         pathname: "/uploads/**",
       },
+      {
+        protocol: "https",
+        hostname: "api.axies.uz",
+        pathname: "/uploads/**",
+      },
     ],
   },
 
