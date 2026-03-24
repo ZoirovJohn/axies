@@ -11,6 +11,7 @@ import { onError } from "@apollo/client/link/error";
 import { TokenRefreshLink } from "apollo-link-token-refresh";
 import { getJwtToken } from "@/app/(auth)";
 import { sweetErrorAlert } from "@/app/sweetAlert";
+import { getDerivedHttpBaseUrl, resolvePublicUrl } from "@/libs/runtime";
 
 let apolloClient: ApolloClient<NormalizedCacheObject>;
 
@@ -34,8 +35,8 @@ const tokenRefreshLink = new TokenRefreshLink({
 });
 
 function createIsomorphicLink() {
-  const graphqlUrl =
-    process.env.NEXT_PUBLIC_API_GRAPHQL_URL ?? "http://127.0.0.1:4007/graphql";
+  const derivedGraphqlUrl = `${getDerivedHttpBaseUrl(4007)}/graphql`;
+  const graphqlUrl = resolvePublicUrl(process.env.NEXT_PUBLIC_API_GRAPHQL_URL, derivedGraphqlUrl);
 
   if (typeof window !== "undefined") {
     const authLink = new ApolloLink((operation, forward) => {

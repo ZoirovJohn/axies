@@ -1,7 +1,9 @@
-export const API_URL =
-  process.env.NEXT_PUBLIC_API_URL ??
-  process.env.REACT_APP_API_URL ??
-  "http://127.0.0.1:4007";
+import { getDerivedHttpBaseUrl, resolvePublicUrl } from "@/libs/runtime";
+
+export const API_URL = resolvePublicUrl(
+  process.env.NEXT_PUBLIC_API_URL ?? process.env.REACT_APP_API_URL,
+  getDerivedHttpBaseUrl(4007)
+);
 
 export const REACT_APP_API_URL = API_URL;
 

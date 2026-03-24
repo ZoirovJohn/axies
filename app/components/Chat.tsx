@@ -13,6 +13,7 @@ import { sweetErrorAlert } from "../sweetAlert";
 import { Member } from "@/libs/dto/member/member";
 import { RippleBadge } from "@/public/assets/MaterialTheme/styled";
 import { getJwtToken } from "@/app/(auth)";
+import { getDerivedWsBaseUrl, resolvePublicUrl } from "@/libs/runtime";
 
 interface MessagePayload {
   event: string;
@@ -43,9 +44,10 @@ const Chat = () => {
     if (socket) return;
 
     const wsBaseUrl =
-      process.env.NEXT_PUBLIC_API_CHAT_WS ??
-      process.env.NEXT_PUBLIC_API_WS ??
-      "ws://127.0.0.1:4007";
+      resolvePublicUrl(
+        process.env.NEXT_PUBLIC_API_CHAT_WS ?? process.env.NEXT_PUBLIC_API_WS,
+        getDerivedWsBaseUrl(4007)
+      );
 
     const token = getJwtToken();
     const socketUrl = new URL(wsBaseUrl);
