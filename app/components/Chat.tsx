@@ -194,7 +194,7 @@ const Chat = () => {
                       sx={{ m: "10px 0px" }}
                       component={"div"}
                     >
-                      <Avatar alt={"thomas"} src={memberImage} />
+                      <Avatar alt={"Muhammadjon"} src={memberImage} />
                       <div className={"msg-left"}>{text}</div>
                     </Box>
                   );
